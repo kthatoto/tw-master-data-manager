@@ -1,11 +1,10 @@
-<template>
-  <div>
-    <h1>tw-mapmaker</h1>
-  </div>
+<template lang="pug">
+.index
+  h1 tw-mapmaker
 </template>
 
 <script lang="ts">
 </script>
 
-<style>
+<style lang="stylus">
 </style>
