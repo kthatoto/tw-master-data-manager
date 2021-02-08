@@ -8,7 +8,8 @@
       :show-file-list="false"
     )
       el-button(icon="el-icon-plus" type="primary") 追加
-  img(v-for="image in images" :src="image")
+  .images__content
+    img(v-for="image in images" :src="image")
 </template>
 
 <script lang="ts">
@@ -50,4 +51,14 @@ export default defineComponent({
     border-bottom: 1px solid lightgray
     display: flex
     justify-content: flex-end
+  &__content
+    padding: 10px
+    display: flex
+    justify-content: space-between
+    flex-wrap: wrap
+    img
+      width: 80px
+      height: 80px
+      border: 1px solid lightgray
+      margin-bottom: 10px
 </style>
