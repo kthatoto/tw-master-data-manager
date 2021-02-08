@@ -1,10 +1,18 @@
 <template lang="pug">
 .index
-  .editor
-  .console
+  Editor.editor
+  Console.console
 </template>
 
 <script lang="ts">
+import { defineComponent } from "@vue/composition-api"
+
+import Editor from "@/components/Editor.vue"
+import Console from "@/components/Console.vue"
+
+export default defineComponent({
+  components: { Editor, Console },
+})
 </script>
 
 <style lang="stylus" scoped>
