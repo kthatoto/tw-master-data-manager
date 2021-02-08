@@ -3,7 +3,7 @@ export default {
   srcDir: 'src',
   target: 'static',
   head: {
-    title: 'tw-mapmaker',
+    title: 'tw-game-editor',
     htmlAttrs: {
       lang: 'en'
     },

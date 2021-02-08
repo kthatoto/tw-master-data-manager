@@ -1,4 +1,4 @@
-# tw-mapmaker
+# tw-game-editor
 
 ## Build Setup
 
