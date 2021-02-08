@@ -38,5 +38,6 @@ export default {
     extend (config, ctx) {
       config.resolve.alias['~data'] = path.join(__dirname, 'data')
     }
-  }
+  },
+  serverMiddleware: ["~~/server/"]
 }
