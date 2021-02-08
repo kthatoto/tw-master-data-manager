@@ -35,6 +35,7 @@ export default defineComponent({
     const handleUpload = async (file: any) => {
       const params = new FormData()
       params.append("file", file.raw)
+      params.append("filename", file.name)
       await axios.post("/api/images", params, {
         headers: {
           "content-type": "multipart/form-data"
