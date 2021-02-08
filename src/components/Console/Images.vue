@@ -32,8 +32,14 @@ export default defineComponent({
       })
     })
 
-    const handleUpload = (files: any[]) => {
-      console.log(files)
+    const handleUpload = async (file: any) => {
+      const params = new FormData()
+      params.append("file", file.raw)
+      await axios.post("/api/images", params, {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      })
     }
 
     return {
