@@ -23,4 +23,6 @@ export default defineComponent({
   height: 100%
   >>> .el-tabs
     height: 100%
+    &__content
+      padding: 0
 </style>
