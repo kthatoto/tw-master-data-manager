@@ -63,9 +63,16 @@ export default defineComponent({
     display: flex
     justify-content: space-between
     flex-wrap: wrap
+    &::before
+      order: 1
+    &::before, &::after
+      content: ""
+      display: block
+      width: 80px
+      height: 0
     img
       width: 80px
       height: 80px
       border: 1px solid lightgray
-      margin-bottom: 10px
+      margin-bottom: 20px
 </style>
