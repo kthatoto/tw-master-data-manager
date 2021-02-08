@@ -15,7 +15,7 @@ import { defineComponent } from "@vue/composition-api"
 
 export default defineComponent({
   setup() {
-    const handleUpload = (files) => {
+    const handleUpload = (files: any[]) => {
       console.log(files)
     }
 

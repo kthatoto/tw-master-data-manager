@@ -1,3 +1,5 @@
+import path from 'path'
+
 export default {
   ssr: false,
   srcDir: 'src',
@@ -32,6 +34,9 @@ export default {
   ],
   axios: {},
   build: {
-    transpile: [/^element-ui/]
+    transpile: [/^element-ui/],
+    extend (config, ctx) {
+      config.resolve.alias['~data'] = path.join(__dirname, 'data')
+    }
   }
 }
