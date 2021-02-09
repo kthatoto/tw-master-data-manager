@@ -1,17 +1,23 @@
 <template lang="pug">
 .images
   .images__header
-    el-upload.button(
-      action=""
-      :auto-upload="false"
-      :on-change="handleUpload"
-      :show-file-list="false"
-    )
-      el-button(icon="el-icon-plus" type="primary") 画像追加
-    el-button.button(icon="el-icon-plus" type="primary") フォルダ追加
+    .buttons
+      el-upload.button(
+        action=""
+        :auto-upload="false"
+        :on-change="handleUpload"
+        :show-file-list="false"
+      )
+        el-button(icon="el-icon-plus" type="primary") 画像追加
+      el-button.button(icon="el-icon-plus" type="primary") フォルダ追加
+    .nav
+      icon.home-icon(name="home" @click.native="changeDirectory('')")
+      .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
+        icon.icon(name="chevron-right")
+        span(@click="backDirectory(i)") {{ breadcrumb }}
   .images__content
     .images__item(v-for="o in directories" :key="o.name")
-      Icon.icon(name="folder")
+      Icon.icon(name="folder" @click.native="appendDirectory(o.name)")
       span {{ o.name }}
     .images__item(v-for="o in images" :key="o.name")
       img(:src="o.image")
@@ -28,9 +34,9 @@ export default defineComponent({
     const imagesStore = appStores.imagesStore
 
     const state = reactive<{
-      creatingFolder: boolean
+      creatingDirectory: boolean
     }>({
-      creatingFolder: false
+      creatingDirectory: false
     })
 
     onMounted(async () => {
@@ -40,6 +46,10 @@ export default defineComponent({
     return {
       ...toRefs(state),
       handleUpload: imagesStore.uploadImage,
+      changeDirectory: imagesStore.changeDirectory,
+      appendDirectory: imagesStore.appendDirectory,
+      backDirectory: imagesStore.backDirectory,
+      breadcrumbs: imagesStore.breadcrumbs,
       directories: imagesStore.directories,
       images: imagesStore.images
     }
@@ -52,9 +62,33 @@ export default defineComponent({
   &__header
     padding: 10px
     border-bottom: 1px solid lightgray
-    display: flex
-    .button
-      margin-right: 10px
+    .buttons
+      display: flex
+      margin-bottom: 10px
+      .button
+        margin-right: 10px
+    .nav
+      display: flex
+      flex-wrap: wrap
+      .home-icon
+        width: 20px
+        height: 20px
+        color: lightblue
+        cursor: pointer
+      .breadcrumb
+        height: 20px
+        .icon
+          color: black
+          width: 15px
+          height: 15px
+          vertical-align: text-top
+        span
+          font-size: 12px
+          vertical-align: text-bottom
+          margin-right: 3px
+          cursor: pointer
+          &:hover
+            text-decoration: underline
   &__content
     padding: 10px
     display: flex

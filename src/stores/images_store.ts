@@ -1,4 +1,4 @@
-import { reactive, toRefs } from '@vue/composition-api'
+import { reactive, computed, toRefs } from '@vue/composition-api'
 import axios from 'axios'
 
 export interface UploadingFile {
@@ -28,14 +28,18 @@ export const buildImagesStore = () => {
 
   const fetchImages = async () => {
     const res = await axios.get(`/api/images?directory=${state.currentDirectory}`)
-    res.data.objects.forEach(async (obj: FileObject) => {
+    const images = []
+    const directories = []
+    for (const obj of res.data.objects) {
       if (obj.isFile) {
         obj.image = (await import(`~data/images/${state.currentDirectory}${obj.name}`)).default
-        state.images.push(obj)
+        images.push(obj)
       } else {
-        state.directories.push(obj)
+        directories.push(obj)
       }
-    })
+    }
+    state.images = images
+    state.directories = directories
   }
 
   const uploadImage = async (file: UploadingFile) => {
@@ -46,10 +50,35 @@ export const buildImagesStore = () => {
     await axios.post('/api/images', params, { headers })
   }
 
+  const changeDirectory = (dir: string) => {
+    state.currentDirectory = dir
+  }
+
+  const appendDirectory = (dir: string) => {
+    if (!state.currentDirectory) state.currentDirectory = dir
+    else state.currentDirectory = `${state.currentDirectory}/${dir}`
+  }
+
+  const backDirectory = (i: number) => {
+    state.currentDirectory = breadcrumbs.value.reduce((newDirectory: string[], breadcrumb: string, j: number) => {
+      if (j <= i) newDirectory.push(breadcrumb)
+      return newDirectory
+    }, []).join('/')
+  }
+
+  const breadcrumbs = computed<string[]>(() => {
+    if (state.currentDirectory.length === 0) return []
+    return state.currentDirectory.split('/').filter((v: any) => v)
+  })
+
   return {
     ...toRefs(state),
     fetchImages,
-    uploadImage
+    uploadImage,
+    changeDirectory,
+    appendDirectory,
+    backDirectory,
+    breadcrumbs
   }
 }
 
