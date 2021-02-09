@@ -1,12 +1,13 @@
 import express from 'express'
 import bodyParser from 'body-parser'
+// @ts-ignore
 import multer from 'multer'
 import fs from 'fs'
 
 const app = express()
 const storage = multer.diskStorage({
   destination: './data/images',
-  filename: (req, file, cb) => {
+  filename: (req: any, file: any, cb: any) => {
     cb(null, file.originalname)
   }
 })
