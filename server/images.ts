@@ -15,14 +15,14 @@ export default (app: any) => {
     const response: any = {objects: []}
 
     const objects = await fs.promises.readdir('./data/images', {})
-    objects.forEach(async (obj: string) => {
+    for (obj of objects) {
       const stat = await fs.promises.stat(`./data/images/${obj}`)
       response.objects.push({
         path: obj,
         name: obj,
         isFile: !stat.isDirectory()
       })
-    })
+    }
 
     res.send(response)
   })
