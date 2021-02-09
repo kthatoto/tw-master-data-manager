@@ -1,13 +1,14 @@
 <template lang="pug">
 .images
   .images__header
-    el-upload(
+    el-upload.button(
       action=""
       :auto-upload="false"
       :on-change="handleUpload"
       :show-file-list="false"
     )
-      el-button(icon="el-icon-plus" type="primary") 追加
+      el-button(icon="el-icon-plus" type="primary") 画像追加
+    el-button.button(icon="el-icon-plus" type="primary") フォルダ追加
   .images__content
     img(v-for="image in images" :src="image")
 </template>
@@ -19,9 +20,12 @@ import axios from "axios"
 export default defineComponent({
   setup() {
     const state = reactive<{
+      currentDirectory: "."
       images: any[]
+      creatingFolder: boolean
     }>({
-      images: []
+      images: [],
+      creatingFolder: false
     })
 
     onMounted(async () => {
@@ -57,7 +61,8 @@ export default defineComponent({
     padding: 10px
     border-bottom: 1px solid lightgray
     display: flex
-    justify-content: flex-end
+    .button
+      margin-right: 10px
   &__content
     padding: 10px
     display: flex
