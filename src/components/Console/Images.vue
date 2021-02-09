@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, onMounted } from "@vue/composition-api"
+import axios from "axios"
 
 import { appStores } from "@/stores/appStores.ts"
 
