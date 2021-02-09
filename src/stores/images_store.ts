@@ -1,12 +1,12 @@
-import { reactive, toRefs } from "@vue/composition-api"
-import axios from "axios"
+import { reactive, toRefs } from '@vue/composition-api'
+import axios from 'axios'
 
 export const buildImagesStore = () => {
   const state = reactive<{
     currentDirectory: string
     images: any[]
   }>({
-    currentDirectory: ".",
+    currentDirectory: '.',
     images: []
   })
 

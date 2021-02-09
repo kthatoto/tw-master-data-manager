@@ -26,7 +26,7 @@
       "@types/node"
     ]
   },
-  "include": ["src/**/*.vue", "src/**/*.ts", "server/**/*.ts"],
+  "include": ["./**/*.vue", "./**/*.ts"],
   "exclude": [
     "node_modules",
     ".nuxt",
