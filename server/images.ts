@@ -14,7 +14,7 @@ export default (app: any) => {
   app.get('/images', async (req: any, res: any) => {
     const response: any = {objects: []}
 
-    const objects = await fs.promises.readdir('./data/images', {}).catch(err => throw err)
+    const objects = await fs.promises.readdir('./data/images', {})
     objects.forEach(async (obj: string) => {
       const stat = await fs.promises.stat(`./data/images/${obj}`)
       response.objects.push({
