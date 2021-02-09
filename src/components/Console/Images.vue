@@ -15,25 +15,21 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, onMounted } from "@vue/composition-api"
-import axios from "axios"
+
+import { appStores } from "@/stores/appStores.ts"
 
 export default defineComponent({
   setup() {
+    const imagesStore = appStores.imagesStore
+
     const state = reactive<{
-      currentDirectory: "."
-      images: any[]
       creatingFolder: boolean
     }>({
-      images: [],
       creatingFolder: false
     })
 
     onMounted(async () => {
-      const imagesRes = await axios.get("/api/images")
-      imagesRes.data.forEach(async (filename: string) => {
-        const image = (await import(`~data/images/${filename}`)).default
-        state.images.push(image)
-      })
+      imagesStore.fetchImages()
     })
 
     const handleUpload = async (file: any) => {
@@ -49,7 +45,8 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
-      handleUpload
+      handleUpload,
+      images: imagesStore.images
     }
   }
 })
