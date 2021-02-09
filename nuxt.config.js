@@ -23,7 +23,8 @@ export default {
   ],
   plugins: [
     '@/plugins/element-ui',
-    '@/plugins/vue-composition-api'
+    '@/plugins/vue-composition-api',
+    '@/plugins/vue-awesome'
   ],
   components: true,
   buildModules: [

@@ -10,7 +10,10 @@
       el-button(icon="el-icon-plus" type="primary") 画像追加
     el-button.button(icon="el-icon-plus" type="primary") フォルダ追加
   .images__content
-    img(v-for="image in images" :src="image")
+    .images__item(v-for="directory in directories" :key="directory")
+      icon(name="folder")
+    .images__item(v-for="image in images" :key="image")
+      img(:src="image")
 </template>
 
 <script lang="ts">
@@ -35,6 +38,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       handleUpload: imagesStore.uploadImage,
+      directories: imagesStore.directories,
       images: imagesStore.images
     }
   }
