@@ -8,6 +8,12 @@ export interface UploadingFile {
   uid: number
 }
 
+export interface FileObject {
+  path: string
+  name: string
+  isFile: boolean
+}
+
 export const buildImagesStore = () => {
   const state = reactive<{
     currentDirectory: string
@@ -18,10 +24,12 @@ export const buildImagesStore = () => {
   })
 
   const fetchImages = async () => {
-    const imagesRes = await axios.get(`/api/images?directory=${state.currentDirectory}`)
-    imagesRes.data.forEach(async (filename: string) => {
-      const image = (await import(`~data/images/${state.currentDirectory}${filename}`)).default
-      state.images.push(image)
+    const res = await axios.get(`/api/images?directory=${state.currentDirectory}`)
+    res.data.objects.forEach(async (obj: FileObject) => {
+      if (obj.isFile) {
+        const image = (await import(`~data/images/${state.currentDirectory}${obj.name}`)).default
+        state.images.push(image)
+      }
     })
   }
 
