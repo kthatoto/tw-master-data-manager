@@ -14,13 +14,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, onMounted } from "@vue/composition-api"
-import axios from "axios"
+import { defineComponent, reactive, toRefs, onMounted } from '@vue/composition-api'
+import axios from 'axios'
 
-import { appStores } from "@/stores/appStores.ts"
+import { appStores } from '@/stores/appStores.ts'
 
 export default defineComponent({
-  setup() {
+  setup () {
     const imagesStore = appStores.imagesStore
 
     const state = reactive<{
@@ -35,11 +35,11 @@ export default defineComponent({
 
     const handleUpload = async (file: any) => {
       const params = new FormData()
-      params.append("file", file.raw)
-      params.append("filename", file.name)
-      await axios.post("/api/images", params, {
+      params.append('file', file.raw)
+      params.append('filename', file.name)
+      await axios.post('/api/images', params, {
         headers: {
-          "content-type": "multipart/form-data"
+          'content-type': 'multipart/form-data'
         }
       })
     }

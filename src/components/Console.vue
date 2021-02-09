@@ -9,12 +9,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api"
+import { defineComponent } from '@vue/composition-api'
 
-import Images from "@/components/Console/Images.vue"
+import Images from '@/components/Console/Images.vue'
 
 export default defineComponent({
-  components: { Images },
+  components: { Images }
 })
 </script>
 
