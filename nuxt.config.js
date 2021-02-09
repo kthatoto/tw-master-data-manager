@@ -38,6 +38,7 @@ export default {
     transpile: [/^element-ui/],
     extend (config, ctx) {
       config.resolve.alias['~data'] = path.join(__dirname, 'data')
+      config.resolve.alias['~server'] = path.join(__dirname, 'server')
     }
   },
   serverMiddleware: ['~~/server/']
