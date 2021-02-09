@@ -12,13 +12,14 @@ export interface FileObject {
   path: string
   name: string
   isFile: boolean
+  image?: string
 }
 
 export const buildImagesStore = () => {
   const state = reactive<{
     currentDirectory: string
-    images: string[]
-    directories: string[]
+    images: FileObject[]
+    directories: FileObject[]
   }>({
     currentDirectory: '',
     images: [],
@@ -29,10 +30,10 @@ export const buildImagesStore = () => {
     const res = await axios.get(`/api/images?directory=${state.currentDirectory}`)
     res.data.objects.forEach(async (obj: FileObject) => {
       if (obj.isFile) {
-        const image = (await import(`~data/images/${state.currentDirectory}${obj.name}`)).default
-        state.images.push(image)
+        obj.image = (await import(`~data/images/${state.currentDirectory}${obj.name}`)).default
+        state.images.push(obj)
       } else {
-        state.directories.push(obj.name)
+        state.directories.push(obj)
       }
     })
   }

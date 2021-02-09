@@ -10,10 +10,12 @@
       el-button(icon="el-icon-plus" type="primary") 画像追加
     el-button.button(icon="el-icon-plus" type="primary") フォルダ追加
   .images__content
-    .images__item(v-for="directory in directories" :key="directory")
-      icon(name="folder")
-    .images__item(v-for="image in images" :key="image")
-      img(:src="image")
+    .images__item(v-for="o in directories" :key="o.name")
+      Icon.icon(name="folder")
+      span {{ o.name }}
+    .images__item(v-for="o in images" :key="o.name")
+      img(:src="o.image")
+      span {{ o.name }}
 </template>
 
 <script lang="ts">
@@ -65,9 +67,23 @@ export default defineComponent({
       display: block
       width: 80px
       height: 0
+
+  &__item
+    width: 80px
+    display: flex
+    flex-direction: column
+    margin-bottom: 20px
+    .icon
+      width: 80px
+      height: 80px
+      color: lightblue
     img
       width: 80px
       height: 80px
       border: 1px solid lightgray
-      margin-bottom: 20px
+    span
+      display: inline-block
+      width: 100%
+      font-size: 12px
+      word-wrap: break-word
 </style>
