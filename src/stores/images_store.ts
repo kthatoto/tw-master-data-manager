@@ -18,9 +18,11 @@ export const buildImagesStore = () => {
   const state = reactive<{
     currentDirectory: string
     images: string[]
+    directories: string[]
   }>({
     currentDirectory: '',
-    images: []
+    images: [],
+    directories: []
   })
 
   const fetchImages = async () => {
@@ -29,6 +31,8 @@ export const buildImagesStore = () => {
       if (obj.isFile) {
         const image = (await import(`~data/images/${state.currentDirectory}${obj.name}`)).default
         state.images.push(image)
+      } else {
+        state.directories.push(obj.name)
       }
     })
   }
