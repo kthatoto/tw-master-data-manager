@@ -24,9 +24,9 @@
       span(@dblclick="editName(o)") {{ o.name }}
   .images__detail.content(v-else)
     ImageDetail(:image="showingImage")
-  el-dialog.name-editor(:visible.sync="editing")
-    el-input(v-model="editingName")
-      template(slot="append") {{ editingExtension }}
+  el-dialog.name-editor(:visible.sync="editing.flag")
+    el-input(v-model="editing.name")
+      template(v-if="editing.isFile" slot="append") {{ editing.extension }}
     el-button(type="primary" @click="updateName") 更新
 </template>
 
@@ -44,28 +44,41 @@ export default defineComponent({
 
     const state = reactive<{
       creatingDirectory: boolean
-      editing: boolean
-      editingName: string
-      editingExtension: string
     }>({
-      creatingDirectory: false,
-      editing: false,
+      creatingDirectory: false
+    })
+
+    const editing = reactive<{
+      flag: boolean
+      isFile: boolean
+      beforeName: string
+      name: string
+      extension: string
+    }>({
+      flag: false,
+      isFile: false,
       beforeName: '',
-      editingName: '',
-      editingExtension: ''
+      name: '',
+      extension: ''
     })
 
     const editName = (o: FileObject) => {
-      state.editing = true
-      state.beforeName = o.name
-      const splited: string[] = o.name.split('.')
-      state.editingExtension = '.' + splited.pop()
-      state.editingName = splited.join('.')
+      editing.flag = true
+      editing.isFile = o.isFile
+      editing.beforeName = o.name
+      if (o.isFile) {
+        const splited: string[] = o.name.split('.')
+        editing.extension = '.' + splited.pop()
+        editing.name = splited.join('.')
+      } else {
+        editing.name = o.name
+      }
     }
 
     const updateName = async () => {
-      await imagesStore.updateName(state.beforeName, state.editingName + state.editingExtension)
-      state.editing = false
+      const afterName = editing.isFile ? editing.name + editing.extension : editing.name
+      await imagesStore.updateName(editing.beforeName, afterName)
+      editing.flag = false
     }
 
     onMounted(async () => {
@@ -74,6 +87,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      editing,
       handleUpload: imagesStore.uploadImage,
       showImage: imagesStore.showImage,
       backToHome: imagesStore.backToHome,
