@@ -53,6 +53,11 @@ export const buildImagesStore = () => {
     await axios.post(`/api/images?directory=${state.currentDirectory}`, params, { headers })
   }
 
+  const updateName = async (before: string, after: string) => {
+    const params = { before, after }
+    await axios.patch(`/api/images?directory=${state.currentDirectory}`, params)
+  }
+
   const showImage = (filename: string) => {
     const index = state.images.findIndex((i: FileObject) => i.name === filename)
     if (index < 0) return
@@ -87,6 +92,7 @@ export const buildImagesStore = () => {
     ...toRefs(state),
     fetchImages,
     uploadImage,
+    updateName,
     showImage,
     backToHome,
     appendDirectory,

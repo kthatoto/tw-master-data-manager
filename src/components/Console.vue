@@ -2,7 +2,7 @@
 .console
   el-tabs(type="border-card")
     el-tab-pane(label="Images")
-      Images
+      Images.pane
     el-tab-pane(label="Map")
     el-tab-pane(label="NPC")
     el-tab-pane(label="Enemies")
@@ -23,6 +23,13 @@ export default defineComponent({
   height: 100%
   >>> .el-tabs
     height: 100%
+    display: flex
+    flex-direction: column
     &__content
       padding: 0
+      flex: 1
+    .el-tab-pane
+      height: 100%
+  .pane
+    height: 100%
 </style>

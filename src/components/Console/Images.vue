@@ -15,31 +15,57 @@
       .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
         icon.icon(name="chevron-right")
         span(@click="backDirectory(i)") {{ breadcrumb }}
-  .images__content(v-if="!showingImage")
+  .images__content.content(v-if="!showingImage")
     .images__item(v-for="o in directories" :key="o.name")
       Icon.icon(name="folder" @click.native="appendDirectory(o.name)")
-      span {{ o.name }}
+      span(@dblclick="editName(o)") {{ o.name }}
     .images__item(v-for="o in images" :key="o.name")
       img(:src="o.image" @dblclick="showImage(o.name)")
-      span {{ o.name }}
-  .images__detail(v-else)
-    img(:src="showingImage.image")
+      span(@dblclick="editName(o)") {{ o.name }}
+  .images__detail.content(v-else)
+    ImageDetail(:image="showingImage")
+  el-dialog(:visible.sync="editing")
+    el-input(v-model="editingName")
+      template(slot="append") {{ editingExtension }}
+    el-button(type="primary" @click="updateName")
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, onMounted } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
+import { FileObject } from '@/stores/iamges_store.ts'
+import ImageDetail from '@/components/Console/ImageDetail.vue'
 
 export default defineComponent({
+  components: { ImageDetail },
   setup () {
     const imagesStore = appStores.imagesStore
 
     const state = reactive<{
       creatingDirectory: boolean
+      editing: boolean
+      editingName: string
+      editingExtension: string
     }>({
-      creatingDirectory: false
+      creatingDirectory: false,
+      editing: false,
+      beforeName: '',
+      editingName: '',
+      editingExtension: ''
     })
+
+    const editName = (o: FileObject) => {
+      state.editing = true
+      state.beforeName = o.name
+      const splited: string[] = o.name.split('.')
+      state.editingExtension = '.' + splited.pop()
+      state.editingName = splited.join('.')
+    }
+
+    const updateName = () => {
+      imagesStore.updateName(state.beforeName, state.editingName + state.editingExtension)
+    }
 
     onMounted(async () => {
       imagesStore.fetchImages()
@@ -55,7 +81,9 @@ export default defineComponent({
       breadcrumbs: imagesStore.breadcrumbs,
       directories: imagesStore.directories,
       images: imagesStore.images,
-      showingImage: imagesStore.showingImage
+      showingImage: imagesStore.showingImage,
+      editName,
+      updateName
     }
   }
 })
@@ -63,6 +91,8 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 .images
+  display: flex
+  flex-direction: column
   &__header
     padding: 10px
     border-bottom: 1px solid lightgray
@@ -98,6 +128,7 @@ export default defineComponent({
     display: flex
     justify-content: space-between
     flex-wrap: wrap
+    align-content: flex-start
     &::before
       order: 1
     &::before, &::after
@@ -146,8 +177,9 @@ export default defineComponent({
         width: 100%
 
   &__detail
-    padding: 10px
-    img
-      width: 100%
-      border: 1px solid lightgray
+    height: 100%
+
+  .content
+    flex: 1
+    overflow-y: scroll
 </style>
