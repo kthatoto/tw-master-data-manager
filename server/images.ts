@@ -14,9 +14,9 @@ export default (app: any) => {
   app.get('/images', async (req: any, res: any) => {
     const response: any = {objects: []}
 
-    const objects = await fs.promises.readdir('./data/images', {})
+    const objects = await fs.promises.readdir(`./data/images${req.query.directory}`, {})
     for (let obj of objects) {
-      const stat = await fs.promises.stat(`./data/images/${obj}`)
+      const stat = await fs.promises.stat(`./data/images${req.query.directory}${obj}`)
       response.objects.push({
         path: obj,
         name: obj,

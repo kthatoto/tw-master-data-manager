@@ -11,7 +11,7 @@
         el-button(icon="el-icon-plus" type="primary") 画像追加
       el-button.button(icon="el-icon-plus" type="primary") フォルダ追加
     .nav
-      icon.home-icon(name="home" @click.native="changeDirectory('')")
+      icon.home-icon(name="home" @click.native="backToHome")
       .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
         icon.icon(name="chevron-right")
         span(@click="backDirectory(i)") {{ breadcrumb }}
@@ -46,7 +46,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       handleUpload: imagesStore.uploadImage,
-      changeDirectory: imagesStore.changeDirectory,
+      backToHome: imagesStore.backToHome,
       appendDirectory: imagesStore.appendDirectory,
       backDirectory: imagesStore.backDirectory,
       breadcrumbs: imagesStore.breadcrumbs,

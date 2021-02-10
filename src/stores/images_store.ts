@@ -21,7 +21,7 @@ export const buildImagesStore = () => {
     images: FileObject[]
     directories: FileObject[]
   }>({
-    currentDirectory: '',
+    currentDirectory: '/',
     images: [],
     directories: []
   })
@@ -32,7 +32,7 @@ export const buildImagesStore = () => {
     const directories = []
     for (const obj of res.data.objects) {
       if (obj.isFile) {
-        obj.image = (await import(`~data/images/${state.currentDirectory}${obj.name}`)).default
+        obj.image = (await import(`~data/images${state.currentDirectory}${obj.name}`)).default
         images.push(obj)
       } else {
         directories.push(obj)
@@ -50,24 +50,24 @@ export const buildImagesStore = () => {
     await axios.post('/api/images', params, { headers })
   }
 
-  const changeDirectory = (dir: string) => {
-    state.currentDirectory = dir
+  const backToHome = () => {
+    state.currentDirectory = '/'
   }
 
   const appendDirectory = (dir: string) => {
-    if (!state.currentDirectory) state.currentDirectory = dir
-    else state.currentDirectory = `${state.currentDirectory}/${dir}`
+    state.currentDirectory = `${state.currentDirectory}${dir}/`
+    fetchImages()
   }
 
   const backDirectory = (i: number) => {
-    state.currentDirectory = breadcrumbs.value.reduce((newDirectory: string[], breadcrumb: string, j: number) => {
-      if (j <= i) newDirectory.push(breadcrumb)
+    state.currentDirectory = breadcrumbs.value.reduce((newDirectory: string, breadcrumb: string, j: number) => {
+      if (j <= i) newDirectory += `${breadcrumb}/`
       return newDirectory
-    }, []).join('/')
+    }, '/')
+    fetchImages()
   }
 
   const breadcrumbs = computed<string[]>(() => {
-    if (state.currentDirectory.length === 0) return []
     return state.currentDirectory.split('/').filter((v: any) => v)
   })
 
@@ -75,7 +75,7 @@ export const buildImagesStore = () => {
     ...toRefs(state),
     fetchImages,
     uploadImage,
-    changeDirectory,
+    backToHome,
     appendDirectory,
     backDirectory,
     breadcrumbs
