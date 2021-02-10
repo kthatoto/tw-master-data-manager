@@ -34,7 +34,7 @@
 import { defineComponent, reactive, toRefs, onMounted } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import { FileObject } from '@/stores/iamges_store.ts'
+import { FileObject } from '@/stores/images_store.ts'
 import ImageDetail from '@/components/Console/ImageDetail.vue'
 
 export default defineComponent({
