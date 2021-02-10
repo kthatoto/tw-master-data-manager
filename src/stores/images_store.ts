@@ -52,6 +52,7 @@ export const buildImagesStore = () => {
 
   const backToHome = () => {
     state.currentDirectory = '/'
+    fetchImages()
   }
 
   const appendDirectory = (dir: string) => {
