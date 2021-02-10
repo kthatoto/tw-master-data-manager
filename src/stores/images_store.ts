@@ -47,7 +47,8 @@ export const buildImagesStore = () => {
     params.append('file', file.raw)
     params.append('filename', file.name)
     const headers = { 'content-type': 'multipart/form-data' }
-    await axios.post('/api/images', params, { headers })
+    await axios.post(`/api/images?directory=${state.currentDirectory}`, params, { headers })
+    fetchImages()
   }
 
   const backToHome = () => {

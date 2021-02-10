@@ -3,7 +3,10 @@ import fs from 'fs'
 import multer from 'multer'
 
 const storage = multer.diskStorage({
-  destination: './data/images',
+  // destination: './data/images',
+  destination: (req: any, file: any, cb: any) => {
+    cb(null, `./data/images${req.query.directory}`)
+  },
   filename: (req: any, file: any, cb: any) => {
     cb(null, file.originalname)
   }
