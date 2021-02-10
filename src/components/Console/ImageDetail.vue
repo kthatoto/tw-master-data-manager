@@ -1,6 +1,6 @@
 <template lang="pug">
 .detail
-  img(:src="image.image")
+  img(:src="image.raw")
   h3 {{ image.name }}
   p サイズ：{{ image.size }}B
 </template>

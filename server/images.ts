@@ -19,12 +19,15 @@ export default (app: any) => {
 
     const objects = await fs.promises.readdir(`./data/images${req.query.directory}`, {})
     for (let obj of objects) {
-      const stat = await fs.promises.stat(`./data/images${req.query.directory}${obj}`)
+      const filePath: string = `./data/images${req.query.directory}${obj}`
+      const stat = await fs.promises.stat(filePath)
+      const data = stat.isDirectory() ? null : await fs.promises.readFile(filePath, 'base64')
       response.objects.push({
-        path: obj,
+        fullPath: filePath,
         name: obj,
         isFile: !stat.isDirectory(),
-        size: stat.size
+        size: stat.size,
+        raw: data
       })
     }
 

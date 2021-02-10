@@ -9,11 +9,11 @@ export interface UploadingFile {
 }
 
 export interface FileObject {
-  path: string
+  fullPath: string
   name: string
   isFile: boolean
   size: number
-  image?: string
+  raw: string
 }
 
 export const buildImagesStore = () => {
@@ -35,7 +35,6 @@ export const buildImagesStore = () => {
     const directories = []
     for (const obj of res.data.objects) {
       if (obj.isFile) {
-        obj.image = (await import(`~data/images${state.currentDirectory}${obj.name}`)).default
         images.push(obj)
       } else {
         directories.push(obj)

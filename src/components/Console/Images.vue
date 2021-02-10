@@ -20,7 +20,7 @@
       Icon.icon(name="folder" @click.native="appendDirectory(o.name)")
       span(@dblclick="editName(o)") {{ o.name }}
     .images__item(v-for="o in images" :key="o.name")
-      img(:src="o.image" @dblclick="showImage(o.name)")
+      img(:src="o.raw" @dblclick="showImage(o.name)")
       span(@dblclick="editName(o)") {{ o.name }}
   .images__detail.content(v-else)
     ImageDetail(:image="showingImage")
