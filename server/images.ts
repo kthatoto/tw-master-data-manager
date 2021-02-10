@@ -34,4 +34,13 @@ export default (app: any) => {
   app.post('/images', upload.single('file'), async (req: any, res: any) => {
     res.send(null)
   })
+
+  app.patch('/images', async (req: any, res: any) => {
+    const before: string = req.body.before
+    const after: string = req.body.after
+    fs.rename(`./data/images${req.query.directory}${before}`, `./data/images${req.query.directory}${after}`, (err: any) => {
+      if (err) throw err
+      res.send(null)
+    })
+  })
 }

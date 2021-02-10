@@ -24,10 +24,10 @@
       span(@dblclick="editName(o)") {{ o.name }}
   .images__detail.content(v-else)
     ImageDetail(:image="showingImage")
-  el-dialog(:visible.sync="editing")
+  el-dialog.name-editor(:visible.sync="editing")
     el-input(v-model="editingName")
       template(slot="append") {{ editingExtension }}
-    el-button(type="primary" @click="updateName")
+    el-button(type="primary" @click="updateName") 更新
 </template>
 
 <script lang="ts">
@@ -63,8 +63,9 @@ export default defineComponent({
       state.editingName = splited.join('.')
     }
 
-    const updateName = () => {
-      imagesStore.updateName(state.beforeName, state.editingName + state.editingExtension)
+    const updateName = async () => {
+      await imagesStore.updateName(state.beforeName, state.editingName + state.editingExtension)
+      state.editing = false
     }
 
     onMounted(async () => {
@@ -182,4 +183,8 @@ export default defineComponent({
   .content
     flex: 1
     overflow-y: scroll
+
+  .name-editor
+    .el-input
+      margin-bottom: 10px
 </style>
