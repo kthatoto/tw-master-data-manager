@@ -26,7 +26,7 @@ export default (app: any) => {
         name: obj,
         isFile: !stat.isDirectory(),
         size: stat.size,
-        raw: data
+        raw: data ? `data:image;base64,` + data : null
       })
     }
 
