@@ -15,13 +15,15 @@
       .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
         icon.icon(name="chevron-right")
         span(@click="backDirectory(i)") {{ breadcrumb }}
-  .images__content
+  .images__content(v-if="!showingImage")
     .images__item(v-for="o in directories" :key="o.name")
       Icon.icon(name="folder" @click.native="appendDirectory(o.name)")
       span {{ o.name }}
     .images__item(v-for="o in images" :key="o.name")
-      img(:src="o.image")
+      img(:src="o.image" @dblclick="showImage(o.name)")
       span {{ o.name }}
+  .images__detail(v-else)
+    img(:src="showingImage.image")
 </template>
 
 <script lang="ts">
@@ -46,12 +48,14 @@ export default defineComponent({
     return {
       ...toRefs(state),
       handleUpload: imagesStore.uploadImage,
+      showImage: imagesStore.showImage,
       backToHome: imagesStore.backToHome,
       appendDirectory: imagesStore.appendDirectory,
       backDirectory: imagesStore.backDirectory,
       breadcrumbs: imagesStore.breadcrumbs,
       directories: imagesStore.directories,
-      images: imagesStore.images
+      images: imagesStore.images,
+      showingImage: imagesStore.showingImage
     }
   }
 })
@@ -115,9 +119,35 @@ export default defineComponent({
       width: 80px
       height: 80px
       border: 1px solid lightgray
+      object-fit: contain
     span
+      $font-size = 12px
+      $line-height = 1.4
+      $lines-to-show = 3
+
       display: inline-block
       width: 100%
-      font-size: 12px
-      word-wrap: break-word
+      font-size: $font-size
+      word-break: break-all
+      max-height: $font-size * $line-height * $lines-to-show
+      line-height: $line-height
+      position: relative
+      overflow: hidden
+      &:before, &:after
+        position: absolute
+        background-color: white
+      &:before
+        content: "..."
+        top: $font-size * $line-height * ($lines-to-show - 1)
+        right: 0
+      &:after
+        content: ""
+        height: 100%
+        width: 100%
+
+  &__detail
+    padding: 10px
+    img
+      width: 100%
+      border: 1px solid lightgray
 </style>

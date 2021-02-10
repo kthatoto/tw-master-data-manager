@@ -12,6 +12,7 @@ export interface FileObject {
   path: string
   name: string
   isFile: boolean
+  size: number
   image?: string
 }
 
@@ -20,10 +21,12 @@ export const buildImagesStore = () => {
     currentDirectory: string
     images: FileObject[]
     directories: FileObject[]
+    showingImage: FileObject | undefined
   }>({
     currentDirectory: '/',
     images: [],
-    directories: []
+    directories: [],
+    showingImage: undefined
   })
 
   const fetchImages = async () => {
@@ -50,8 +53,15 @@ export const buildImagesStore = () => {
     await axios.post(`/api/images?directory=${state.currentDirectory}`, params, { headers })
   }
 
+  const showImage = (filename: string) => {
+    const index = state.images.findIndex((i: FileObject) => i.name === filename)
+    if (index < 0) return
+    state.showingImage = state.images[index]
+  }
+
   const backToHome = () => {
     state.currentDirectory = '/'
+    state.showingImage = undefined
     fetchImages()
   }
 
@@ -65,6 +75,7 @@ export const buildImagesStore = () => {
       if (j <= i) newDirectory += `${breadcrumb}/`
       return newDirectory
     }, '/')
+    state.showingImage = undefined
     fetchImages()
   }
 
@@ -76,6 +87,7 @@ export const buildImagesStore = () => {
     ...toRefs(state),
     fetchImages,
     uploadImage,
+    showImage,
     backToHome,
     appendDirectory,
     backDirectory,

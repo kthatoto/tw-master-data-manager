@@ -23,7 +23,8 @@ export default (app: any) => {
       response.objects.push({
         path: obj,
         name: obj,
-        isFile: !stat.isDirectory()
+        isFile: !stat.isDirectory(),
+        size: stat.size
       })
     }
 
