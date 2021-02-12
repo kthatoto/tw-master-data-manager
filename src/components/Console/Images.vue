@@ -17,10 +17,10 @@
         span(@click="backDirectory(i)") {{ breadcrumb }}
   .images__content.content(v-if="!showingImage")
     .images__item(v-for="o in directories" :key="o.name")
-      Icon.icon(name="folder" @dblclick.native="appendDirectory(o.name)" @click.right.prevent.native="confirmDirectoryDelete(o.name)")
+      Icon.icon(name="folder" @dblclick.native="appendDirectory(o.name)" @click.right.prevent.native="confirmDelete(o.name)")
       span(@dblclick="editName(o)") {{ o.name }}
     .images__item(v-for="o in images" :key="o.name")
-      img(:src="o.raw" @dblclick="showImage(o.name)")
+      img(:src="o.raw" @dblclick="showImage(o.name)" @click.right.prevent="confirmDelete(o.name)")
       span(@dblclick="editName(o)") {{ o.name }}
   .images__detail.content(v-else)
     ImageDetail(:image="showingImage")
@@ -29,10 +29,10 @@
       template(v-if="editing.isFile" slot="append") {{ editing.extension }}
     .buttons
       el-button(type="primary" @click="updateName") 更新
-  el-dialog.dialog(:visible.sync="directoryDeleting.flag")
-    p 「{{ directoryDeleting.name }}」削除していい？
+  el-dialog.dialog(:visible.sync="deleting.flag")
+    p 「{{ deleting.name }}」削除していい？
     .buttons
-      el-button(type="danger" @click="deleteDirectory") 削除
+      el-button(type="danger" @click="deleteObject") 削除
 </template>
 
 <script lang="ts">
@@ -89,20 +89,19 @@ export default defineComponent({
       editing.flag = false
     }
 
-    const directoryDeleting = reactive<{
+    const deleting = reactive<{
       flag: boolean
       name: string
     }>({
       flag: false,
       name: ''
     })
-    const confirmDirectoryDelete = (name: string) => {
-      directoryDeleting.flag = true
-      directoryDeleting.name = name
+    const confirmDelete = (name: string) => {
+      deleting.flag = true
+      deleting.name = name
     }
-    console.log(context)
-    const deleteDirectory = async () => {
-      const res = await imagesStore.deleteDirectory(directoryDeleting.name)
+    const deleteObject = async () => {
+      const res = await imagesStore.deleteObject(deleting.name)
       if (res) {
         Message({
           message: res,
@@ -111,7 +110,7 @@ export default defineComponent({
       } else {
         imagesStore.fetchImages()
       }
-      directoryDeleting.flag = false
+      deleting.flag = false
     }
 
     onMounted(async () => {
@@ -121,7 +120,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       editing,
-      directoryDeleting,
+      deleting,
       handleUpload: imagesStore.uploadImage,
       showImage: imagesStore.showImage,
       backToHome: imagesStore.backToHome,
@@ -133,8 +132,8 @@ export default defineComponent({
       showingImage: imagesStore.showingImage,
       editName,
       updateName,
-      confirmDirectoryDelete,
-      deleteDirectory
+      confirmDelete,
+      deleteObject
     }
   }
 })
