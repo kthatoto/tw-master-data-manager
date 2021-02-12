@@ -46,10 +46,16 @@ export default (app: any) => {
     })
   })
 
-  app.patch('/images/directories/delete', async (req: any, res: any) => {
+  app.patch('/images/delete', async (req: any, res: any) => {
     const name: string = req.body.name
     try {
-      const result = await fs.promises.rmdir(`./data/images${req.query.directory}${name}`)
+      const filePath: string = `./data/images${req.query.directory}${name}`
+      const stat = await fs.promises.stat(filePath)
+      if (stat.isDirectory()) {
+        await fs.promises.rmdir(filePath)
+      } else {
+        await fs.promises.unlink(filePath)
+      }
       res.send(null)
     } catch (err: any) {
       if (err.code === 'ENOENT') {

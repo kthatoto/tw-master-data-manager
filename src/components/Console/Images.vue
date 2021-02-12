@@ -108,6 +108,10 @@ export default defineComponent({
           type: 'error'
         })
       } else {
+        Message({
+          message: '削除完了！',
+          type: 'success'
+        })
         imagesStore.fetchImages()
       }
       deleting.flag = false
