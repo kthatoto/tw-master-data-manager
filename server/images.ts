@@ -46,6 +46,21 @@ export default (app: any) => {
     })
   })
 
+  app.post('/images/directories', async (req: any, res: any) => {
+    const name: string = req.body.name
+    try {
+      const filePath: string = `./data/images${req.query.directory}${name}`
+      await fs.promises.mkdir(filePath)
+      res.send(null)
+    } catch (err: any) {
+      if (err.code === 'EEXIST') {
+        res.send({ message: `「${name}」は既に存在してます` })
+      } else {
+        res.send({ message: "把握していない不具合", err })
+      }
+    }
+  })
+
   app.patch('/images/delete', async (req: any, res: any) => {
     const name: string = req.body.name
     try {
@@ -63,7 +78,7 @@ export default (app: any) => {
       } else if (err.code === 'ENOTEMPTY') {
         res.send({ message: `「${name}」の中は空じゃないので消せません` })
       } else {
-        res.send({ message: "把握していない不具合" })
+        res.send({ message: "把握していない不具合", err })
       }
     }
   })

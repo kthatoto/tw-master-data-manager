@@ -53,7 +53,16 @@ export const buildImagesStore = () => {
     fetchImages()
   }
 
-  const updateName = async (before: string, after: string) => {
+  const createDirectory = async (name: string) => {
+    const params = { name }
+    const res = await axios.post(`/api/images/directories?directory=${state.currentDirectory}`, params)
+    if (res.data && res.data.message) {
+      return res.data.message
+    }
+    return null
+  }
+
+  const editName = async (before: string, after: string) => {
     const params = { before, after }
     await axios.patch(`/api/images?directory=${state.currentDirectory}`, params)
     fetchImages()
@@ -102,7 +111,8 @@ export const buildImagesStore = () => {
     ...toRefs(state),
     fetchImages,
     uploadImage,
-    updateName,
+    createDirectory,
+    editName,
     showImage,
     backToHome,
     appendDirectory,

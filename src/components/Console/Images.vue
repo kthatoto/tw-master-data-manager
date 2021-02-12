@@ -9,7 +9,7 @@
         :show-file-list="false"
       )
         el-button(icon="el-icon-plus" type="primary") 画像追加
-      el-button.button(icon="el-icon-plus" type="primary") フォルダ追加
+      el-button.button(icon="el-icon-plus" type="primary" @click="openCreateModal") フォルダ追加
     .nav
       icon.home-icon(name="home" @click.native="backToHome")
       .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
@@ -18,17 +18,22 @@
   .images__content.content(v-if="!showingImage")
     .images__item(v-for="o in directories" :key="o.name")
       Icon.icon(name="folder" @dblclick.native="appendDirectory(o.name)" @click.right.prevent.native="confirmDelete(o.name)")
-      span(@dblclick="editName(o)") {{ o.name }}
+      span(@dblclick="openEditModal(o)") {{ o.name }}
     .images__item(v-for="o in images" :key="o.name")
       img(:src="o.raw" @dblclick="showImage(o.name)" @click.right.prevent="confirmDelete(o.name)")
-      span(@dblclick="editName(o)") {{ o.name }}
+      span(@dblclick="openEditModal(o)") {{ o.name }}
   .images__detail.content(v-else)
     ImageDetail(:image="showingImage")
+  el-dialog.dialog(:visible.sync="creating.flag")
+    p フォルダの作成
+    el-input(v-model="creating.name" ref="createInput")
+    .buttons
+      el-button(type="primary" @click="createDirectory" :disabled="creating.name.length === 0") 作成
   el-dialog.dialog(:visible.sync="editing.flag")
     el-input(v-model="editing.name" ref="nameEditor")
       template(v-if="editing.isFile" slot="append") {{ editing.extension }}
     .buttons
-      el-button(type="primary" @click="updateName") 更新
+      el-button(type="primary" @click="editName") 更新
   el-dialog.dialog(:visible.sync="deleting.flag")
     p 「{{ deleting.name }}」削除していい？
     .buttons
@@ -36,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, onMounted } from '@vue/composition-api'
+import { defineComponent, reactive, onMounted } from '@vue/composition-api'
 import { Message } from 'element-ui'
 
 import { appStores } from '@/stores/appStores.ts'
@@ -48,11 +53,37 @@ export default defineComponent({
   setup (_, context) {
     const imagesStore = appStores.imagesStore
 
-    const state = reactive<{
-      creatingDirectory: boolean
+    const creating = reactive<{
+      flag: boolean
+      name: string
     }>({
-      creatingDirectory: false
+      flag: false,
+      name: ''
     })
+    const openCreateModal = () => {
+      creating.flag = true
+      creating.name = ''
+      setTimeout(() => {
+        const el: any = context.refs.createInput
+        el.focus()
+      })
+    }
+    const createDirectory = async () => {
+      const res = await imagesStore.createDirectory(creating.name)
+      if (res) {
+        Message({
+          message: res,
+          type: 'error'
+        })
+      } else {
+        Message({
+          message: '作成完了！',
+          type: 'success'
+        })
+        imagesStore.fetchImages()
+      }
+      creating.flag = false
+    }
 
     const editing = reactive<{
       flag: boolean
@@ -67,7 +98,7 @@ export default defineComponent({
       name: '',
       extension: ''
     })
-    const editName = (o: FileObject) => {
+    const openEditModal = (o: FileObject) => {
       editing.flag = true
       editing.isFile = o.isFile
       editing.beforeName = o.name
@@ -83,9 +114,9 @@ export default defineComponent({
         }
       }, 50)
     }
-    const updateName = async () => {
+    const editName = async () => {
       const afterName = editing.isFile ? editing.name + editing.extension : editing.name
-      await imagesStore.updateName(editing.beforeName, afterName)
+      await imagesStore.editName(editing.beforeName, afterName)
       editing.flag = false
     }
 
@@ -122,9 +153,6 @@ export default defineComponent({
     })
 
     return {
-      ...toRefs(state),
-      editing,
-      deleting,
       handleUpload: imagesStore.uploadImage,
       showImage: imagesStore.showImage,
       backToHome: imagesStore.backToHome,
@@ -134,8 +162,13 @@ export default defineComponent({
       directories: imagesStore.directories,
       images: imagesStore.images,
       showingImage: imagesStore.showingImage,
+      editing,
+      deleting,
+      creating,
+      openCreateModal,
+      createDirectory,
+      openEditModal,
       editName,
-      updateName,
       confirmDelete,
       deleteObject
     }
