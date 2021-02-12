@@ -91,7 +91,7 @@ export const buildImagesStore = () => {
 
   const deleteDirectory = async (name: string) => {
     const params = { name: 'aaa' }
-    const res = await axios.delete(`/api/images/directories?directory=${state.currentDirectory}`, params)
+    const res = await axios.patch(`/api/images/directories/delete?directory=${state.currentDirectory}`, params)
     console.log(res)
   }
 
