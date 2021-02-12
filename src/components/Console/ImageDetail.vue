@@ -2,13 +2,14 @@
 .detail
   img(:src="image.raw")
   h3 {{ image.name }}
-  p サイズ：{{ image.size }}B
+  p サイズ：{{ bytes }}
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, computed } from '@vue/composition-api'
 
 // import { appStores } from '@/stores/appStores.ts'
+import bytesCalculate from '@/utils/bytesCalculator'
 
 export default defineComponent({
   props: {
@@ -17,7 +18,14 @@ export default defineComponent({
       required: true
     }
   },
-  setup () {
+  setup (props) {
+    const bytes = computed<string>(() => {
+      return bytesCalculate(props.image.size)
+    })
+
+    return {
+      bytes
+    }
   }
 })
 </script>
