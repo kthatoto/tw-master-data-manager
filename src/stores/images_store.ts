@@ -170,7 +170,7 @@ export const buildImagesStore = () => {
     state.showingImageIndex = index
   }
   const showingImage = computed<FileObject | undefined>(() => {
-    if (!state.showingImageIndex) return
+    if (state.showingImageIndex === undefined) return
     return state.images[state.showingImageIndex]
   })
 
