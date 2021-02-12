@@ -23,11 +23,13 @@ export const buildImagesStore = () => {
     images: FileObject[]
     directories: FileObject[]
     showingImage: FileObject | undefined
+    selectingName: string | undefined
   }>({
     currentDirectory: '/',
     images: [],
     directories: [],
-    showingImage: undefined
+    showingImage: undefined,
+    selectingName: undefined
   })
 
   const fetchImages = async () => {

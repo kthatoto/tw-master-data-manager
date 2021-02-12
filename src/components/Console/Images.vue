@@ -16,10 +16,12 @@
         icon.icon(name="chevron-right")
         span(@click="backDirectory(i)") {{ breadcrumb }}
   .images__content.content(v-if="!showingImage")
-    .images__item(v-for="o in directories" :key="o.name")
+    .images__item(v-for="o in directories" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
+      .focus(v-if="selectingName === o.name")
       Icon.icon(name="folder" @dblclick.native="appendDirectory(o.name)" @click.right.prevent.native="editable && confirmDelete(o.name)")
       span(@dblclick="editable && openEditModal($refs, o)") {{ o.name }}
-    .images__item(v-for="o in images" :key="o.name")
+    .images__item(v-for="o in images" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
+      .focus(v-if="selectingName === o.name")
       img(:src="o.raw" @dblclick="showImage(o.name)" @click.right.prevent="editable && confirmDelete(o.name)")
       span(@dblclick="editable && openEditModal($refs, o)") {{ o.name }}
   .images__detail.content(v-else)
@@ -123,15 +125,28 @@ export default defineComponent({
     display: flex
     flex-direction: column
     margin-bottom: 20px
+    position: relative
+    focusColor = #05d
+    .focus
+      position: absolute
+      focusPadding = -7px
+      top: focusPadding
+      left: focusPadding
+      right: focusPadding
+      bottom: focusPadding
+      background-color: focusColor
+      border-radius: 3px
+      z-index: 0
     .icon
-      width: 80px
-      height: 80px
       color: lightblue
     img
-      width: 80px
-      height: 80px
       border: 1px solid lightgray
       object-fit: contain
+    .icon, img
+      width: 80px
+      height: 80px
+      z-index: 1
+      cursor: pointer
     span
       $font-size = 12px
       $line-height = 1.4
@@ -145,6 +160,7 @@ export default defineComponent({
       line-height: $line-height
       position: relative
       overflow: hidden
+      cursor: pointer
       &:before, &:after
         position: absolute
         background-color: white
@@ -156,6 +172,13 @@ export default defineComponent({
         content: ""
         height: 100%
         width: 100%
+      &:hover
+        opacity: 0.8
+    &.selected
+      span
+        color: white
+        &:before, &:after
+          background-color: focusColor
 
   &__detail
     height: 100%
