@@ -2,26 +2,32 @@ import { reactive, computed, toRefs } from '@vue/composition-api'
 import axios from 'axios'
 import { Message } from 'element-ui'
 
-export interface UploadingFile {
+interface UploadingFile {
   name: string
   raw: File
   size: number
   uid: number
 }
 
-export interface FileObject {
+interface Image {
   fullPath: string
   name: string
-  isFile: boolean
   size: number
   raw: string
+  isFile: true
+}
+
+interface Directory {
+  fullPath: string
+  name: string
+  isFile: false
 }
 
 export const buildImagesStore = () => {
   const state = reactive<{
     currentDirectory: string
-    images: FileObject[]
-    directories: FileObject[]
+    images: Image[]
+    directories: Directory[]
     showingImageIndex: number | undefined
     selectingName: string | undefined
   }>({
@@ -100,7 +106,7 @@ export const buildImagesStore = () => {
     name: '',
     extension: ''
   })
-  const openEditModal = (refs: any, o: FileObject) => {
+  const openEditModal = (refs: any, o: Image | Directory) => {
     editing.flag = true
     editing.isFile = o.isFile
     editing.beforeName = o.name
@@ -166,11 +172,11 @@ export const buildImagesStore = () => {
   }
 
   const showImage = (filename: string) => {
-    const index = state.images.findIndex((i: FileObject) => i.name === filename)
+    const index = state.images.findIndex((i: Image) => i.name === filename)
     if (index < 0) return
     state.showingImageIndex = index
   }
-  const showingImage = computed<FileObject | undefined>(() => {
+  const showingImage = computed<Image | undefined>(() => {
     if (state.showingImageIndex === undefined) return
     return state.images[state.showingImageIndex]
   })
