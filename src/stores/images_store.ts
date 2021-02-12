@@ -22,13 +22,13 @@ export const buildImagesStore = () => {
     currentDirectory: string
     images: FileObject[]
     directories: FileObject[]
-    showingImage: FileObject | undefined
+    showingImageIndex: number | undefined
     selectingName: string | undefined
   }>({
     currentDirectory: '/',
     images: [],
     directories: [],
-    showingImage: undefined,
+    showingImageIndex: undefined,
     selectingName: undefined
   })
 
@@ -167,12 +167,16 @@ export const buildImagesStore = () => {
   const showImage = (filename: string) => {
     const index = state.images.findIndex((i: FileObject) => i.name === filename)
     if (index < 0) return
-    state.showingImage = state.images[index]
+    state.showingImageIndex = index
   }
+  const showingImage = computed<FileObject | undefined>(() => {
+    if (!state.showingImageIndex) return
+    return state.images[state.showingImageIndex]
+  })
 
   const backToHome = () => {
     state.currentDirectory = '/'
-    state.showingImage = undefined
+    state.showingImageIndex = undefined
     fetchImages()
   }
 
@@ -186,7 +190,7 @@ export const buildImagesStore = () => {
       if (j <= i) newDirectory += `${breadcrumb}/`
       return newDirectory
     }, '/')
-    state.showingImage = undefined
+    state.showingImageIndex = undefined
     fetchImages()
   }
 
@@ -212,6 +216,7 @@ export const buildImagesStore = () => {
     deleteObject,
 
     showImage,
+    showingImage,
     backToHome,
     appendDirectory,
     backDirectory,

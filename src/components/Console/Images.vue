@@ -25,7 +25,7 @@
       img(:src="o.raw" @dblclick="showImage(o.name)" @click.right.prevent="editable && confirmDelete(o.name)")
       span(@dblclick="editable && openEditModal($refs, o)") {{ o.name }}
   .images__detail.content(v-else)
-    ImageDetail(:image="showingImage")
+    ImageDetail(:image="showingImage" :refs="$refs")
 
   el-dialog.dialog(v-if="editable" :visible.sync="creating.flag")
     p フォルダの作成
