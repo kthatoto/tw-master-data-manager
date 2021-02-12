@@ -1,4 +1,4 @@
-import path from 'path'
+import path, { resolve } from 'path'
 
 export default {
   ssr: false,
@@ -32,7 +32,10 @@ export default {
     '@nuxt/typescript-build'
   ],
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    ['nuxt-stylus-resources-loader', [
+      resolve(__dirname, 'src/styles/console-mixin.styl')
+    ]]
   ],
   axios: {},
   build: {

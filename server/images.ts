@@ -14,10 +14,10 @@ const upload = multer({ storage })
 
 export default (app: any) => {
   app.get('/images', async (req: any, res: any) => {
-    const response: any = {objects: []}
+    const response: any = { objects: [] }
 
     const objects = await fs.promises.readdir(`./data/images${req.query.directory}`, {})
-    for (let obj of objects) {
+    for (const obj of objects) {
       const filePath: string = `./data/images${req.query.directory}${obj}`
       const stat = await fs.promises.stat(filePath)
       const data = stat.isDirectory() ? null : await fs.promises.readFile(filePath, 'base64')
@@ -26,7 +26,7 @@ export default (app: any) => {
         name: obj,
         isFile: !stat.isDirectory(),
         size: stat.size,
-        raw: data ? `data:image;base64,` + data : null
+        raw: data ? 'data:image;base64,' + data : null
       })
     }
 
@@ -39,11 +39,20 @@ export default (app: any) => {
 
   app.patch('/images', async (req: any, res: any) => {
     const before: string = req.body.before
+    const beforeFilePath = `./data/images${req.query.directory}${before}`
     const after: string = req.body.after
-    fs.rename(`./data/images${req.query.directory}${before}`, `./data/images${req.query.directory}${after}`, (err: any) => {
-      if (err) throw err
-      res.send(null)
-    })
+    const afterFilePath = `./data/images${req.query.directory}${after}`
+    try {
+      if (fs.existsSync(afterFilePath)) {
+        return res.send({ message: `「${after}」は既に存在してます` })
+      }
+      fs.rename(beforeFilePath, afterFilePath, (err: any) => {
+        if (err) throw err
+        res.send(null)
+      })
+    } catch (err: any) {
+      res.send({ message: '把握していない不具合', err })
+    }
   })
 
   app.post('/images/directories', async (req: any, res: any) => {
@@ -56,7 +65,7 @@ export default (app: any) => {
       if (err.code === 'EEXIST') {
         res.send({ message: `「${name}」は既に存在してます` })
       } else {
-        res.send({ message: "把握していない不具合", err })
+        res.send({ message: '把握していない不具合', err })
       }
     }
   })
@@ -78,7 +87,7 @@ export default (app: any) => {
       } else if (err.code === 'ENOTEMPTY') {
         res.send({ message: `「${name}」の中は空じゃないので消せません` })
       } else {
-        res.send({ message: "把握していない不具合", err })
+        res.send({ message: '把握していない不具合', err })
       }
     }
   })

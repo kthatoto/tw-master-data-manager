@@ -18,10 +18,11 @@
     "element-ui": "^2.15.0",
     "multer": "^1.4.2",
     "nuxt": "^2.14.12",
+    "nuxt-stylus-resources-loader": "^2.0.0",
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.1.0",
     "stylus": "^0.54.8",
-    "stylus-loader": "^4.3.3",
+    "stylus-loader": "^3.0.2",
     "vue-awesome": "^4.1.0"
   },
   "devDependencies": {
