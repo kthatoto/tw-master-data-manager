@@ -5,7 +5,7 @@
       el-upload.button(
         action=""
         :auto-upload="false"
-        :on-change="handleUpload"
+        :on-change="uploadImage"
         :show-file-list="false"
       )
         el-button(icon="el-icon-plus" type="primary") 画像追加
@@ -160,15 +160,7 @@ export default defineComponent({
     })
 
     return {
-      handleUpload: imagesStore.uploadImage,
-      showImage: imagesStore.showImage,
-      backToHome: imagesStore.backToHome,
-      appendDirectory: imagesStore.appendDirectory,
-      backDirectory: imagesStore.backDirectory,
-      breadcrumbs: imagesStore.breadcrumbs,
-      directories: imagesStore.directories,
-      images: imagesStore.images,
-      showingImage: imagesStore.showingImage,
+      ...imagesStore,
       editing,
       deleting,
       creating,
