@@ -89,6 +89,12 @@ export const buildImagesStore = () => {
     return state.currentDirectory.split('/').filter((v: any) => v)
   })
 
+  const deleteDirectory = async (name: string) => {
+    const params = { name: 'aaa' }
+    const res = await axios.delete(`/api/images/directories?directory=${state.currentDirectory}`, params)
+    console.log(res)
+  }
+
   return {
     ...toRefs(state),
     fetchImages,
@@ -98,7 +104,8 @@ export const buildImagesStore = () => {
     backToHome,
     appendDirectory,
     backDirectory,
-    breadcrumbs
+    breadcrumbs,
+    deleteDirectory
   }
 }
 
