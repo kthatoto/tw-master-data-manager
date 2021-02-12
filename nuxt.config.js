@@ -1,4 +1,5 @@
 import path from 'path'
+import { resolve } from 'path'
 
 export default {
   ssr: false,
