@@ -37,6 +37,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, onMounted } from '@vue/composition-api'
+import { Message } from 'element-ui'
 
 import { appStores } from '@/stores/appStores.ts'
 import { FileObject } from '@/stores/images_store.ts'
@@ -99,8 +100,17 @@ export default defineComponent({
       directoryDeleting.flag = true
       directoryDeleting.name = name
     }
+    console.log(context)
     const deleteDirectory = async () => {
-      await imagesStore.deleteDirectory(directoryDeleting.name)
+      const res = await imagesStore.deleteDirectory(directoryDeleting.name)
+      if (res) {
+        Message({
+          message: res,
+          type: 'error'
+        })
+      } else {
+        imagesStore.fetchImages()
+      }
       directoryDeleting.flag = false
     }
 

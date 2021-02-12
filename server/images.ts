@@ -48,7 +48,17 @@ export default (app: any) => {
 
   app.patch('/images/directories/delete', async (req: any, res: any) => {
     const name: string = req.body.name
-    await fs.promises.rmdir(`./data/images${req.query.directory}${name}`)
-    res.send(null)
+    try {
+      const result = await fs.promises.rmdir(`./data/images${req.query.directory}${name}`)
+      res.send(null)
+    } catch (err: any) {
+      if (err.code === 'ENOENT') {
+        res.send({ message: `「${name}」は存在しません` })
+      } else if (err.code === 'ENOTEMPTY') {
+        res.send({ message: `「${name}」の中は空じゃないので消せません` })
+      } else {
+        res.send({ message: "把握していない不具合" })
+      }
+    }
   })
 }
