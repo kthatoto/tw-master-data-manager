@@ -1,5 +1,4 @@
-import path from 'path'
-import { resolve } from 'path'
+import path, { resolve } from 'path'
 
 export default {
   ssr: false,
