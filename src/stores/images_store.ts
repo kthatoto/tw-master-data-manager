@@ -159,6 +159,7 @@ export const buildImagesStore = () => {
         message: '削除完了！',
         type: 'success'
       })
+      state.showingImageIndex = undefined
       fetchImages()
     }
     deleting.flag = false
