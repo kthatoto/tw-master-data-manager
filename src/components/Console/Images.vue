@@ -1,7 +1,7 @@
 <template lang="pug">
 .images
   .images__header
-    .buttons
+    .buttons(v-if="editable")
       el-upload.button(
         action=""
         :auto-upload="false"
@@ -17,24 +17,24 @@
         span(@click="backDirectory(i)") {{ breadcrumb }}
   .images__content.content(v-if="!showingImage")
     .images__item(v-for="o in directories" :key="o.name")
-      Icon.icon(name="folder" @dblclick.native="appendDirectory(o.name)" @click.right.prevent.native="confirmDelete(o.name)")
-      span(@dblclick="openEditModal(o)") {{ o.name }}
+      Icon.icon(name="folder" @dblclick.native="appendDirectory(o.name)" @click.right.prevent.native="editable && confirmDelete(o.name)")
+      span(@dblclick="editable && openEditModal(o)") {{ o.name }}
     .images__item(v-for="o in images" :key="o.name")
-      img(:src="o.raw" @dblclick="showImage(o.name)" @click.right.prevent="confirmDelete(o.name)")
-      span(@dblclick="openEditModal(o)") {{ o.name }}
+      img(:src="o.raw" @dblclick="showImage(o.name)" @click.right.prevent="editable && confirmDelete(o.name)")
+      span(@dblclick="editable && openEditModal(o)") {{ o.name }}
   .images__detail.content(v-else)
     ImageDetail(:image="showingImage")
-  el-dialog.dialog(:visible.sync="creating.flag")
+  el-dialog.dialog(v-if="editable" :visible.sync="creating.flag")
     p フォルダの作成
     el-input(v-model="creating.name" ref="createInput")
     .buttons
       el-button(type="primary" @click="createDirectory" :disabled="creating.name.length === 0") 作成
-  el-dialog.dialog(:visible.sync="editing.flag")
+  el-dialog.dialog(v-if="editable" :visible.sync="editing.flag")
     el-input(v-model="editing.name" ref="nameEditor")
       template(v-if="editing.isFile" slot="append") {{ editing.extension }}
     .buttons
       el-button(type="primary" @click="editName") 更新
-  el-dialog.dialog(:visible.sync="deleting.flag")
+  el-dialog.dialog(v-if="editable" :visible.sync="deleting.flag")
     p 「{{ deleting.name }}」削除していい？
     .buttons
       el-button(type="danger" @click="deleteObject") 削除
@@ -50,6 +50,13 @@ import ImageDetail from '@/components/Console/ImageDetail.vue'
 
 export default defineComponent({
   components: { ImageDetail },
+  props: {
+    editable: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
   setup (_, context) {
     const imagesStore = appStores.imagesStore
 
