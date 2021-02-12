@@ -1,5 +1,6 @@
 import { reactive, computed, toRefs } from '@vue/composition-api'
 import axios from 'axios'
+import { Message } from 'element-ui'
 
 export interface UploadingFile {
   name: string
@@ -53,19 +54,112 @@ export const buildImagesStore = () => {
     fetchImages()
   }
 
-  const createDirectory = async (name: string) => {
-    const params = { name }
+  const creating = reactive<{
+    flag: boolean
+    name: string
+  }>({
+    flag: false,
+    name: ''
+  })
+  const openCreateModal = (refs: any) => {
+    creating.flag = true
+    creating.name = ''
+    setTimeout(() => refs.createInput.focus(), 50)
+  }
+  const createDirectory = async () => {
+    if (creating.name.length === 0) return
+    const params = { name: creating.name }
     const res = await axios.post(`/api/images/directories?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
-      return res.data.message
+      Message({
+        message: res.data.message,
+        type: 'error'
+      })
+    } else {
+      Message({
+        message: '作成完了！',
+        type: 'success'
+      })
+      fetchImages()
     }
-    return null
+    creating.flag = false
   }
 
-  const editName = async (before: string, after: string) => {
-    const params = { before, after }
-    await axios.patch(`/api/images?directory=${state.currentDirectory}`, params)
-    fetchImages()
+  const editing = reactive<{
+    flag: boolean
+    isFile: boolean
+    beforeName: string
+    name: string
+    extension: string
+  }>({
+    flag: false,
+    isFile: false,
+    beforeName: '',
+    name: '',
+    extension: ''
+  })
+  const openEditModal = (refs: any, o: FileObject) => {
+    editing.flag = true
+    editing.isFile = o.isFile
+    editing.beforeName = o.name
+    setTimeout(() => {
+      refs.nameEditor.focus()
+      if (o.isFile) {
+        const splited: string[] = o.name.split('.')
+        editing.extension = '.' + splited.pop()
+        editing.name = splited.join('.')
+      } else {
+        editing.name = o.name
+      }
+    }, 50)
+  }
+  const editName = async () => {
+    if (editing.name.length === 0) return
+    const afterName = editing.isFile ? editing.name + editing.extension : editing.name
+    const params = { before: editing.beforeName, after: afterName }
+    const res = await axios.patch(`/api/images?directory=${state.currentDirectory}`, params)
+    if (res.data && res.data.message) {
+      Message({
+        message: res.data.message,
+        type: 'error'
+      })
+    } else {
+      Message({
+        message: '更新完了！',
+        type: 'success'
+      })
+      fetchImages()
+    }
+    editing.flag = false
+  }
+
+  const deleting = reactive<{
+    flag: boolean
+    name: string
+  }>({
+    flag: false,
+    name: ''
+  })
+  const confirmDelete = (name: string) => {
+    deleting.flag = true
+    deleting.name = name
+  }
+  const deleteObject = async () => {
+    const params = { name: deleting.name }
+    const res = await axios.patch(`/api/images/delete?directory=${state.currentDirectory}`, params)
+    if (res.data && res.data.message) {
+      Message({
+        message: res.data.message,
+        type: 'error'
+      })
+    } else {
+      Message({
+        message: '削除完了！',
+        type: 'success'
+      })
+      fetchImages()
+    }
+    deleting.flag = false
   }
 
   const showImage = (filename: string) => {
@@ -98,27 +192,28 @@ export const buildImagesStore = () => {
     return state.currentDirectory.split('/').filter((v: any) => v)
   })
 
-  const deleteObject = async (name: string): Promise<string | null> => {
-    const params = { name }
-    const res = await axios.patch(`/api/images/delete?directory=${state.currentDirectory}`, params)
-    if (res.data && res.data.message) {
-      return res.data.message
-    }
-    return null
-  }
-
   return {
     ...toRefs(state),
     fetchImages,
     uploadImage,
+
+    creating,
+    openCreateModal,
     createDirectory,
+
+    editing,
+    openEditModal,
     editName,
+
+    deleting,
+    confirmDelete,
+    deleteObject,
+
     showImage,
     backToHome,
     appendDirectory,
     backDirectory,
-    breadcrumbs,
-    deleteObject
+    breadcrumbs
   }
 }
 

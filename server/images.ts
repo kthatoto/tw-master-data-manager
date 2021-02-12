@@ -39,11 +39,20 @@ export default (app: any) => {
 
   app.patch('/images', async (req: any, res: any) => {
     const before: string = req.body.before
+    const beforeFilePath = `./data/images${req.query.directory}${before}`
     const after: string = req.body.after
-    fs.rename(`./data/images${req.query.directory}${before}`, `./data/images${req.query.directory}${after}`, (err: any) => {
-      if (err) throw err
-      res.send(null)
-    })
+    const afterFilePath = `./data/images${req.query.directory}${after}`
+    try {
+      if (fs.existsSync(afterFilePath)) {
+        return res.send({ message: `「${after}」は既に存在してます` })
+      }
+      fs.rename(beforeFilePath, afterFilePath, (err: any) => {
+        if (err) throw err
+        res.send(null)
+      })
+    } catch (err: any) {
+      res.send({ message: "把握していない不具合", err })
+    }
   })
 
   app.post('/images/directories', async (req: any, res: any) => {
