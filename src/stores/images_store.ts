@@ -50,11 +50,13 @@ export const buildImagesStore = () => {
     params.append('filename', file.name)
     const headers = { 'content-type': 'multipart/form-data' }
     await axios.post(`/api/images?directory=${state.currentDirectory}`, params, { headers })
+    fetchImages()
   }
 
   const updateName = async (before: string, after: string) => {
     const params = { before, after }
     await axios.patch(`/api/images?directory=${state.currentDirectory}`, params)
+    fetchImages()
   }
 
   const showImage = (filename: string) => {

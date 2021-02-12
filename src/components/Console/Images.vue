@@ -17,7 +17,7 @@
         span(@click="backDirectory(i)") {{ breadcrumb }}
   .images__content.content(v-if="!showingImage")
     .images__item(v-for="o in directories" :key="o.name")
-      Icon.icon(name="folder" @click.native="appendDirectory(o.name)")
+      Icon.icon(name="folder" @dblclick.native="appendDirectory(o.name)")
       span(@dblclick="editName(o)") {{ o.name }}
     .images__item(v-for="o in images" :key="o.name")
       img(:src="o.raw" @dblclick="showImage(o.name)")
@@ -25,7 +25,7 @@
   .images__detail.content(v-else)
     ImageDetail(:image="showingImage")
   el-dialog.name-editor(:visible.sync="editing.flag")
-    el-input(v-model="editing.name")
+    el-input(v-model="editing.name" ref="nameEditor")
       template(v-if="editing.isFile" slot="append") {{ editing.extension }}
     el-button(type="primary" @click="updateName") 更新
 </template>
@@ -39,7 +39,7 @@ import ImageDetail from '@/components/Console/ImageDetail.vue'
 
 export default defineComponent({
   components: { ImageDetail },
-  setup () {
+  setup (_, context) {
     const imagesStore = appStores.imagesStore
 
     const state = reactive<{
@@ -66,13 +66,17 @@ export default defineComponent({
       editing.flag = true
       editing.isFile = o.isFile
       editing.beforeName = o.name
-      if (o.isFile) {
-        const splited: string[] = o.name.split('.')
-        editing.extension = '.' + splited.pop()
-        editing.name = splited.join('.')
-      } else {
-        editing.name = o.name
-      }
+      setTimeout(() => {
+        const nameEditor = context.refs.nameEditor
+        nameEditor.focus()
+        if (o.isFile) {
+          const splited: string[] = o.name.split('.')
+          editing.extension = '.' + splited.pop()
+          editing.name = splited.join('.')
+        } else {
+          editing.name = o.name
+        }
+      }, 50)
     }
 
     const updateName = async () => {
