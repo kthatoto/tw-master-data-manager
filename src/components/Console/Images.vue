@@ -71,7 +71,7 @@ export default defineComponent({
       editing.isFile = o.isFile
       editing.beforeName = o.name
       setTimeout(() => {
-        const nameEditor = context.refs.nameEditor
+        const nameEditor: any = context.refs.nameEditor
         nameEditor.focus()
         if (o.isFile) {
           const splited: string[] = o.name.split('.')

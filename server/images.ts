@@ -48,7 +48,7 @@ export default (app: any) => {
 
   app.patch('/images/directories/delete', async (req: any, res: any) => {
     const name: string = req.body.name
-    const result = await fs.promises.rmdir(`./data/images${req.query.directory}${name}`)
-    res.send(result)
+    await fs.promises.rmdir(`./data/images${req.query.directory}${name}`)
+    res.send(null)
   })
 }
