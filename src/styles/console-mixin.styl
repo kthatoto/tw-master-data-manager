@@ -1,0 +1,115 @@
+console(module-name)
+  .{module-name}
+    display: flex
+    flex-direction: column
+    &__header
+      padding: 10px
+      border-bottom: 1px solid lightgray
+      .buttons
+        display: flex
+        margin-bottom: 10px
+        .button
+          margin-right: 10px
+      .nav
+        display: flex
+        flex-wrap: wrap
+        .home-icon
+          width: 20px
+          height: 20px
+          color: lightblue
+          cursor: pointer
+        .breadcrumb
+          height: 20px
+          .icon
+            color: black
+            width: 15px
+            height: 15px
+            vertical-align: text-top
+          span
+            font-size: 12px
+            vertical-align: text-bottom
+            margin-right: 3px
+            cursor: pointer
+            &:hover
+              text-decoration: underline
+
+    &__content
+      padding: 10px
+      display: flex
+      justify-content: space-between
+      flex-wrap: wrap
+      align-content: flex-start
+      &::before
+        order: 1
+      &::before, &::after
+        content: ""
+        display: block
+        width: 80px
+        height: 0
+
+    &__item
+      width: 80px
+      display: flex
+      flex-direction: column
+      margin-bottom: 20px
+      position: relative
+      focusColor = #05d
+      .focus
+        position: absolute
+        focusPadding = -7px
+        top: focusPadding
+        left: focusPadding
+        right: focusPadding
+        bottom: focusPadding
+        background-color: focusColor
+        border-radius: 3px
+        z-index: 0
+      .icon
+        color: lightblue
+      img
+        border: 1px solid lightgray
+        object-fit: contain
+      .icon, img
+        width: 80px
+        height: 80px
+        z-index: 1
+        cursor: pointer
+      span
+        $font-size = 12px
+        $line-height = 1.4
+        $lines-to-show = 3
+
+        display: inline-block
+        width: 100%
+        font-size: $font-size
+        word-break: break-all
+        max-height: $font-size * $line-height * $lines-to-show
+        line-height: $line-height
+        position: relative
+        overflow: hidden
+        cursor: pointer
+        &:before, &:after
+          position: absolute
+          background-color: white
+        &:before
+          content: "..."
+          top: $font-size * $line-height * ($lines-to-show - 1)
+          right: 0
+        &:after
+          content: ""
+          height: 100%
+          width: 100%
+        &:hover
+          opacity: 0.8
+      &.selected
+        span
+          color: white
+          &:before, &:after
+            background-color: focusColor
+
+    &__detail
+      height: 100%
+
+    .content
+      flex: 1
+      overflow-y: scroll
