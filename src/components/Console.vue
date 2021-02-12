@@ -3,8 +3,8 @@
   el-tabs(type="border-card")
     el-tab-pane(label="Images")
       Images.pane(:editable="true")
-    el-tab-pane(label="Map")
-    el-tab-pane(label="NPC")
+    el-tab-pane(label="Tiles")
+    el-tab-pane(label="NPCs")
     el-tab-pane(label="Enemies")
 </template>
 
