@@ -186,12 +186,10 @@ export const buildImagesStore = () => {
     state.showingImageIndex = undefined
     fetchImages()
   }
-
   const appendDirectory = (dir: string) => {
     state.currentDirectory = `${state.currentDirectory}${dir}/`
     fetchImages()
   }
-
   const backDirectory = (i: number) => {
     state.currentDirectory = breadcrumbs.value.reduce((newDirectory: string, breadcrumb: string, j: number) => {
       if (j <= i) newDirectory += `${breadcrumb}/`
@@ -200,7 +198,6 @@ export const buildImagesStore = () => {
     state.showingImageIndex = undefined
     fetchImages()
   }
-
   const breadcrumbs = computed<string[]>(() => {
     return state.currentDirectory.split('/').filter((v: any) => v)
   })
