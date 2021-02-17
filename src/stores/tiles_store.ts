@@ -129,7 +129,10 @@ export const buildTilesStore = (stores: {
   const openDirectoryNameEditModal = (refs: any, o: Directory) => {
     directoryEditing.flag = true
     directoryEditing.beforeName = o.name
-    directoryEditing.name = o.name
+    setTimeout(() => {
+      refs.nameEditor.focus()
+      directoryEditing.name = o.name
+    })
   }
   const editDirectoryName = async () => {
     if (directoryEditing.name.length === 0) return
