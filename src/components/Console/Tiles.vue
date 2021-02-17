@@ -2,8 +2,8 @@
 .tiles
   .tiles__header
     .buttons
-      el-button.button(icon="el-icon-plus" type="primary" @click="openDirectoryCreateModal($refs)") Tile作成
-      el-button.button(icon="el-icon-plus" type="primary" @click="openTileCreateModal($refs)") フォルダ作成
+      el-button.button(icon="el-icon-plus" type="primary" @click="openTileCreateModal($refs)") Tile作成
+      el-button.button(icon="el-icon-plus" type="primary" @click="openDirectoryCreateModal($refs)") フォルダ作成
     .nav
       icon.home-icon(name="home" @click.native="backToHome")
       .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
@@ -29,7 +29,7 @@
     .buttons
       el-button(type="primary" @click="createDirectory" :disabled="directoryCreating.name.length === 0") 作成
 
-  el-dialog.dialog(:visible.sync="tileCreatable.flag" width="700px")
+  el-dialog.dialog(:visible.sync="tileCreating.flag" width="700px")
     p Tileの作成
     .form
       .form__column.-left

@@ -87,7 +87,7 @@ export const buildTilesStore = (stores: {
     tileCreating.flag = true
     tileCreating.name = ''
     tileCreating.collision = false
-    setTimeout(() => refs.tileCreateInput.focus(), 50)
+    setTimeout(() => refs.tileCreateInput.focus(), 500)
   }
   const tileCreatable = computed<boolean>(() => {
     if (tileCreating.name.length === 0) return false
