@@ -79,6 +79,4 @@ console(images)
   .dialog
     .el-input
       margin-bottom: 10px
-    .buttons
-      text-align: right
 </style>

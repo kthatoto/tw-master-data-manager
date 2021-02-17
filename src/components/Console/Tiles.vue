@@ -28,6 +28,11 @@
     el-input(v-model="creating.name" ref="createInput")
     .buttons
       el-button(type="primary" @click="createDirectory" :disabled="creating.name.length === 0") 作成
+
+  el-dialog.dialog(:visible.sync="deleting.flag")
+    p 「{{ deleting.name }}」削除していい？
+    .buttons
+      el-button(type="danger" @click="deleteObject") 削除
 </template>
 
 <script lang="ts">
