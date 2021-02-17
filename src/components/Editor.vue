@@ -10,7 +10,7 @@ import { defineComponent, onMounted, reactive } from '@vue/composition-api'
 
 export default defineComponent({
   setup () {
-    const padding = 300
+    const padding = 50
     const state = reactive<{
       container: any
       canvas: any
@@ -59,12 +59,13 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 .editor
+  editorPadding = 100px
   background-color: lightgray
   #container
-    width: calc(100% - 22px)
-    height: calc(100% - 22px)
+    width: "calc(100% - (%s * 2) - 2px)" % editorPadding
+    height: "calc(100% - (%s * 2) - 2px)" % editorPadding
     border: 1px solid gray
-    margin: 10px
+    margin: editorPadding
     overflow: auto
     &::-webkit-scrollbar
       width: 8px
