@@ -117,31 +117,23 @@ export const buildTilesStore = (stores: {
     tileCreating.flag = false
   }
 
-  const editing = reactive<{
+  const directoryEditing = reactive<{
     flag: boolean
     beforeName: string
     name: string
-    collision: boolean
-    imagePath: string
   }>({
     flag: false,
     beforeName: '',
-    name: '',
-    collision: false,
-    imagePath: ''
+    name: ''
   })
-  const openEditModal = (o: Tile | Directory) => {
-    editing.flag = true
-    editing.beforeName = o.name
-    editing.name = o.name
-    if (o.isFile) {
-      editing.collision = o.collision
-      editing.imagePath = o.imagePath
-    }
+  const openDirectoryNameEditModal = (refs: any, o: Directory) => {
+    directoryEditing.flag = true
+    directoryEditing.beforeName = o.name
+    directoryEditing.name = o.name
   }
-  const editDirectory = async () => {
-    if (editing.name.length === 0) return
-    const params = { before: editing.beforeName, after: directoryCreating.name }
+  const editDirectoryName = async () => {
+    if (directoryEditing.name.length === 0) return
+    const params = { before: directoryEditing.beforeName, after: directoryEditing.name }
     const res = await axios.patch(`/api/tiles/directories?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
@@ -155,32 +147,32 @@ export const buildTilesStore = (stores: {
       })
       fetchTiles()
     }
-    editing.flag = false
+    directoryEditing.flag = false
   }
-  const editTile = async () => {
-    if (editing.name.length === 0) return
-    if (!editing.imagePath) return
-    const params = {
-      beforeName: editing.beforeName,
-      name: editing.name,
-      collision: editing.collision,
-      imagePath: editing.imagePath
-    }
-    const res = await axios.patch(`/api/tiles?directory=${state.currentDirectory}`, params)
-    if (res.data && res.data.message) {
-      Message({
-        message: res.data.message,
-        type: 'error'
-      })
-    } else {
-      Message({
-        message: '更新完了！',
-        type: 'success'
-      })
-      fetchTiles()
-    }
-    editing.flag = false
-  }
+  // const editTile = async () => {
+  //   if (editing.name.length === 0) return
+  //   if (!editing.imagePath) return
+  //   const params = {
+  //     beforeName: editing.beforeName,
+  //     name: editing.name,
+  //     collision: editing.collision,
+  //     imagePath: editing.imagePath
+  //   }
+  //   const res = await axios.patch(`/api/tiles?directory=${state.currentDirectory}`, params)
+  //   if (res.data && res.data.message) {
+  //     Message({
+  //       message: res.data.message,
+  //       type: 'error'
+  //     })
+  //   } else {
+  //     Message({
+  //       message: '更新完了！',
+  //       type: 'success'
+  //     })
+  //     fetchTiles()
+  //   }
+  //   editing.flag = false
+  // }
 
   const deleting = reactive<{
     flag: boolean
@@ -256,10 +248,10 @@ export const buildTilesStore = (stores: {
     tileCreatable,
     createTile,
 
-    editing,
-    openEditModal,
-    editDirectory,
-    editTile,
+    directoryEditing,
+    openDirectoryNameEditModal,
+    editDirectoryName,
+    // editTile,
 
     deleting,
     confirmDelete,

@@ -14,11 +14,11 @@
     .tiles__item(v-for="o in directories" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
       .focus(v-if="selectingName === o.name")
       Icon.icon(name="folder" @dblclick.native="appendDirectory(o.name)" @click.right.prevent.native="confirmDelete(o.name)")
-      span(@dblclick="openEditModal($refs, o)") {{ o.name }}
+      span(@dblclick="openDirectoryNameEditModal($refs, o)") {{ o.name }}
     .tiles__item(v-for="o in tiles" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
       .focus(v-if="selectingName === o.name")
       img(:src="o.raw" @dblclick="showTile(o.name)" @click.right.prevent="confirmDelete(o.name)")
-      span(@dblclick="openEditModal($refs, o)") {{ o.name }}
+      span {{ o.name }}
 
   .tiles__detail.content(v-else)
     TileDetail(:refs="$refs")
@@ -39,11 +39,11 @@
       .form__column.-right
         Images.form__images(:editable="false")
 
-  el-dialog.dialog(:visible.sync="editing.flag")
-    el-input(v-model="editing.name" ref="nameEditor")
-      template(v-if="editing.isFile" slot="append") {{ editing.extension }}
+  el-dialog.dialog(:visible.sync="directoryEditing.flag")
+    p フォルダの名前変更
+    el-input(v-model="directoryEditing.name" ref="nameEditor")
     .buttons
-      el-button(type="primary" @click="editName" :disabled="editing.name.length === 0") 更新
+      el-button(type="primary" @click="editDirectoryName" :disabled="directoryEditing.name.length === 0") 更新
 
   el-dialog.dialog(:visible.sync="deleting.flag")
     p 「{{ deleting.name }}」削除していい？
