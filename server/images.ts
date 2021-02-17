@@ -14,20 +14,28 @@ const upload = multer({ storage })
 
 export default (app: any) => {
   app.get('/images', async (req: any, res: any) => {
-    const response: any = { objects: [] }
+    const response: any = { images: [], directories: [] }
 
     const objects = await fs.promises.readdir(`./data/images${req.query.directory}`, {})
     for (const obj of objects) {
       const filePath: string = `./data/images${req.query.directory}${obj}`
       const stat = await fs.promises.stat(filePath)
-      const data = stat.isDirectory() ? null : await fs.promises.readFile(filePath, 'base64')
-      response.objects.push({
-        fullPath: filePath,
-        name: obj,
-        isFile: !stat.isDirectory(),
-        size: stat.size,
-        raw: data ? 'data:image;base64,' + data : null
-      })
+      if (stat.isDirectory()) {
+        response.directories.push({
+          fullPath: filePath,
+          name: obj,
+          isFile: false
+        })
+      } else {
+        const data = await fs.promises.readFile(filePath, 'base64')
+        response.images.push({
+          fullPath: filePath,
+          name: obj,
+          isFile: true,
+          size: stat.size,
+          raw: 'data:image;base64,' + data
+        })
+      }
     }
 
     res.send(response)
