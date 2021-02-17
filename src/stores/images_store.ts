@@ -193,6 +193,12 @@ export const buildImagesStore = () => {
     return state.currentDirectory.split('/').filter((v: any) => v)
   })
 
+  const selectingImagePath = computed<string | undefined>(() => {
+    if (!state.selectingName) return
+    if (!state.images.map((i: Image) => i.name).includes(state.selectingName)) return
+    return `${state.currentDirectory}${state.selectingName}`
+  })
+
   return {
     ...toRefs(state),
     fetchImages,
@@ -215,7 +221,8 @@ export const buildImagesStore = () => {
     backToHome,
     appendDirectory,
     backDirectory,
-    breadcrumbs
+    breadcrumbs,
+    selectingImagePath
   }
 }
 

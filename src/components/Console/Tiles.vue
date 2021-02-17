@@ -36,8 +36,9 @@
         .form__column.-left
           el-input(v-model="creating.name" ref="createInput")
           el-checkbox(v-model="creating.collision") 衝突
+          el-button(type="primary" @click="createTile" :disabled="!tileCreatable") 作成
         .form__column.-right
-          Images(:editable="false")
+          Images.form__images(:editable="false")
 
   // el-dialog.dialog(v-if="editable" :visible.sync="editing.flag")
   //   el-input(v-model="editing.name" ref="nameEditor")
@@ -81,7 +82,13 @@ console(tiles)
     &__column
       &.-left
         flex: 1
-        padding-right: 10px
+        padding-right: 20px
+        border-right: 1px solid lightgray
       &.-right
         width: 400px
+    &__images
+      height: 600px
+    .el-checkbox
+      display: block
+      margin-bottom: 20px
 </style>

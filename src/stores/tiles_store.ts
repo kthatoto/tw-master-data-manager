@@ -2,6 +2,8 @@ import { reactive, computed, toRefs } from '@vue/composition-api'
 import axios from 'axios'
 import { Message } from 'element-ui'
 
+import { ImagesStore } from '@/stores/images_store.ts'
+
 export interface Tile {
   fullPath: string
   name: string
@@ -18,7 +20,9 @@ interface Directory {
   isFile: false
 }
 
-export const buildTilesStore = () => {
+export const buildTilesStore = (stores: {
+  imagesStore: ImagesStore
+}) => {
   const state = reactive<{
     currentDirectory: string
     tiles: Tile[]
@@ -43,20 +47,17 @@ export const buildTilesStore = () => {
     flag: boolean
     name: string
     collision: boolean
-    imagePath: string
     mode: 'tile' | 'directory' | undefined
   }>({
     flag: false,
     name: '',
     collision: false,
-    imagePath: '',
     mode: undefined
   })
   const openCreateModal = (refs: any, mode: 'tile' | 'directory') => {
     creating.flag = true
     creating.name = ''
     creating.collision = false
-    creating.imagePath = ''
     creating.mode = mode
     setTimeout(() => refs.createInput.focus(), 50)
   }
@@ -78,12 +79,16 @@ export const buildTilesStore = () => {
     }
     creating.flag = false
   }
+  const tileCreatable = computed<boolean>(() => {
+    if (creating.name.length === 0) return false
+    if (!stores.imagesStore.selectingImagePath.value) return false
+    return true
+  })
   const createTile = async () => {
-    if (creating.name.length === 0) return
-    if (!creating.imagePath) return
+    if (!tileCreatable.value) return
     const params = {
       name: creating.name,
-      imagePath: creating.imagePath,
+      imagePath: stores.imagesStore.selectingImagePath.value,
       collision: creating.collision
     }
     const res = await axios.post(`/api/tiles?directory=${state.currentDirectory}`, params)
@@ -235,6 +240,7 @@ export const buildTilesStore = () => {
     creating,
     openCreateModal,
     createDirectory,
+    tileCreatable,
     createTile,
 
     editing,
