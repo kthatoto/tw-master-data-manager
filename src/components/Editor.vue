@@ -10,11 +10,12 @@ import { defineComponent, onMounted } from '@vue/composition-api'
 
 export default defineComponent({
   setup () {
+    const padding = 300
     const makeCanvasFullScreen = () => {
-      const editor = document.getElementsByClassName('editor')[0]
+      const container = document.getElementById('container')
       const canvas = document.getElementById('mapCanvas')
-      canvas.width = editor.clientWidth - 22
-      canvas.height = editor.clientHeight - 22
+      canvas.width = container.clientWidth + padding * 2
+      canvas.height = container.clientHeight + padding * 2
     }
     window.addEventListener('resize', () => {
       makeCanvasFullScreen()
@@ -35,8 +36,8 @@ export default defineComponent({
 
       const scrollContainer: any = document.getElementById('container')
       const repositionCanvas = () => {
-        const dx = scrollContainer.scrollLeft
-        const dy = scrollContainer.scrollTop
+        const dx = scrollContainer.scrollLeft - padding
+        const dy = scrollContainer.scrollTop - padding
         const canvas = document.getElementById('mapCanvas')
         canvas.style.transform = `translate(${dx}px, ${dy}px)`
         const ctx = canvas.getContext('2d')
@@ -59,12 +60,12 @@ export default defineComponent({
     overflow: auto
     &::-webkit-scrollbar
       width: 8px
+      height: 8px
       &-track
-        border-radius: 0
         box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1)
       &-thumb
         background-color: rgba(0, 0, 50, 0.5)
-        border-radius: 4px
+        border-radius: 0
         box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3)
   .large-box
     width: 10000px
