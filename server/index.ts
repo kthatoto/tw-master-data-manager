@@ -2,7 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import fs from 'fs'
 
-import imagesHandle from './images'
+import imagesHandle from './images/index'
 
 const app = express()
 

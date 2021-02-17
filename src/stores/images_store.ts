@@ -40,17 +40,8 @@ export const buildImagesStore = () => {
 
   const fetchImages = async () => {
     const res = await axios.get(`/api/images?directory=${state.currentDirectory}`)
-    const images = []
-    const directories = []
-    for (const obj of res.data.objects) {
-      if (obj.isFile) {
-        images.push(obj)
-      } else {
-        directories.push(obj)
-      }
-    }
-    state.images = images
-    state.directories = directories
+    state.images = res.data.images
+    state.directories = res.data.directories
   }
 
   const uploadImage = async (file: UploadingFile) => {
