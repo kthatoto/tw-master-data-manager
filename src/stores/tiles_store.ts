@@ -191,6 +191,7 @@ export const buildTilesStore = () => {
       state.showingTileIndex = undefined
       fetchTiles()
     }
+    deleting.flag = false
   }
 
   const showTile = (filename: string) => {
