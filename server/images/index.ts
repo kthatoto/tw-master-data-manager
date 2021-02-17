@@ -1,5 +1,3 @@
-import fs from 'fs'
-
 import getList from './getList'
 import create from './create'
 import move from './move'
