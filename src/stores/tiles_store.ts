@@ -43,27 +43,21 @@ export const buildTilesStore = (stores: {
     state.directories = res.data.directories
   }
 
-  const creating = reactive<{
+  const directoryCreating = reactive<{
     flag: boolean
     name: string
-    collision: boolean
-    mode: 'tile' | 'directory' | undefined
   }>({
     flag: false,
-    name: '',
-    collision: false,
-    mode: undefined
+    name: ''
   })
-  const openCreateModal = (refs: any, mode: 'tile' | 'directory') => {
-    creating.flag = true
-    creating.name = ''
-    creating.collision = false
-    creating.mode = mode
+  const openDirectoryCreateModal = (refs: any) => {
+    directoryCreating.flag = true
+    directoryCreating.name = ''
     setTimeout(() => refs.createInput.focus(), 50)
   }
   const createDirectory = async () => {
-    if (creating.name.length === 0) return
-    const params = { name: creating.name }
+    if (directoryCreating.name.length === 0) return
+    const params = { name: directoryCreating.name }
     const res = await axios.post(`/api/tiles/directories?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
@@ -77,19 +71,35 @@ export const buildTilesStore = (stores: {
       })
       fetchTiles()
     }
-    creating.flag = false
+    directoryCreating.flag = false
+  }
+
+  const tileCreating = reactive<{
+    flag: boolean
+    name: string
+    collision: boolean
+  }>({
+    flag: false,
+    name: '',
+    collision: false
+  })
+  const openTileCreateModal = (refs: any) => {
+    tileCreating.flag = true
+    tileCreating.name = ''
+    tileCreating.collision = false
+    setTimeout(() => refs.createInput.focus(), 50)
   }
   const tileCreatable = computed<boolean>(() => {
-    if (creating.name.length === 0) return false
+    if (tileCreating.name.length === 0) return false
     if (!stores.imagesStore.selectingImagePath.value) return false
     return true
   })
   const createTile = async () => {
     if (!tileCreatable.value) return
     const params = {
-      name: creating.name,
+      name: tileCreating.name,
       imagePath: stores.imagesStore.selectingImagePath.value,
-      collision: creating.collision
+      collision: tileCreating.collision
     }
     const res = await axios.post(`/api/tiles?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
@@ -104,7 +114,7 @@ export const buildTilesStore = (stores: {
       })
       fetchTiles()
     }
-    creating.flag = false
+    tileCreating.flag = false
   }
 
   const editing = reactive<{
@@ -131,7 +141,7 @@ export const buildTilesStore = (stores: {
   }
   const editDirectory = async () => {
     if (editing.name.length === 0) return
-    const params = { before: editing.beforeName, after: creating.name }
+    const params = { before: editing.beforeName, after: directoryCreating.name }
     const res = await axios.patch(`/api/tiles/directories?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
@@ -237,9 +247,12 @@ export const buildTilesStore = (stores: {
     ...toRefs(state),
     fetchTiles,
 
-    creating,
-    openCreateModal,
+    directoryCreating,
+    openDirectoryCreateModal,
     createDirectory,
+
+    tileCreating,
+    openTileCreateModal,
     tileCreatable,
     createTile,
 
