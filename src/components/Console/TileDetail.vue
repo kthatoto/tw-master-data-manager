@@ -6,7 +6,7 @@
   p 衝突：{{ showingTile.collision ? 'あり' : 'なし' }}
   p 画像：{{ showingTile.imagePath }}
   .buttons
-    el-button(type="primary" @click="openEditModal(refs, showingTile)") 変更
+    el-button(type="primary" @click="openTileEditModal(refs, showingTile)") 変更
     el-button(type="danger" @click="confirmDelete(showingTile.name)") 削除
 </template>
 

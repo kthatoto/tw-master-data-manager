@@ -198,6 +198,15 @@ export const buildImagesStore = () => {
     if (!state.images.map((i: Image) => i.name).includes(state.selectingName)) return
     return `${state.currentDirectory}${state.selectingName}`
   })
+  const setSelection = (imagePath: string) => {
+    const paths = imagePath.split('/').filter((v: string) => v)
+    state.selectingName = paths.pop()
+    if (paths.length === 0) {
+      state.currentDirectory = '/'
+    } else {
+      state.currentDirectory = `/${paths.join('/')}/`
+    }
+  }
 
   return {
     ...toRefs(state),
@@ -222,7 +231,9 @@ export const buildImagesStore = () => {
     appendDirectory,
     backDirectory,
     breadcrumbs,
-    selectingImagePath
+
+    selectingImagePath,
+    setSelection
   }
 }
 

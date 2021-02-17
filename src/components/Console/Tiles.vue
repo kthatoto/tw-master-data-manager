@@ -18,7 +18,7 @@
     .tiles__item(v-for="o in tiles" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
       .focus(v-if="selectingName === o.name")
       img(:src="o.raw" @dblclick="showTile(o.name)" @click.right.prevent="confirmDelete(o.name)")
-      span {{ o.name }}
+      span(@dblclick="openTileEditModal($refs, o)") {{ o.name }}
 
   .tiles__detail.content(v-else)
     TileDetail(:refs="$refs")
@@ -41,9 +41,19 @@
 
   el-dialog.dialog(:visible.sync="directoryEditing.flag")
     p フォルダの名前変更
-    el-input(v-model="directoryEditing.name" ref="nameEditor")
+    el-input(v-model="directoryEditing.name" ref="directoryNameEditor")
     .buttons
       el-button(type="primary" @click="editDirectoryName" :disabled="directoryEditing.name.length === 0") 更新
+
+  el-dialog.dialog(:visible.sync="tileEditing.flag")
+    p Tileの変更
+    .form
+      .form__column.-left
+        el-input(v-model="tileEditing.name" ref="tileNameEditor")
+        el-checkbox(v-model="tileEditing.collision") 衝突
+        el-button(type="primary" @click="editTile" :disabled="!tileEditable") 変更
+      .form__column.-right
+        Images.form__images(:editable="false")
 
   el-dialog.dialog(:visible.sync="deleting.flag")
     p 「{{ deleting.name }}」削除していい？

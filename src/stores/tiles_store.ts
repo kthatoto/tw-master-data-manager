@@ -130,7 +130,7 @@ export const buildTilesStore = (stores: {
     directoryEditing.flag = true
     directoryEditing.beforeName = o.name
     setTimeout(() => {
-      refs.nameEditor.focus()
+      refs.directoryNameEditor.focus()
       directoryEditing.name = o.name
     })
   }
@@ -152,30 +152,57 @@ export const buildTilesStore = (stores: {
     }
     directoryEditing.flag = false
   }
-  // const editTile = async () => {
-  //   if (editing.name.length === 0) return
-  //   if (!editing.imagePath) return
-  //   const params = {
-  //     beforeName: editing.beforeName,
-  //     name: editing.name,
-  //     collision: editing.collision,
-  //     imagePath: editing.imagePath
-  //   }
-  //   const res = await axios.patch(`/api/tiles?directory=${state.currentDirectory}`, params)
-  //   if (res.data && res.data.message) {
-  //     Message({
-  //       message: res.data.message,
-  //       type: 'error'
-  //     })
-  //   } else {
-  //     Message({
-  //       message: '更新完了！',
-  //       type: 'success'
-  //     })
-  //     fetchTiles()
-  //   }
-  //   editing.flag = false
-  // }
+
+  const tileEditing = reactive<{
+    flag: boolean
+    beforeName: string
+    name: string
+    collision: boolean
+  }>({
+    flag: false,
+    beforeName: '',
+    name: '',
+    collision: false
+  })
+  const openTileEditModal = (refs: any, o: Tile) => {
+    tileEditing.flag = true
+    tileEditing.beforeName = o.name
+    tileEditing.collision = o.collision
+    stores.imagesStore.setSelection(o.imagePath)
+    setTimeout(() => {
+      refs.tileNameEditor.focus()
+      tileEditing.name = o.name
+    })
+  }
+  const tileEditable = () => {
+    console.log(tileEditing.name)
+    if (tileEditing.name.length === 0) return false
+    if (!stores.imagesStore.selectingImagePath.value) return false
+    return true
+  }
+  const editTile = async () => {
+    if (tileEditing.name.length === 0) return
+    const params = {
+      beforeName: tileEditing.beforeName,
+      name: tileEditing.name,
+      collision: tileEditing.collision,
+      imagePath: stores.imagesStore.selectingImagePath.value
+    }
+    const res = await axios.patch(`/api/tiles?directory=${state.currentDirectory}`, params)
+    if (res.data && res.data.message) {
+      Message({
+        message: res.data.message,
+        type: 'error'
+      })
+    } else {
+      Message({
+        message: '更新完了！',
+        type: 'success'
+      })
+      fetchTiles()
+    }
+    tileEditing.flag = false
+  }
 
   const deleting = reactive<{
     flag: boolean
@@ -254,7 +281,11 @@ export const buildTilesStore = (stores: {
     directoryEditing,
     openDirectoryNameEditModal,
     editDirectoryName,
-    // editTile,
+
+    tileEditing,
+    openTileEditModal,
+    tileEditable,
+    editTile,
 
     deleting,
     confirmDelete,
