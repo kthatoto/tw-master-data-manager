@@ -25,7 +25,7 @@
 
   el-dialog.dialog(:visible.sync="directoryCreating.flag")
     p フォルダの作成
-    el-input(v-model="directoryCreating.name" ref="createInput")
+    el-input(v-model="directoryCreating.name" ref="directoryCreateInput")
     .buttons
       el-button(type="primary" @click="createDirectory" :disabled="directoryCreating.name.length === 0") 作成
 
@@ -33,7 +33,7 @@
     p Tileの作成
     .form
       .form__column.-left
-        el-input(v-model="tileCreating.name" ref="createInput")
+        el-input(v-model="tileCreating.name" ref="tileCreateInput")
         el-checkbox(v-model="tileCreating.collision") 衝突
         el-button(type="primary" @click="createTile" :disabled="!tileCreatable") 作成
       .form__column.-right

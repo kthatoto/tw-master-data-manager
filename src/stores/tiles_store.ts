@@ -53,7 +53,7 @@ export const buildTilesStore = (stores: {
   const openDirectoryCreateModal = (refs: any) => {
     directoryCreating.flag = true
     directoryCreating.name = ''
-    setTimeout(() => refs.createInput.focus(), 50)
+    setTimeout(() => refs.directoryCreateInput.focus(), 50)
   }
   const createDirectory = async () => {
     if (directoryCreating.name.length === 0) return
@@ -87,7 +87,7 @@ export const buildTilesStore = (stores: {
     tileCreating.flag = true
     tileCreating.name = ''
     tileCreating.collision = false
-    setTimeout(() => refs.createInput.focus(), 50)
+    setTimeout(() => refs.tileCreateInput.focus(), 50)
   }
   const tileCreatable = computed<boolean>(() => {
     if (tileCreating.name.length === 0) return false
