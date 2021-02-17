@@ -6,22 +6,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@vue/composition-api'
+import { defineComponent, onMounted, reactive } from '@vue/composition-api'
 
 export default defineComponent({
   setup () {
     const padding = 300
+    const state = reactive<{
+      container: any
+      canvas: any
+      ctx: any
+    }>({
+      container: undefined,
+      canvas: undefined,
+      ctx: undefined
+    })
+
     const makeCanvasFullScreen = () => {
-      const container: any = document.getElementById('container')
-      const canvas: any = document.getElementById('mapCanvas')
-      canvas.width = container.clientWidth + padding * 2
-      canvas.height = container.clientHeight + padding * 2
+      state.container = document.getElementById('container')
+      state.canvas.width = state.container.clientWidth + padding * 2
+      state.canvas.height = state.container.clientHeight + padding * 2
     }
     window.addEventListener('resize', () => {
       makeCanvasFullScreen()
     })
 
-    const draw = (ctx: any, dx: number, dy: number) => {
+    const draw = (dx: number, dy: number) => {
+      const ctx: any = state.ctx
       ctx.fillStyle = '#fff'
       ctx.fillRect(0, 0, 2000, 2000)
       ctx.fillStyle = '#333'
@@ -29,19 +39,17 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      state.canvas = document.getElementById('mapCanvas')
+      state.ctx = state.canvas.getContext('2d')
       makeCanvasFullScreen()
-      const canvas: any = document.getElementById('mapCanvas')
-      const ctx = canvas.getContext('2d')
-      draw(ctx, 0, 0)
+      draw(0, 0)
 
       const scrollContainer: any = document.getElementById('container')
       const repositionCanvas = () => {
         const dx = scrollContainer.scrollLeft - padding
         const dy = scrollContainer.scrollTop - padding
-        const canvas: any = document.getElementById('mapCanvas')
-        canvas.style.transform = `translate(${dx}px, ${dy}px)`
-        const ctx = canvas.getContext('2d')
-        draw(ctx, dx, dy)
+        state.canvas.style.transform = `translate(${dx}px, ${dy}px)`
+        draw(dx, dy)
       }
       scrollContainer.addEventListener('scroll', repositionCanvas)
     })
