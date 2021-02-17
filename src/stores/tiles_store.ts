@@ -174,12 +174,11 @@ export const buildTilesStore = (stores: {
       tileEditing.name = o.name
     })
   }
-  const tileEditable = () => {
-    console.log(tileEditing.name)
+  const tileEditable = computed<boolean>(() => {
     if (tileEditing.name.length === 0) return false
     if (!stores.imagesStore.selectingImagePath.value) return false
     return true
-  }
+  })
   const editTile = async () => {
     if (tileEditing.name.length === 0) return
     const params = {
