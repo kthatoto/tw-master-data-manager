@@ -20,7 +20,7 @@ export default (app: any, method: 'patch', path: string) => {
         return res.send({ message: `「${beforeName}」はTileではありません` })
       }
       if (beforeFilePath !== afterFilePath) {
-        fs.promises.renameSync(beforeFilePath, afterFilePath)
+        fs.renameSync(beforeFilePath, afterFilePath)
       }
       await fs.promises.writeFile(afterFilePath, data)
       res.send(null)
