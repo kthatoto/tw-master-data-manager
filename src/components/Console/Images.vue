@@ -15,6 +15,7 @@
       .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
         icon.icon(name="chevron-right")
         span(@click="backDirectory(i)") {{ breadcrumb }}
+
   .images__content.content(v-if="!showingImage")
     .images__item(v-for="o in directories" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
       .focus(v-if="selectingName === o.name")
@@ -63,7 +64,7 @@ export default defineComponent({
   setup (_, context) {
     const imagesStore = appStores.imagesStore
 
-    onMounted(async () => {
+    onMounted(() => {
       imagesStore.fetchImages()
     })
 

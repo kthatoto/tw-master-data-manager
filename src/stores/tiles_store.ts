@@ -35,17 +35,8 @@ export const buildTilesStore = () => {
 
   const fetchTiles = async () => {
     const res = await axios.get(`/api/tiles?directory=${state.currentDirectory}`)
-    const tiles = []
-    const directories = []
-    for (const obj of res.data.objects) {
-      if (obj.isFile) {
-        tiles.push(obj)
-      } else {
-        directories.push(obj)
-      }
-    }
-    state.tiles = tiles
-    state.directories = directories
+    state.tiles = res.data.tiles
+    state.directories = res.data.directories
   }
 
   const creating = reactive<{
