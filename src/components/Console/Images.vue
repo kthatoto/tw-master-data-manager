@@ -75,8 +75,4 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 console(images)
-.images
-  .dialog
-    .el-input
-      margin-bottom: 10px
 </style>
