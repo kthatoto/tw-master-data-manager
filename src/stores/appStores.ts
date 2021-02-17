@@ -13,6 +13,6 @@ export const appStores: AppStores = {
     return _.imagesStore || (_.imagesStore = buildImagesStore())
   },
   get tilesStore (): TilesStore {
-    return _.tilesStore || (_.tilesStore = buildTilesStore())
+    return _.tilesStore || (_.tilesStore = buildTilesStore(this))
   }
 }

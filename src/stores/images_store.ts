@@ -193,6 +193,21 @@ export const buildImagesStore = () => {
     return state.currentDirectory.split('/').filter((v: any) => v)
   })
 
+  const selectingImagePath = computed<string | undefined>(() => {
+    if (!state.selectingName) return
+    if (!state.images.map((i: Image) => i.name).includes(state.selectingName)) return
+    return `${state.currentDirectory}${state.selectingName}`
+  })
+  const setSelection = (imagePath: string) => {
+    const paths = imagePath.split('/').filter((v: string) => v)
+    state.selectingName = paths.pop()
+    if (paths.length === 0) {
+      state.currentDirectory = '/'
+    } else {
+      state.currentDirectory = `/${paths.join('/')}/`
+    }
+  }
+
   return {
     ...toRefs(state),
     fetchImages,
@@ -215,7 +230,10 @@ export const buildImagesStore = () => {
     backToHome,
     appendDirectory,
     backDirectory,
-    breadcrumbs
+    breadcrumbs,
+
+    selectingImagePath,
+    setSelection
   }
 }
 
