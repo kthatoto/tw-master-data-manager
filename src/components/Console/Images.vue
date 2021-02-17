@@ -8,8 +8,8 @@
         :on-change="uploadImage"
         :show-file-list="false"
       )
-        el-button(icon="el-icon-plus" type="primary") 画像追加
-      el-button.button(icon="el-icon-plus" type="primary" @click="openCreateModal($refs)") フォルダ追加
+        el-button(icon="el-icon-plus" type="primary") 画像作成
+      el-button.button(icon="el-icon-plus" type="primary" @click="openCreateModal($refs)") フォルダ作成
     .nav
       icon.home-icon(name="home" @click.native="backToHome")
       .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
@@ -26,7 +26,7 @@
       img(:src="o.raw" @dblclick="showImage(o.name)" @click.right.prevent="editable && confirmDelete(o.name)")
       span(@dblclick="editable && openEditModal($refs, o)") {{ o.name }}
   .images__detail.content(v-else)
-    ImageDetail(:refs="$refs")
+    ImageDetail(:refs="$refs" :editable="editable")
 
   el-dialog.dialog(v-if="editable" :visible.sync="creating.flag")
     p フォルダの作成

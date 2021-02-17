@@ -2,8 +2,8 @@
 .tiles
   .tiles__header
     .buttons
-      el-button.button(icon="el-icon-plus" type="primary") Tile追加
-      el-button.button(icon="el-icon-plus" type="primary" @click="openCreateModal($refs)") フォルダ追加
+      el-button.button(icon="el-icon-plus" type="primary" @click="openCreateModal($refs, 'tile')") Tile作成
+      el-button.button(icon="el-icon-plus" type="primary" @click="openCreateModal($refs, 'directory')") フォルダ作成
     .nav
       icon.home-icon(name="home" @click.native="backToHome")
       .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
@@ -23,11 +23,27 @@
   .tiles__detail.content(v-else)
     TileDetail(:refs="$refs")
 
-  el-dialog.dialog(:visible.sync="creating.flag")
-    p フォルダの作成
-    el-input(v-model="creating.name" ref="createInput")
-    .buttons
-      el-button(type="primary" @click="createDirectory" :disabled="creating.name.length === 0") 作成
+  el-dialog.dialog(:visible.sync="creating.flag" :width="creating.mode === 'tile' ? '700px' : '50%'")
+    template(v-if="creating.mode === 'directory'")
+      p フォルダの作成
+      el-input(v-model="creating.name" ref="createInput")
+      .buttons
+        el-button(type="primary" @click="createDirectory" :disabled="creating.name.length === 0") 作成
+
+    template(v-else-if="creating.mode === 'tile'")
+      p Tileの作成
+      .form
+        .form__column.-left
+          el-input(v-model="creating.name" ref="createInput")
+          el-checkbox(v-model="creating.collision") 衝突
+        .form__column.-right
+          Images(:editable="false")
+
+  // el-dialog.dialog(v-if="editable" :visible.sync="editing.flag")
+  //   el-input(v-model="editing.name" ref="nameEditor")
+  //     template(v-if="editing.isFile" slot="append") {{ editing.extension }}
+  //   .buttons
+  //     el-button(type="primary" @click="editName" :disabled="editing.name.length === 0") 更新
 
   el-dialog.dialog(:visible.sync="deleting.flag")
     p 「{{ deleting.name }}」削除していい？
@@ -40,9 +56,10 @@ import { defineComponent, onMounted } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
 import TileDetail from '@/components/Console/TileDetail.vue'
+import Images from '@/components/Console/Images.vue'
 
 export default defineComponent({
-  components: { TileDetail },
+  components: { TileDetail, Images },
   setup () {
     const tilesStore = appStores.tilesStore
 
@@ -57,4 +74,14 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 console(tiles)
+.tiles
+  .form
+    display: flex
+    justify-content: space-between
+    &__column
+      &.-left
+        flex: 1
+        padding-right: 10px
+      &.-right
+        width: 400px
 </style>

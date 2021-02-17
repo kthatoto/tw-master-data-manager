@@ -44,17 +44,20 @@ export const buildTilesStore = () => {
     name: string
     collision: boolean
     imagePath: string
+    mode: 'tile' | 'directory' | undefined
   }>({
     flag: false,
     name: '',
     collision: false,
-    imagePath: ''
+    imagePath: '',
+    mode: undefined
   })
-  const openCreateModal = (refs: any) => {
+  const openCreateModal = (refs: any, mode: 'tile' | 'directory') => {
     creating.flag = true
     creating.name = ''
     creating.collision = false
     creating.imagePath = ''
+    creating.mode = mode
     setTimeout(() => refs.createInput.focus(), 50)
   }
   const createDirectory = async () => {

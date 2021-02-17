@@ -3,7 +3,7 @@
   img(:src="showingImage.raw")
   h3 {{ showingImage.name }}
   p サイズ：{{ bytes }}
-  .buttons
+  .buttons(v-if="editable")
     el-button(type="primary" @click="openEditModal(refs, showingImage)") 名前変更
     el-button(type="danger" @click="confirmDelete(showingImage.name)") 削除
 </template>
@@ -19,6 +19,11 @@ export default defineComponent({
     refs: {
       type: Object,
       required: true
+    },
+    editable: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   setup (props) {
