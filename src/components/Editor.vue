@@ -12,8 +12,8 @@ export default defineComponent({
   setup () {
     const padding = 300
     const makeCanvasFullScreen = () => {
-      const container = document.getElementById('container')
-      const canvas = document.getElementById('mapCanvas')
+      const container: any = document.getElementById('container')
+      const canvas: any = document.getElementById('mapCanvas')
       canvas.width = container.clientWidth + padding * 2
       canvas.height = container.clientHeight + padding * 2
     }
@@ -30,7 +30,7 @@ export default defineComponent({
 
     onMounted(() => {
       makeCanvasFullScreen()
-      const canvas = document.getElementById('mapCanvas')
+      const canvas: any = document.getElementById('mapCanvas')
       const ctx = canvas.getContext('2d')
       draw(ctx, 0, 0)
 
@@ -38,7 +38,7 @@ export default defineComponent({
       const repositionCanvas = () => {
         const dx = scrollContainer.scrollLeft - padding
         const dy = scrollContainer.scrollTop - padding
-        const canvas = document.getElementById('mapCanvas')
+        const canvas: any = document.getElementById('mapCanvas')
         canvas.style.transform = `translate(${dx}px, ${dy}px)`
         const ctx = canvas.getContext('2d')
         draw(ctx, dx, dy)
