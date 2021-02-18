@@ -44,6 +44,7 @@ export default () => {
       draw()
     }
     repositionCanvas()
+    scrollContainer.scrollTo(500, 500)
     scrollContainer.addEventListener('scroll', repositionCanvas)
   })
 
