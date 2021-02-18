@@ -41,8 +41,12 @@ export default () => {
 
     const scrollContainer: any = document.getElementById('container')
     const repositionCanvas = () => {
-      state.rx = scrollContainer.scrollLeft - PADDING
-      state.ry = scrollContainer.scrollTop - PADDING
+      const nextRx = scrollContainer.scrollLeft - PADDING
+      const nextRy = scrollContainer.scrollTop - PADDING
+      state.vx += nextRx - state.rx
+      state.vy += nextRy - state.ry
+      state.rx = nextRx
+      state.ry = nextRy
       canvas.value.style.transform = `translate(${state.rx}px, ${state.ry}px)`
       draw()
     }
