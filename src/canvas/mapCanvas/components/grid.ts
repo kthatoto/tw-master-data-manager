@@ -5,7 +5,7 @@ export default (d: Drawer, tileSize: number) => {
   const vx = d.state.vx
   const vy = d.state.vy
 
-  for (let x = vx - d.halfVw - rulerSize; x < vx + d.halfVw; x++) {
+  for (let x = vx - d.halfVw - tileSize; x < vx + d.halfVw; x++) {
     if (x % tileSize !== 0) continue
     d.line(
       '#333',
@@ -13,7 +13,7 @@ export default (d: Drawer, tileSize: number) => {
       { x: x - vx + (d.vw / 2) + (tileSize / 2) + rulerSize, y: d.state.height }
     )
   }
-  for (let y = vy - d.halfVh - rulerSize; y < vy + d.halfVh; y++) {
+  for (let y = vy - d.halfVh - tileSize; y < vy + d.halfVh; y++) {
     if (y % tileSize !== 0) continue
     d.line(
       '#333',

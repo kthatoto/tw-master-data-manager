@@ -11,7 +11,7 @@ export default (d: Drawer, tileSize: number) => {
   const vx = d.state.vx
   const vy = d.state.vy
 
-  for (let x = vx - d.halfVw - rulerSize; x <= vx + d.halfVw; x++) {
+  for (let x = vx - d.halfVw - tileSize; x <= vx + d.halfVw; x++) {
     if (x % tileSize !== 0) continue
     d.line(
       '#fff',
@@ -19,7 +19,7 @@ export default (d: Drawer, tileSize: number) => {
       { x: x - vx + (d.vw / 2) + (tileSize / 2) + rulerSize, y: rulerSize }
     )
   }
-  for (let y = vy - d.halfVh - rulerSize; y < vy + d.halfVh; y++) {
+  for (let y = vy - d.halfVh - tileSize; y < vy + d.halfVh; y++) {
     if (y % tileSize !== 0) continue
     d.line(
       '#fff',
@@ -28,15 +28,10 @@ export default (d: Drawer, tileSize: number) => {
     )
   }
 
-  d.line('red', { x: rulerSize, y: rulerSize }, { x: d.state.width, y: d.state.height })
-  d.line('red', { x: rulerSize, y: d.state.height }, { x: d.state.width, y: rulerSize })
-  d.line('red', { x: (d.state.width + rulerSize) / 2, y: rulerSize }, { x: (d.state.width + rulerSize) / 2, y: d.state.height })
-  d.line('red', { x: rulerSize, y: (d.state.height + rulerSize) / 2 }, { x: d.state.width, y: (d.state.height + rulerSize) / 2 })
-
   d.ctx.fillStyle = 'white'
   d.ctx.textAlign = 'center'
   d.ctx.textBaseline = 'middle'
-  for (let x = vx - d.halfVw - rulerSize; x < vx + d.halfVw; x++) {
+  for (let x = vx - d.halfVw - tileSize; x < vx + d.halfVw; x++) {
     if (x % tileSize !== 0) continue
     const n: number = x / tileSize
     if (n % 5 === 0) {
@@ -46,7 +41,7 @@ export default (d: Drawer, tileSize: number) => {
       })
     }
   }
-  for (let y = vy - d.halfVh - rulerSize; y < vy + d.halfVh; y++) {
+  for (let y = vy - d.halfVh - tileSize; y < vy + d.halfVh; y++) {
     if (y % tileSize !== 0) continue
     const n: number = y / tileSize
     if (n % 5 === 0) {
