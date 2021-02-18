@@ -4,7 +4,7 @@ import Drawer from './drawer'
 import drawRuler from './components/ruler'
 import drawGrid from './components/grid'
 
-export const largeBoxSize = 10000
+export const largeBoxSize = 2000
 export const PADDING = 50
 export interface CanvasState {
   width: number
@@ -51,7 +51,7 @@ export default () => {
       draw()
     }
     repositionCanvas()
-    scrollContainer.scrollTo(largeBoxSize / 2, largeBoxSize / 2)
+    scrollContainer.scrollTo((largeBoxSize - state.width) / 2, (largeBoxSize - state.height) / 2)
     scrollContainer.addEventListener('scroll', repositionCanvas)
     setTimeout(() => {
       state.vx = 0
