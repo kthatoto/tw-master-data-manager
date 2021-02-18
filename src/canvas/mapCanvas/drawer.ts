@@ -6,6 +6,11 @@ interface Vector {
 }
 
 export default class Drawer {
+  constructor () {
+    this.state = { width: 0, height: 0, rx: 0, ry: 0, vx: 0, vy: 0 }
+    this.rulerSize = 30
+  }
+
   ctx: any
   setContext (ctx: any) {
     this.ctx = ctx
@@ -16,8 +21,17 @@ export default class Drawer {
     this.state = state
   }
 
-  constructor () {
-    this.state = { width: 0, height: 0, rx: 0, ry: 0, vx: 0, vy: 0 }
+  rulerSize: number
+  setRulerSize (rulerSize: number) {
+    this.rulerSize = rulerSize
+  }
+
+  get vw () {
+    return this.state.width - this.rulerSize
+  }
+
+  get vh () {
+    return this.state.height - this.rulerSize
   }
 
   clearScreen () {

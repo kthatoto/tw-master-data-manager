@@ -1,6 +1,7 @@
 import Drawer from '../drawer'
 
-export default (d: Drawer, rulerSize: number, tileSize: number) => {
+export default (d: Drawer, tileSize: number) => {
+  const rulerSize = d.rulerSize
   const vx = d.state.vx
   const vy = d.state.vy
 

@@ -26,11 +26,11 @@ export default () => {
   const draw = () => {
     d.clearScreen()
     d.setState(state)
+    d.setRulerSize(30)
 
-    const rulerSize = 30
     const tileSize = 30
-    drawRuler(d, rulerSize, tileSize)
-    drawGrid(d, rulerSize, tileSize)
+    drawRuler(d, tileSize)
+    drawGrid(d, tileSize)
   }
 
   onMounted(() => {

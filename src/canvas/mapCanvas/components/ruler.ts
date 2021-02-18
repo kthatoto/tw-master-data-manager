@@ -1,6 +1,7 @@
 import Drawer from '../drawer'
 
-export default (d: Drawer, rulerSize: number, tileSize: number) => {
+export default (d: Drawer, tileSize: number) => {
+  const rulerSize = d.rulerSize
   d.ctx.fillStyle = '#555'
   d.fillRect({ x: 0, y: rulerSize }, rulerSize, d.state.height - rulerSize)
   d.fillRect({ x: rulerSize, y: 0 }, d.state.width - rulerSize, rulerSize)
@@ -33,18 +34,18 @@ export default (d: Drawer, rulerSize: number, tileSize: number) => {
   d.ctx.fillStyle = 'white'
   d.ctx.textAlign = 'center'
   d.ctx.textBaseline = 'middle'
-  for (let x = vx + rulerSize; x < vx + d.state.width; x++) {
+  for (let x = vx - parseInt(d.vw / 2); x < vx + parseInt(d.vw / 2); x++) {
     if (x % tileSize !== 0) continue
     const n: number = x / tileSize
     if (n % 5 === 0) {
-      d.fillText(`${n}`, { x: x - vx + (tileSize / 2), y: rulerSize / 2 })
+      d.fillText(`${n}`, { x: x - vx + (d.vw / 2) + tileSize, y: rulerSize / 2 })
     }
   }
-  for (let y = vy + rulerSize; y < vy + d.state.height; y++) {
+  for (let y = vy - parseInt(d.vh / 2); y < vy + parseInt(d.vh / 2); y++) {
     if (y % tileSize !== 0) continue
     const n: number = y / tileSize
     if (n % 5 === 0) {
-      d.fillText(`${n}`, { x: rulerSize / 2, y: y - vy + (tileSize / 2) })
+      d.fillText(`${n}`, { x: rulerSize / 2, y: y - vy + (d.vh / 2) + tileSize })
     }
   }
 }
