@@ -71,4 +71,6 @@ export default () => {
     makeCanvasFullScreen()
     draw()
   })
+
+  return { state }
 }

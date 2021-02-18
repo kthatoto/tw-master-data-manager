@@ -3,6 +3,7 @@
   #container
     .large-box(:style="{ width: `${largeBoxSize}px`, height: `${largeBoxSize}px` }")
       canvas#mapCanvas
+  .hud {{ state }}
 </template>
 
 <script lang="ts">
@@ -12,8 +13,8 @@ import mapCanvas, { largeBoxSize } from '@/canvas/mapCanvas/index'
 
 export default defineComponent({
   setup () {
-    mapCanvas()
-    return { largeBoxSize }
+    const state = mapCanvas()
+    return { largeBoxSize, state }
   }
 })
 </script>
@@ -22,6 +23,7 @@ export default defineComponent({
 .editor
   editorPadding = 100px
   background-color: lightgray
+  position: relative
   #container
     width: "calc(100% - (%s * 2) - 2px)" % editorPadding
     height: "calc(100% - (%s * 2) - 2px)" % editorPadding
@@ -39,4 +41,11 @@ export default defineComponent({
         box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3)
   .large-box
     overflow: hidden
+
+  .hud
+    position: absolute
+    top: 0
+    left: 0
+    background-color: gray
+    color: white
 </style>
