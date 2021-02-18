@@ -34,14 +34,14 @@ export default (d: Drawer, tileSize: number) => {
   d.ctx.fillStyle = 'white'
   d.ctx.textAlign = 'center'
   d.ctx.textBaseline = 'middle'
-  for (let x = vx - parseInt(d.vw / 2); x < vx + parseInt(d.vw / 2); x++) {
+  for (let x = vx - Math.floor(d.vw / 2); x < vx + Math.floor(d.vw / 2); x++) {
     if (x % tileSize !== 0) continue
     const n: number = x / tileSize
     if (n % 5 === 0) {
       d.fillText(`${n}`, { x: x - vx + (d.vw / 2) + tileSize, y: rulerSize / 2 })
     }
   }
-  for (let y = vy - parseInt(d.vh / 2); y < vy + parseInt(d.vh / 2); y++) {
+  for (let y = vy - Math.floor(d.vh / 2); y < vy + Math.floor(d.vh / 2); y++) {
     if (y % tileSize !== 0) continue
     const n: number = y / tileSize
     if (n % 5 === 0) {
