@@ -1,7 +1,9 @@
 import { onMounted, ref, reactive } from '@vue/composition-api'
 
+import Drawer from './drawer'
+
+export const PADDING = 50
 export default () => {
-  const PADDING = 50
   const container = ref<any>(undefined)
   const canvas = ref<any>(undefined)
   const context = ref<any>(undefined)
@@ -18,31 +20,17 @@ export default () => {
     dy: 0
   })
 
-  const makeCanvasFullScreen = () => {
-    container.value = document.getElementById('container')
-    state.width = container.value.clientWidth
-    state.height = container.value.clientHeight
-    canvas.value.width = container.value.clientWidth + PADDING * 2
-    canvas.value.height = container.value.clientHeight + PADDING * 2
-  }
-  window.addEventListener('resize', () => {
-    makeCanvasFullScreen()
-    draw()
-  })
-
+  const d = new Drawer()
   const draw = () => {
     const { dx, dy } = state
     const ctx: any = context.value
-    ctx.fillStyle = '#fff'
-    ctx.fillRect(0, 0, 2000, 2000)
-    ctx.fillStyle = '#333'
-    ctx.fillRect(350 - dx, 350 - dy, 300, 300)
+    d.clearScreen()
 
     // ruler
     const rulerSize = 30
     ctx.fillStyle = '#555'
-    ctx.fillRect(PADDING, PADDING + rulerSize, rulerSize, state.height - rulerSize)
-    ctx.fillRect(PADDING + rulerSize, PADDING, state.width - rulerSize, rulerSize)
+    d.fillRect(0, rulerSize, rulerSize, state.height - rulerSize)
+    d.fillRect(rulerSize, 0, state.width - rulerSize, rulerSize)
 
     const origin = { x: dx + PADDING, y: dy + PADDING }
     const rulerOrigin = { x: origin.x + rulerSize, y: origin.y + rulerSize }
@@ -78,6 +66,7 @@ export default () => {
   onMounted(() => {
     canvas.value = document.getElementById('mapCanvas')
     context.value = canvas.value.getContext('2d')
+    d.setContext(context.value)
     makeCanvasFullScreen()
 
     const scrollContainer: any = document.getElementById('container')
@@ -89,5 +78,17 @@ export default () => {
     }
     repositionCanvas()
     scrollContainer.addEventListener('scroll', repositionCanvas)
+  })
+
+  const makeCanvasFullScreen = () => {
+    container.value = document.getElementById('container')
+    state.width = container.value.clientWidth
+    state.height = container.value.clientHeight
+    canvas.value.width = container.value.clientWidth + PADDING * 2
+    canvas.value.height = container.value.clientHeight + PADDING * 2
+  }
+  window.addEventListener('resize', () => {
+    makeCanvasFullScreen()
+    draw()
   })
 }

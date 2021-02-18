@@ -8,7 +8,7 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import mapCanvas from '@/canvas/mapCanvas'
+import mapCanvas from '@/canvas/mapCanvas/index'
 
 export default defineComponent({
   setup () {
