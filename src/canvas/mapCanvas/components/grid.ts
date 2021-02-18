@@ -1,23 +1,24 @@
 import Drawer from '../drawer'
 
-export default (d: Drawer, rulerSize: number, tileSize: number) => {
+export default (d: Drawer, tileSize: number) => {
+  const rulerSize = d.rulerSize
   const vx = d.state.vx
   const vy = d.state.vy
 
-  for (let x = vx + rulerSize; x < vx + d.state.width; x++) {
+  for (let x = vx - d.halfVw - tileSize; x < vx + d.halfVw; x++) {
     if (x % tileSize !== 0) continue
     d.line(
       '#333',
-      { x: x - vx, y: rulerSize },
-      { x: x - vx, y: d.state.height }
+      { x: x - vx + (d.vw / 2) + (tileSize / 2) + rulerSize, y: rulerSize },
+      { x: x - vx + (d.vw / 2) + (tileSize / 2) + rulerSize, y: d.state.height }
     )
   }
-  for (let y = vy + rulerSize; y < vy + d.state.height; y++) {
+  for (let y = vy - d.halfVh - tileSize; y < vy + d.halfVh; y++) {
     if (y % tileSize !== 0) continue
     d.line(
       '#333',
-      { x: rulerSize, y: y - vy },
-      { x: d.state.width, y: y - vy }
+      { y: y - vy + (d.vh / 2) + (tileSize / 2) + rulerSize, x: rulerSize },
+      { y: y - vy + (d.vh / 2) + (tileSize / 2) + rulerSize, x: d.state.width }
     )
   }
 }

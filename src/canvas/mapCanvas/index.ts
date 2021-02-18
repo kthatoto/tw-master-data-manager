@@ -4,7 +4,7 @@ import Drawer from './drawer'
 import drawRuler from './components/ruler'
 import drawGrid from './components/grid'
 
-export const largeBoxSize = 10000
+export const largeBoxSize = 2000
 export const PADDING = 50
 export interface CanvasState {
   width: number
@@ -26,11 +26,11 @@ export default () => {
   const draw = () => {
     d.clearScreen()
     d.setState(state)
+    d.setRulerSize(30)
 
-    const rulerSize = 30
     const tileSize = 30
-    drawRuler(d, rulerSize, tileSize)
-    drawGrid(d, rulerSize, tileSize)
+    drawGrid(d, tileSize)
+    drawRuler(d, tileSize)
   }
 
   onMounted(() => {
@@ -51,8 +51,13 @@ export default () => {
       draw()
     }
     repositionCanvas()
-    scrollContainer.scrollTo(largeBoxSize / 2, largeBoxSize / 2)
+    scrollContainer.scrollTo((largeBoxSize - state.width) / 2, (largeBoxSize - state.height) / 2)
     scrollContainer.addEventListener('scroll', repositionCanvas)
+    setTimeout(() => {
+      state.vx = 0
+      state.vy = 0
+      repositionCanvas()
+    }, 10)
   })
 
   const makeCanvasFullScreen = () => {
@@ -66,4 +71,6 @@ export default () => {
     makeCanvasFullScreen()
     draw()
   })
+
+  return { state }
 }
