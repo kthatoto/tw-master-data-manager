@@ -53,6 +53,11 @@ export default () => {
     repositionCanvas()
     scrollContainer.scrollTo(largeBoxSize / 2, largeBoxSize / 2)
     scrollContainer.addEventListener('scroll', repositionCanvas)
+    setTimeout(() => {
+      state.vx = 0
+      state.vy = 0
+      repositionCanvas()
+    }, 10)
   })
 
   const makeCanvasFullScreen = () => {
