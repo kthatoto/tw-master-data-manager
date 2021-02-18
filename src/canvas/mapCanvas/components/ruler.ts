@@ -25,6 +25,11 @@ export default (d: Drawer, rulerSize: number, tileSize: number) => {
     )
   }
 
+  d.line('red', { x: rulerSize, y: rulerSize }, { x: d.state.width, y: d.state.height })
+  d.line('red', { x: rulerSize, y: d.state.height }, { x: d.state.width, y: rulerSize })
+  d.line('red', { x: (d.state.width + rulerSize) / 2, y: rulerSize }, { x: (d.state.width + rulerSize) / 2, y: d.state.height })
+  d.line('red', { x: rulerSize, y: (d.state.height + rulerSize) / 2 }, { x: d.state.width, y: (d.state.height + rulerSize) / 2 })
+
   d.ctx.fillStyle = 'white'
   d.ctx.textAlign = 'center'
   d.ctx.textBaseline = 'middle'
