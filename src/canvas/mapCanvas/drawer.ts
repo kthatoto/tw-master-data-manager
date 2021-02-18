@@ -1,5 +1,10 @@
 import { PADDING, CanvasState } from './index'
 
+interface Vector {
+  x: number
+  y: number
+}
+
 export default class Drawer {
   ctx: any
   setContext (ctx: any) {
@@ -22,5 +27,15 @@ export default class Drawer {
 
   fillRect (x: number, y: number, width: number, height: number) {
     this.ctx.fillRect(PADDING + x, PADDING + y, width, height)
+  }
+
+  line (strokeStyle: string, start: Vector, end: Vector) {
+    this.ctx.beginPath()
+    this.ctx.lineWidth = 1
+    this.ctx.strokeStyle = strokeStyle
+    this.ctx.moveTo(PADDING + start.x, PADDING + start.y)
+    this.ctx.lineTo(PADDING + end.x, PADDING + end.y)
+    this.ctx.stroke()
+    this.ctx.closePath()
   }
 }

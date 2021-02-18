@@ -20,44 +20,12 @@ export default () => {
 
   const d = new Drawer()
   const draw = () => {
-    const { dx, dy } = state
-    const ctx: any = context.value
     d.clearScreen()
     d.setState(state)
 
-    // ruler
     const rulerSize = 30
-    drawRuler(d, rulerSize)
-
-    const origin = { x: dx + PADDING, y: dy + PADDING }
-    const rulerOrigin = { x: origin.x + rulerSize, y: origin.y + rulerSize }
     const tileSize = 30
-    ctx.lineWidth = 1
-    ctx.beginPath()
-    for (let x = rulerOrigin.x; x < rulerOrigin.x + state.width - rulerSize; x++) {
-      if (x % tileSize !== 0) continue
-      ctx.moveTo(x - dx, rulerOrigin.y - dy)
-      ctx.lineTo(x - dx, origin.y - dy)
-      ctx.strokeStyle = '#fff'
-      ctx.stroke()
-
-      ctx.moveTo(x - dx, rulerOrigin.y - dy)
-      ctx.lineTo(x - dx, rulerOrigin.y - dy + state.height - rulerSize)
-      ctx.strokeStyle = '#333'
-      ctx.stroke()
-    }
-    for (let y = rulerOrigin.y; y < rulerOrigin.y + state.height - rulerSize; y++) {
-      if (y % tileSize !== 0) continue
-      ctx.moveTo(rulerOrigin.x - dx, y - dy)
-      ctx.lineTo(origin.x - dx, y - dy)
-      ctx.strokeStyle = '#fff'
-      ctx.stroke()
-
-      ctx.moveTo(rulerOrigin.x - dx, y - dy)
-      ctx.lineTo(rulerOrigin.x - dx + state.width - rulerSize, y - dy)
-      ctx.strokeStyle = '#333'
-      ctx.stroke()
-    }
+    drawRuler(d, rulerSize, tileSize)
   }
 
   onMounted(() => {
