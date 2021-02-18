@@ -2,6 +2,7 @@ import { onMounted, ref, reactive } from '@vue/composition-api'
 
 import Drawer from './drawer'
 import drawRuler from './components/ruler'
+import drawGrid from './components/grid'
 
 export const PADDING = 50
 export interface CanvasState {
@@ -26,6 +27,7 @@ export default () => {
     const rulerSize = 30
     const tileSize = 30
     drawRuler(d, rulerSize, tileSize)
+    drawGrid(d, rulerSize, tileSize)
   }
 
   onMounted(() => {
