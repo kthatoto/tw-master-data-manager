@@ -1,11 +1,18 @@
-import { PADDING } from './index'
+import { PADDING, CanvasState } from './index'
 
 export default class Drawer {
-  get getContext () {
-    this.ctx
-  }
+  ctx: any
   setContext (ctx: any) {
     this.ctx = ctx
+  }
+
+  state: CanvasState
+  setState (state: CanvasState) {
+    this.state = state
+  }
+
+  constructor () {
+    this.state = { width: 0, height: 0, dx: 0, dy: 0 }
   }
 
   clearScreen () {

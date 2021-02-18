@@ -1,36 +1,33 @@
 import { onMounted, ref, reactive } from '@vue/composition-api'
 
 import Drawer from './drawer'
+import drawRuler from './components/ruler'
 
 export const PADDING = 50
+export interface CanvasState {
+  width: number
+  height: number
+  dx: number
+  dy: number
+}
+
 export default () => {
   const container = ref<any>(undefined)
   const canvas = ref<any>(undefined)
   const context = ref<any>(undefined)
 
-  const state = reactive<{
-    width: number
-    height: number
-    dx: number
-    dy: number
-  }>({
-    width: 0,
-    height: 0,
-    dx: 0,
-    dy: 0
-  })
+  const state = reactive<CanvasState>({ width: 0, height: 0, dx: 0, dy: 0 })
 
   const d = new Drawer()
   const draw = () => {
     const { dx, dy } = state
     const ctx: any = context.value
     d.clearScreen()
+    d.setState(state)
 
     // ruler
     const rulerSize = 30
-    ctx.fillStyle = '#555'
-    d.fillRect(0, rulerSize, rulerSize, state.height - rulerSize)
-    d.fillRect(rulerSize, 0, state.width - rulerSize, rulerSize)
+    drawRuler(d, rulerSize)
 
     const origin = { x: dx + PADDING, y: dy + PADDING }
     const rulerOrigin = { x: origin.x + rulerSize, y: origin.y + rulerSize }
