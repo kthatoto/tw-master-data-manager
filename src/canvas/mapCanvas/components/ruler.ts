@@ -27,6 +27,10 @@ export default (d: Drawer, tileSize: number) => {
       { y: y - vy + (d.vh / 2) + (tileSize / 2) + rulerSize, x: rulerSize }
     )
   }
+  d.line('red', { x: rulerSize, y: rulerSize }, { x: d.state.width, y: d.state.height })
+  d.line('red', { x: rulerSize, y: d.state.height }, { x: d.state.width, y: rulerSize })
+  d.line('red', { x: (d.state.width + rulerSize) / 2, y: rulerSize }, { x: (d.state.width + rulerSize) / 2, y: d.state.height })
+  d.line('red', { x: rulerSize, y: (d.state.height + rulerSize) / 2 }, { x: d.state.width, y: (d.state.height + rulerSize) / 2 })
 
   d.ctx.fillStyle = 'white'
   d.ctx.textAlign = 'center'
@@ -36,7 +40,7 @@ export default (d: Drawer, tileSize: number) => {
     const n: number = x / tileSize
     if (n % 5 === 0) {
       d.fillText(`${n}`, {
-        x: x - vx + (d.vw / 2) + tileSize,
+        x: x - vx + (d.vw / 2) + rulerSize,
         y: rulerSize / 2
       })
     }
@@ -47,7 +51,7 @@ export default (d: Drawer, tileSize: number) => {
     if (n % 5 === 0) {
       d.fillText(`${n}`, {
         x: rulerSize / 2,
-        y: y - vy + (d.vh / 2) + tileSize
+        y: y - vy + (d.vh / 2) + rulerSize
       })
     }
   }
