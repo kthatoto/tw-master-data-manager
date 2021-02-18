@@ -1,5 +1,3 @@
-import fs from 'fs'
-
 import getList from './getList'
 import createTile from './createTile'
 import createDirectory from './createDirectory'

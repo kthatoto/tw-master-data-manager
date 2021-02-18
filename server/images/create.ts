@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 export default (app: any, method: 'post', path: string) => {
-  app[method](path, upload.single('file'), async(req: any, res: any) => {
+  app[method](path, upload.single('file'), async (req: any, res: any) => {
     res.send(null)
   })
 }
