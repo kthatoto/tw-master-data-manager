@@ -39,6 +39,7 @@ export default class Drawer {
     this.ctx.closePath()
   }
 
-  fillText () {
+  fillText (text: string, position: Vector) {
+    this.ctx.fillText(text, PADDING + position.x, PADDING + position.y)
   }
 }

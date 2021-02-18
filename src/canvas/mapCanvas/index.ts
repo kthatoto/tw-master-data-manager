@@ -1,6 +1,7 @@
 import { onMounted, ref, reactive } from '@vue/composition-api'
 
 import Drawer from './drawer'
+import { largeBoxSize } from '@/components/Editor'
 import drawRuler from './components/ruler'
 import drawGrid from './components/grid'
 
@@ -44,7 +45,7 @@ export default () => {
       draw()
     }
     repositionCanvas()
-    scrollContainer.scrollTo(500, 500)
+    scrollContainer.scrollTo(largeBoxSize / 2, largeBoxSize / 2)
     scrollContainer.addEventListener('scroll', repositionCanvas)
   })
 
