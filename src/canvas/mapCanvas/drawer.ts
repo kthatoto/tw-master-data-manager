@@ -30,12 +30,20 @@ export default class Drawer {
     return this.state.width - this.rulerSize
   }
 
+  get halfVw () {
+    return Math.round(this.vw / 2)
+  }
+
   get vh () {
     return this.state.height - this.rulerSize
   }
 
+  get halfVh () {
+    return Math.round(this.vh / 2)
+  }
+
   clearScreen () {
-    this.ctx.fillStyle = '#fff'
+    this.ctx.fillStyle = '#eee'
     this.ctx.fillRect(0, 0, 3000, 3000)
   }
 

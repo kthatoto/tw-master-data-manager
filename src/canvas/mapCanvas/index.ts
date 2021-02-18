@@ -29,8 +29,8 @@ export default () => {
     d.setRulerSize(30)
 
     const tileSize = 30
-    drawRuler(d, tileSize)
     drawGrid(d, tileSize)
+    drawRuler(d, tileSize)
   }
 
   onMounted(() => {
