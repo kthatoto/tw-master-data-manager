@@ -6,57 +6,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
+
+import mapCanvas from '@/canvas/mapCanvas/index'
 
 export default defineComponent({
   setup () {
-    const padding = 300
-    const makeCanvasFullScreen = () => {
-      const container = document.getElementById('container')
-      const canvas = document.getElementById('mapCanvas')
-      canvas.width = container.clientWidth + padding * 2
-      canvas.height = container.clientHeight + padding * 2
-    }
-    window.addEventListener('resize', () => {
-      makeCanvasFullScreen()
-    })
-
-    const draw = (ctx: any, dx: number, dy: number) => {
-      ctx.fillStyle = '#fff'
-      ctx.fillRect(0, 0, 2000, 2000)
-      ctx.fillStyle = '#333'
-      ctx.fillRect(50 - dx, 50 - dy, 300, 300)
-    }
-
-    onMounted(() => {
-      makeCanvasFullScreen()
-      const canvas = document.getElementById('mapCanvas')
-      const ctx = canvas.getContext('2d')
-      draw(ctx, 0, 0)
-
-      const scrollContainer: any = document.getElementById('container')
-      const repositionCanvas = () => {
-        const dx = scrollContainer.scrollLeft - padding
-        const dy = scrollContainer.scrollTop - padding
-        const canvas = document.getElementById('mapCanvas')
-        canvas.style.transform = `translate(${dx}px, ${dy}px)`
-        const ctx = canvas.getContext('2d')
-        draw(ctx, dx, dy)
-      }
-      scrollContainer.addEventListener('scroll', repositionCanvas)
-    })
+    mapCanvas()
   }
 })
 </script>
 
 <style lang="stylus" scoped>
 .editor
+  editorPadding = 100px
   background-color: lightgray
   #container
-    width: calc(100% - 22px)
-    height: calc(100% - 22px)
+    width: "calc(100% - (%s * 2) - 2px)" % editorPadding
+    height: "calc(100% - (%s * 2) - 2px)" % editorPadding
     border: 1px solid gray
-    margin: 10px
+    margin: editorPadding
     overflow: auto
     &::-webkit-scrollbar
       width: 8px
