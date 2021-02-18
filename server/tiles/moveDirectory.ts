@@ -1,7 +1,7 @@
 import fs from 'fs'
 
 export default (app: any, method: 'patch', path: string) => {
-  app[method](path, async(req: any, res: any) => {
+  app[method](path, async (req: any, res: any) => {
     const before: string = req.body.before
     const beforeFilePath = `./data/tiles${req.query.directory}${before}`
     const after: string = req.body.after

@@ -1,7 +1,7 @@
 import fs from 'fs'
 
 export default (app: any, method: 'get', path: string) => {
-  app[method](path, async(req: any, res: any) => {
+  app[method](path, async (req: any, res: any) => {
     const response: any = { images: [], directories: [] }
 
     const objects = await fs.promises.readdir(`./data/images${req.query.directory}`, {})

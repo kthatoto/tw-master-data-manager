@@ -1,7 +1,7 @@
 import fs from 'fs'
 
 export default (app: any, method: 'patch', path: string) => {
-  app[method](path, async(req: any, res: any) => {
+  app[method](path, async (req: any, res: any) => {
     const name: string = req.body.name
     try {
       const filePath: string = `./data/tiles${req.query.directory}${name}`
