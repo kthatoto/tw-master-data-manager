@@ -15,14 +15,18 @@ export default defineComponent({
       container: any
       canvas: any
       ctx: any
-      width: any
-      height: any
+      width: number
+      height: number
+      dx: number
+      dy: number
     }>({
       container: undefined,
       canvas: undefined,
       ctx: undefined,
-      width: undefined,
-      height: undefined
+      width: 0,
+      height: 0,
+      dx: 0,
+      dy: 0
     })
 
     const makeCanvasFullScreen = () => {
@@ -34,9 +38,11 @@ export default defineComponent({
     }
     window.addEventListener('resize', () => {
       makeCanvasFullScreen()
+      draw()
     })
 
-    const draw = (dx: number, dy: number) => {
+    const draw = () => {
+      const { dx, dy } = state
       const ctx: any = state.ctx
       ctx.fillStyle = '#fff'
       ctx.fillRect(0, 0, 2000, 2000)
@@ -87,10 +93,10 @@ export default defineComponent({
 
       const scrollContainer: any = document.getElementById('container')
       const repositionCanvas = () => {
-        const dx = scrollContainer.scrollLeft - padding
-        const dy = scrollContainer.scrollTop - padding
-        state.canvas.style.transform = `translate(${dx}px, ${dy}px)`
-        draw(dx, dy)
+        state.dx = scrollContainer.scrollLeft - padding
+        state.dy = scrollContainer.scrollTop - padding
+        state.canvas.style.transform = `translate(${state.dx}px, ${state.dy}px)`
+        draw()
       }
       repositionCanvas()
       scrollContainer.addEventListener('scroll', repositionCanvas)
