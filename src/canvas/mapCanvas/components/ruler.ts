@@ -5,41 +5,41 @@ export default (d: Drawer, rulerSize: number, tileSize: number) => {
   d.fillRect({ x: 0, y: rulerSize }, rulerSize, d.state.height - rulerSize)
   d.fillRect({ x: rulerSize, y: 0 }, d.state.width - rulerSize, rulerSize)
 
-  const dx = d.state.dx
-  const dy = d.state.dy
+  const vx = d.state.vx
+  const vy = d.state.vy
 
-  for (let x = dx + rulerSize; x < dx + d.state.width; x++) {
+  for (let x = vx + rulerSize; x < vx + d.state.width; x++) {
     if (x % tileSize !== 0) continue
     d.line(
       '#fff',
-      { x: x - dx, y: 0 },
-      { x: x - dx, y: rulerSize }
+      { x: x - vx, y: 0 },
+      { x: x - vx, y: rulerSize }
     )
   }
-  for (let y = dy + rulerSize; y < dy + d.state.height; y++) {
+  for (let y = vy + rulerSize; y < vy + d.state.height; y++) {
     if (y % tileSize !== 0) continue
     d.line(
       '#fff',
-      { x: 0, y: y - dy },
-      { x: rulerSize, y: y - dy }
+      { x: 0, y: y - vy },
+      { x: rulerSize, y: y - vy }
     )
   }
 
   d.ctx.fillStyle = 'white'
   d.ctx.textAlign = 'center'
   d.ctx.textBaseline = 'middle'
-  for (let x = dx + rulerSize; x < dx + d.state.width; x++) {
+  for (let x = vx + rulerSize; x < vx + d.state.width; x++) {
     if (x % tileSize !== 0) continue
     const n: number = x / tileSize
     if (n % 5 === 0) {
-      d.fillText(`${n}`, { x: x - dx + (tileSize / 2), y: rulerSize / 2 })
+      d.fillText(`${n}`, { x: x - vx + (tileSize / 2), y: rulerSize / 2 })
     }
   }
-  for (let y = dy + rulerSize; y < dy + d.state.height; y++) {
+  for (let y = vy + rulerSize; y < vy + d.state.height; y++) {
     if (y % tileSize !== 0) continue
     const n: number = y / tileSize
     if (n % 5 === 0) {
-      d.fillText(`${n}`, { x: rulerSize / 2, y: y - dy + (tileSize / 2) })
+      d.fillText(`${n}`, { x: rulerSize / 2, y: y - vy + (tileSize / 2) })
     }
   }
 }

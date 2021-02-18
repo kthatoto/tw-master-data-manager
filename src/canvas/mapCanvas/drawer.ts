@@ -17,7 +17,7 @@ export default class Drawer {
   }
 
   constructor () {
-    this.state = { width: 0, height: 0, dx: 0, dy: 0 }
+    this.state = { width: 0, height: 0, rx: 0, ry: 0, vx: 0, vy: 0 }
   }
 
   clearScreen () {

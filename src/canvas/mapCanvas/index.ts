@@ -9,8 +9,10 @@ export const PADDING = 50
 export interface CanvasState {
   width: number
   height: number
-  dx: number
-  dy: number
+  rx: number // real-x
+  ry: number // real-y
+  vx: number // virtual-x
+  vy: number // virtual-y
 }
 
 export default () => {
@@ -18,7 +20,7 @@ export default () => {
   const canvas = ref<any>(undefined)
   const context = ref<any>(undefined)
 
-  const state = reactive<CanvasState>({ width: 0, height: 0, dx: 0, dy: 0 })
+  const state = reactive<CanvasState>({ width: 0, height: 0, rx: 0, ry: 0, vx: 0, vy: 0 })
 
   const d = new Drawer()
   const draw = () => {
@@ -39,9 +41,13 @@ export default () => {
 
     const scrollContainer: any = document.getElementById('container')
     const repositionCanvas = () => {
-      state.dx = scrollContainer.scrollLeft - PADDING
-      state.dy = scrollContainer.scrollTop - PADDING
-      canvas.value.style.transform = `translate(${state.dx}px, ${state.dy}px)`
+      const nextRx = scrollContainer.scrollLeft - PADDING
+      const nextRy = scrollContainer.scrollTop - PADDING
+      state.vx += nextRx - state.rx
+      state.vy += nextRy - state.ry
+      state.rx = nextRx
+      state.ry = nextRy
+      canvas.value.style.transform = `translate(${state.rx}px, ${state.ry}px)`
       draw()
     }
     repositionCanvas()
