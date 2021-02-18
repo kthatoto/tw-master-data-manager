@@ -1,7 +1,7 @@
 import { onMounted, ref, reactive } from '@vue/composition-api'
 
 export default () => {
-  const padding = 50
+  const PADDING = 50
   const container = ref<any>(undefined)
   const canvas = ref<any>(undefined)
   const context = ref<any>(undefined)
@@ -22,8 +22,8 @@ export default () => {
     container.value = document.getElementById('container')
     state.width = container.value.clientWidth
     state.height = container.value.clientHeight
-    canvas.value.width = container.value.clientWidth + padding * 2
-    canvas.value.height = container.value.clientHeight + padding * 2
+    canvas.value.width = container.value.clientWidth + PADDING * 2
+    canvas.value.height = container.value.clientHeight + PADDING * 2
   }
   window.addEventListener('resize', () => {
     makeCanvasFullScreen()
@@ -41,10 +41,10 @@ export default () => {
     // ruler
     const rulerSize = 30
     ctx.fillStyle = '#555'
-    ctx.fillRect(padding, padding + rulerSize, rulerSize, state.height - rulerSize)
-    ctx.fillRect(padding + rulerSize, padding, state.width - rulerSize, rulerSize)
+    ctx.fillRect(PADDING, PADDING + rulerSize, rulerSize, state.height - rulerSize)
+    ctx.fillRect(PADDING + rulerSize, PADDING, state.width - rulerSize, rulerSize)
 
-    const origin = { x: dx + padding, y: dy + padding }
+    const origin = { x: dx + PADDING, y: dy + PADDING }
     const rulerOrigin = { x: origin.x + rulerSize, y: origin.y + rulerSize }
     const tileSize = 30
     ctx.lineWidth = 1
@@ -82,8 +82,8 @@ export default () => {
 
     const scrollContainer: any = document.getElementById('container')
     const repositionCanvas = () => {
-      state.dx = scrollContainer.scrollLeft - padding
-      state.dy = scrollContainer.scrollTop - padding
+      state.dx = scrollContainer.scrollLeft - PADDING
+      state.dy = scrollContainer.scrollTop - PADDING
       canvas.value.style.transform = `translate(${state.dx}px, ${state.dy}px)`
       draw()
     }
