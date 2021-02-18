@@ -2,7 +2,9 @@ import { onMounted, ref, reactive } from '@vue/composition-api'
 
 import Drawer from './drawer'
 import drawRuler from './components/ruler'
+import drawGrid from './components/grid'
 
+export const largeBoxSize = 10000
 export const PADDING = 50
 export interface CanvasState {
   width: number
@@ -26,6 +28,7 @@ export default () => {
     const rulerSize = 30
     const tileSize = 30
     drawRuler(d, rulerSize, tileSize)
+    drawGrid(d, rulerSize, tileSize)
   }
 
   onMounted(() => {
@@ -42,6 +45,7 @@ export default () => {
       draw()
     }
     repositionCanvas()
+    scrollContainer.scrollTo(largeBoxSize / 2, largeBoxSize / 2)
     scrollContainer.addEventListener('scroll', repositionCanvas)
   })
 

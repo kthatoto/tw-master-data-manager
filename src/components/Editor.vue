@@ -1,18 +1,19 @@
 <template lang="pug">
 .editor
   #container
-    .large-box
+    .large-box(:style="{ width: `${largeBoxSize}px`, height: `${largeBoxSize}px` }")
       canvas#mapCanvas
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import mapCanvas from '@/canvas/mapCanvas/index'
+import mapCanvas, { largeBoxSize } from '@/canvas/mapCanvas/index'
 
 export default defineComponent({
   setup () {
     mapCanvas()
+    return { largeBoxSize }
   }
 })
 </script>
@@ -37,7 +38,5 @@ export default defineComponent({
         border-radius: 0
         box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3)
   .large-box
-    width: 10000px
-    height: 10000px
     overflow: hidden
 </style>

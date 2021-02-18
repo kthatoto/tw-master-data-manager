@@ -25,8 +25,8 @@ export default class Drawer {
     this.ctx.fillRect(0, 0, 3000, 3000)
   }
 
-  fillRect (x: number, y: number, width: number, height: number) {
-    this.ctx.fillRect(PADDING + x, PADDING + y, width, height)
+  fillRect (position: Vector, width: number, height: number) {
+    this.ctx.fillRect(PADDING + position.x, PADDING + position.y, width, height)
   }
 
   line (strokeStyle: string, start: Vector, end: Vector) {
@@ -37,5 +37,9 @@ export default class Drawer {
     this.ctx.lineTo(PADDING + end.x, PADDING + end.y)
     this.ctx.stroke()
     this.ctx.closePath()
+  }
+
+  fillText (text: string, position: Vector) {
+    this.ctx.fillText(text, PADDING + position.x, PADDING + position.y)
   }
 }
