@@ -11,7 +11,7 @@ export default (d: Drawer, tileSize: number) => {
   const vx = d.state.vx
   const vy = d.state.vy
 
-  for (let x = vx - d.halfVw - tileSize; x <= vx + d.halfVw; x++) {
+  for (let x = vx - d.halfVw - tileSize; x <= vx + d.halfVw + tileSize; x++) {
     if (x % tileSize !== 0) continue
     d.line(
       '#fff',
@@ -19,7 +19,7 @@ export default (d: Drawer, tileSize: number) => {
       { x: x - vx + (d.vw / 2) + (tileSize / 2) + rulerSize, y: rulerSize }
     )
   }
-  for (let y = vy - d.halfVh - tileSize; y < vy + d.halfVh; y++) {
+  for (let y = vy - d.halfVh - tileSize; y < vy + d.halfVh + tileSize; y++) {
     if (y % tileSize !== 0) continue
     d.line(
       '#fff',
@@ -31,7 +31,7 @@ export default (d: Drawer, tileSize: number) => {
   d.ctx.fillStyle = 'white'
   d.ctx.textAlign = 'center'
   d.ctx.textBaseline = 'middle'
-  for (let x = vx - d.halfVw - tileSize; x < vx + d.halfVw; x++) {
+  for (let x = vx - d.halfVw - tileSize; x < vx + d.halfVw + tileSize; x++) {
     if (x % tileSize !== 0) continue
     const n: number = x / tileSize
     if (n % 5 === 0) {
@@ -41,7 +41,7 @@ export default (d: Drawer, tileSize: number) => {
       })
     }
   }
-  for (let y = vy - d.halfVh - tileSize; y < vy + d.halfVh; y++) {
+  for (let y = vy - d.halfVh - tileSize; y < vy + d.halfVh + tileSize; y++) {
     if (y % tileSize !== 0) continue
     const n: number = y / tileSize
     if (n % 5 === 0) {
