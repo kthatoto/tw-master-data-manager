@@ -1,10 +1,10 @@
 import { onMounted, ref, reactive } from '@vue/composition-api'
 
 import Drawer from './drawer'
-import { largeBoxSize } from '@/components/Editor'
 import drawRuler from './components/ruler'
 import drawGrid from './components/grid'
 
+export const largeBoxSize = 10000
 export const PADDING = 50
 export interface CanvasState {
   width: number

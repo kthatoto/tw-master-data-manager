@@ -8,9 +8,7 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import mapCanvas from '@/canvas/mapCanvas/index'
-
-export const largeBoxSize = 10000
+import mapCanvas, { largeBoxSize } from '@/canvas/mapCanvas/index'
 
 export default defineComponent({
   setup () {
