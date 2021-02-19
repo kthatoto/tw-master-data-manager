@@ -8,8 +8,8 @@ export default (d: Drawer, tileSize: number) => {
   d.ctx.fillStyle = 'white'
   d.fillRect({ x: 0, y: 0 }, rulerSize, rulerSize)
 
-  const vx = d.state.vx
-  const vy = d.state.vy
+  const vx = Math.round(d.state.vx * 30)
+  const vy = Math.round(-d.state.vy * 30)
 
   for (let x = vx - d.halfVw - tileSize; x <= vx + d.halfVw + tileSize; x++) {
     if (x % tileSize !== 0) continue
@@ -47,7 +47,7 @@ export default (d: Drawer, tileSize: number) => {
   }
   for (let y = vy - d.halfVh - tileSize; y < vy + d.halfVh + tileSize; y++) {
     if (y % tileSize !== 0) continue
-    const n: number = y / tileSize
+    const n: number = -y / tileSize
     if (n % 5 === 0) {
       d.fillText(`${n}`, {
         x: rulerSize / 2,
