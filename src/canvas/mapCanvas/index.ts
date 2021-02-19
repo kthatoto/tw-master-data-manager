@@ -6,6 +6,7 @@ import drawGrid from './components/grid'
 
 export const largeBoxSize = 2000
 export const PADDING = 50
+const moveEdgeRatio = 0.05
 export interface CanvasState {
   width: number
   height: number
@@ -45,8 +46,28 @@ export default () => {
       const nextRy = scrollContainer.scrollTop - PADDING
       state.vx += nextRx - state.rx
       state.vy += nextRy - state.ry
-      state.rx = nextRx
-      state.ry = nextRy
+      const scrollPosition = {
+        left: nextRx + PADDING,
+        right: nextRx + state.width + PADDING,
+        top: nextRy + PADDING,
+        bottom: nextRy + state.height + PADDING
+      }
+      const scrollCenterPosition = {
+        x: (largeBoxSize - state.width) / 2,
+        y: (largeBoxSize - state.height) / 2
+      }
+      if (scrollPosition.left <= largeBoxSize * moveEdgeRatio || largeBoxSize * (1 - moveEdgeRatio) <= scrollPosition.right) {
+        state.rx = Math.floor(scrollCenterPosition.x)
+        state.ry = nextRy
+        scrollContainer.scrollTo(scrollCenterPosition.x + PADDING, nextRy + PADDING)
+      } else if (scrollPosition.top <= largeBoxSize * moveEdgeRatio || largeBoxSize * (1 - moveEdgeRatio) <= scrollPosition.bottom) {
+        state.rx = nextRx
+        state.ry = Math.floor(scrollCenterPosition.y)
+        scrollContainer.scrollTo(nextRx + PADDING, scrollCenterPosition.y + PADDING)
+      } else {
+        state.rx = nextRx
+        state.ry = nextRy
+      }
       canvas.value.style.transform = `translate(${state.rx}px, ${state.ry}px)`
       draw()
     }
