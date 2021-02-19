@@ -9,17 +9,31 @@
         .key {{ key }}
         .value {{ value }}
     .position-ui
+      .row
+        span x:
+        el-input-number(v-model="position.x" size="mini")
+      .row
+        span y:
+        el-input-number(v-model="position.y" size="mini")
+      .button
+        el-button(type="primary" size="small" @click="jumpPosition(position.x, position.y)") Jump
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, reactive } from '@vue/composition-api'
 
 import mapCanvas, { largeBoxSize } from '@/canvas/mapCanvas/index'
 
 export default defineComponent({
   setup () {
-    const state = mapCanvas()
-    return { largeBoxSize, state }
+    const { state, canvasStoreInterface } = mapCanvas()
+    const position = reactive<{ x: number, y: number }>({ x: 0, y: 0 })
+    return {
+      jumpPosition: canvasStoreInterface.jumpPosition,
+      largeBoxSize,
+      state,
+      position
+    }
   }
 })
 </script>
@@ -77,4 +91,16 @@ export default defineComponent({
       .value
         width: 150px
         overflow: hidden
+
+    .position-ui
+      position: absolute
+      top: 5px
+      right: 5px
+      .row
+        span
+          font-size: 16px
+          font-weight: bold
+      .button
+        text-align: right
+        margin-top: 5px
 </style>
