@@ -93,5 +93,5 @@ export default () => {
     draw()
   })
 
-  return { state }
+  return state
 }
