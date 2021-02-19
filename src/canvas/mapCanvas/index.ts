@@ -7,6 +7,7 @@ import drawGrid from './components/grid'
 export const largeBoxSize = 2000
 export const PADDING = 50
 const moveEdgeRatio = 0.05
+const tileSize = 30
 export interface CanvasState {
   width: number
   height: number
@@ -29,7 +30,6 @@ export default () => {
     d.setState(state)
     d.setRulerSize(30)
 
-    const tileSize = 30
     drawGrid(d, tileSize)
     drawRuler(d, tileSize)
   }
@@ -44,8 +44,8 @@ export default () => {
     const repositionCanvas = () => {
       const nextRx = scrollContainer.scrollLeft - PADDING
       const nextRy = scrollContainer.scrollTop - PADDING
-      state.vx += nextRx - state.rx
-      state.vy += nextRy - state.ry
+      state.vx += (nextRx - state.rx) / tileSize
+      state.vy -= (nextRy - state.ry) / tileSize
       const scrollPosition = {
         left: nextRx + PADDING,
         right: nextRx + state.width + PADDING,
