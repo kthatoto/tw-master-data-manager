@@ -40,15 +40,5 @@ export default defineComponent({
 </script>
 
 <style lang="stylus" scoped>
-.detail
-  padding: 10px
-  height: 100%
-  img
-    width: 100%
-    border: 1px solid lightgray
-  h3
-    word-break: break-all
-    margin-bottom: 10px
-  .buttons
-    text-align: right
+console-detail()
 </style>

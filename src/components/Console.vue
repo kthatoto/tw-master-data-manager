@@ -24,7 +24,7 @@ export default defineComponent({
 .console
   height: 100%
   >>> .el-tabs
-    height: 100%
+    height: 60vh
     display: flex
     flex-direction: column
     &__content
