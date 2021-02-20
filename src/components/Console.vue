@@ -5,6 +5,8 @@
       Images.pane(:editable="true")
     el-tab-pane(label="Tiles")
       Tiles.pane
+    el-tab-pane(label="Objects")
+      Objects.pane
     el-tab-pane(label="NPCs")
     el-tab-pane(label="Enemies")
 </template>
@@ -30,8 +32,12 @@ export default defineComponent({
     &__content
       padding: 0
       flex: 1
+    &__item
+      padding: 0 10px
     .el-tab-pane
       height: 100%
+    &--top.el-tabs--border-card>.el-tabs__header .el-tabs__item:nth-child(2)
+      padding-left: 10px
   .pane
     height: 100%
 </style>
