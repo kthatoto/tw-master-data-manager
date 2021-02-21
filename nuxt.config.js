@@ -40,11 +40,7 @@ export default {
   ],
   axios: {},
   build: {
-    transpile: [/^element-ui/],
-    extend (config, ctx) {
-      config.resolve.alias['~data'] = path.join(__dirname, 'data')
-      config.resolve.alias['~server'] = path.join(__dirname, 'server')
-    }
+    transpile: [/^element-ui/]
   },
   serverMiddleware: ['~~/server/']
 }
