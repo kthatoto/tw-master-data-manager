@@ -25,21 +25,21 @@ export const buildObjectsStore = (stores: {
 }) => {
   const state = reactive<{
     currentDirectory: string
-    tiles: Object[]
+    objects: Object[]
     directories: Directory[]
     showingObjectIndex: number | undefined
     selectingName: string | undefined
   }>({
     currentDirectory: '/',
-    tiles: [],
+    objects: [],
     directories: [],
     showingObjectIndex: undefined,
     selectingName: undefined
   })
 
   const fetchObjects = async () => {
-    const res = await axios.get(`/api/tiles?directory=${state.currentDirectory}`)
-    state.tiles = res.data.tiles
+    const res = await axios.get(`/api/objects?directory=${state.currentDirectory}`)
+    state.objects = res.data.objects
     state.directories = res.data.directories
   }
 
@@ -58,7 +58,7 @@ export const buildObjectsStore = (stores: {
   const createDirectory = async () => {
     if (directoryCreating.name.length === 0) return
     const params = { name: directoryCreating.name }
-    const res = await axios.post(`/api/tiles/directories?directory=${state.currentDirectory}`, params)
+    const res = await axios.post(`/api/objects/directories?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
         message: res.data.message,
@@ -74,7 +74,7 @@ export const buildObjectsStore = (stores: {
     directoryCreating.flag = false
   }
 
-  const tileCreating = reactive<{
+  const objectCreating = reactive<{
     flag: boolean
     name: string
     collision: boolean
@@ -84,24 +84,24 @@ export const buildObjectsStore = (stores: {
     collision: false
   })
   const openObjectCreateModal = (refs: any) => {
-    tileCreating.flag = true
-    tileCreating.name = ''
-    tileCreating.collision = false
-    setTimeout(() => refs.tileCreateInput.focus(), 500)
+    objectCreating.flag = true
+    objectCreating.name = ''
+    objectCreating.collision = false
+    setTimeout(() => refs.objectCreateInput.focus(), 500)
   }
-  const tileCreatable = computed<boolean>(() => {
-    if (tileCreating.name.length === 0) return false
+  const objectCreatable = computed<boolean>(() => {
+    if (objectCreating.name.length === 0) return false
     if (!stores.imagesStore.selectingImagePath.value) return false
     return true
   })
   const createObject = async () => {
-    if (!tileCreatable.value) return
+    if (!objectCreatable.value) return
     const params = {
-      name: tileCreating.name,
+      name: objectCreating.name,
       imagePath: stores.imagesStore.selectingImagePath.value,
-      collision: tileCreating.collision
+      collision: objectCreating.collision
     }
-    const res = await axios.post(`/api/tiles?directory=${state.currentDirectory}`, params)
+    const res = await axios.post(`/api/objects?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
         message: res.data.message,
@@ -114,7 +114,7 @@ export const buildObjectsStore = (stores: {
       })
       fetchObjects()
     }
-    tileCreating.flag = false
+    objectCreating.flag = false
   }
 
   const directoryEditing = reactive<{
@@ -137,7 +137,7 @@ export const buildObjectsStore = (stores: {
   const editDirectoryName = async () => {
     if (directoryEditing.name.length === 0) return
     const params = { before: directoryEditing.beforeName, after: directoryEditing.name }
-    const res = await axios.patch(`/api/tiles/directories?directory=${state.currentDirectory}`, params)
+    const res = await axios.patch(`/api/objects/directories?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
         message: res.data.message,
@@ -153,7 +153,7 @@ export const buildObjectsStore = (stores: {
     directoryEditing.flag = false
   }
 
-  const tileEditing = reactive<{
+  const objectEditing = reactive<{
     flag: boolean
     beforeName: string
     name: string
@@ -165,29 +165,29 @@ export const buildObjectsStore = (stores: {
     collision: false
   })
   const openObjectEditModal = (refs: any, o: Object) => {
-    tileEditing.flag = true
-    tileEditing.beforeName = o.name
-    tileEditing.collision = o.collision
+    objectEditing.flag = true
+    objectEditing.beforeName = o.name
+    objectEditing.collision = o.collision
     stores.imagesStore.setSelection(o.imagePath)
     setTimeout(() => {
-      refs.tileNameEditor.focus()
-      tileEditing.name = o.name
+      refs.objectNameEditor.focus()
+      objectEditing.name = o.name
     })
   }
-  const tileEditable = computed<boolean>(() => {
-    if (tileEditing.name.length === 0) return false
+  const objectEditable = computed<boolean>(() => {
+    if (objectEditing.name.length === 0) return false
     if (!stores.imagesStore.selectingImagePath.value) return false
     return true
   })
   const editObject = async () => {
-    if (tileEditing.name.length === 0) return
+    if (objectEditing.name.length === 0) return
     const params = {
-      beforeName: tileEditing.beforeName,
-      name: tileEditing.name,
-      collision: tileEditing.collision,
+      beforeName: objectEditing.beforeName,
+      name: objectEditing.name,
+      collision: objectEditing.collision,
       imagePath: stores.imagesStore.selectingImagePath.value
     }
-    const res = await axios.patch(`/api/tiles?directory=${state.currentDirectory}`, params)
+    const res = await axios.patch(`/api/objects?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
         message: res.data.message,
@@ -200,7 +200,7 @@ export const buildObjectsStore = (stores: {
       })
       fetchObjects()
     }
-    tileEditing.flag = false
+    objectEditing.flag = false
   }
 
   const deleting = reactive<{
@@ -216,7 +216,7 @@ export const buildObjectsStore = (stores: {
   }
   const deleteObject = async () => {
     const params = { name: deleting.name }
-    const res = await axios.patch(`/api/tiles/delete?directory=${state.currentDirectory}`, params)
+    const res = await axios.patch(`/api/objects/delete?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
         message: res.data.message,
@@ -234,13 +234,13 @@ export const buildObjectsStore = (stores: {
   }
 
   const showObject = (filename: string) => {
-    const index = state.tiles.findIndex((i: Object) => i.name === filename)
+    const index = state.objects.findIndex((i: Object) => i.name === filename)
     if (index < 0) return
     state.showingObjectIndex = index
   }
   const showingObject = computed<Object | undefined>(() => {
     if (state.showingObjectIndex === undefined) return
-    return state.tiles[state.showingObjectIndex]
+    return state.objects[state.showingObjectIndex]
   })
 
   const backToHome = () => {
@@ -272,18 +272,18 @@ export const buildObjectsStore = (stores: {
     openDirectoryCreateModal,
     createDirectory,
 
-    tileCreating,
+    objectCreating,
     openObjectCreateModal,
-    tileCreatable,
+    objectCreatable,
     createObject,
 
     directoryEditing,
     openDirectoryNameEditModal,
     editDirectoryName,
 
-    tileEditing,
+    objectEditing,
     openObjectEditModal,
-    tileEditable,
+    objectEditable,
     editObject,
 
     deleting,
