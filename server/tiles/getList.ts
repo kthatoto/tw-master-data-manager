@@ -1,8 +1,11 @@
 import fs from 'fs'
 
+import { Directory } from '~domains/index.ts'
+import { Tile, TilesResponse } from '~domains/tiles.ts'
+
 export default (app: any, method: 'get', path: string) => {
   app[method](path, async (req: any, res: any) => {
-    const response: any = { tiles: [], directories: [] }
+    const response: TilesResponse = { tiles: [], directories: [] }
 
     const objects = await fs.promises.readdir(`./data/tiles${req.query.directory}`, {})
     for (const obj of objects) {

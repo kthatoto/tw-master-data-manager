@@ -1,10 +1,10 @@
 import fs from 'fs'
 
 export default (app: any, method: 'post', path: string) => {
-  app[method]('/objects/directories', async (req: any, res: any) => {
+  app[method]('/objekts/directories', async (req: any, res: any) => {
     const name: string = req.body.name
     try {
-      const filePath: string = `./data/objects${req.query.directory}${name}`
+      const filePath: string = `./data/objekts${req.query.directory}${name}`
       await fs.promises.mkdir(filePath)
       res.send(null)
     } catch (err: any) {
