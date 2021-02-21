@@ -18,14 +18,16 @@ export default (app: any, method: 'get', path: string) => {
         })
       } else {
         const json = JSON.parse(await fs.promises.readFile(filePath, 'utf8'))
-        const image = await fs.promises.readFile(`./data/images${json.imagePath}`, 'base64')
+        const image = await fs.promises.readFile(`./data/images${json.imagePath}`, 'base64').catch((err: any) => {
+          console.log(err)
+        })
         response.objekts.push({
           fullPath: filePath,
           name: json.name,
           size: stat.size,
           collision: json.collision,
           imagePath: json.imagePath,
-          raw: 'data:image;base64,' + image,
+          raw: image ? 'data:image;base64,' + image : null,
           isFile: true
         })
       }

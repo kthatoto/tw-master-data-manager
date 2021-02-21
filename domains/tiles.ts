@@ -7,7 +7,7 @@ export interface Tile {
   imagePath: string
   isFile: true
   size: number
-  raw: string
+  raw: string | null
 }
 
 export interface TileJson {
