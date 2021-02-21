@@ -1,7 +1,6 @@
 import fs from 'fs'
 
-import { Directory } from '~domains/index.ts'
-import { Image, ImagesResponse } from '~domains/images.ts'
+import { ImagesResponse } from '~domains/images.ts'
 
 export default (app: any, method: 'get', path: string) => {
   app[method](path, async (req: any, res: any) => {

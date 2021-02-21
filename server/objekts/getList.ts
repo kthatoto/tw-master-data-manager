@@ -1,8 +1,10 @@
 import fs from 'fs'
 
+import { ObjektResponse } from '~domains/objekts'
+
 export default (app: any, method: 'get', path: string) => {
   app[method](path, async (req: any, res: any) => {
-    const response: any = { objekts: [], directories: [] }
+    const response: ObjektResponse = { objekts: [], directories: [] }
 
     const objects = await fs.promises.readdir(`./data/objekts${req.query.directory}`, {})
     for (const obj of objects) {
