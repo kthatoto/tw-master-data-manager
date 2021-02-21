@@ -154,7 +154,7 @@ export const buildTilesStore = (stores: {
     tileEditing.flag = true
     tileEditing.beforeName = o.name
     tileEditing.collision = o.collision
-    stores.imagesStore.setSelection(o.imagePath)
+    stores.imagesStore.setSelection(o.imagePath, !!o.raw)
     setTimeout(() => {
       refs.tileNameEditor.focus()
       tileEditing.name = o.name
