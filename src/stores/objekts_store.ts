@@ -214,7 +214,7 @@ export const buildObjektsStore = (stores: {
     deleting.flag = true
     deleting.name = name
   }
-  const deleteObjekt = async () => {
+  const deleteObject = async () => {
     const params = { name: deleting.name }
     const res = await axios.patch(`/api/objekts/delete?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
@@ -288,7 +288,7 @@ export const buildObjektsStore = (stores: {
 
     deleting,
     confirmDelete,
-    deleteObjekt,
+    deleteObject,
 
     showObjekt,
     showingObjekt,
