@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import { ObjektResponse } from '~domains/objekts'
+import { ObjektResponse } from '~domains/objekts.ts'
 
 export default (app: any, method: 'get', path: string) => {
   app[method](path, async (req: any, res: any) => {

@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import { ObjektJson } from '~domains/objekts'
+import { ObjektJson } from '~domains/objekts.ts'
 
 export default (app: any, method: 'post', path: string) => {
   app[method]('/objekts', async (req: any, res: any) => {
