@@ -4,7 +4,7 @@ export default (app: any, method: 'patch', path: string) => {
   app[method](path, async (req: any, res: any) => {
     const name: string = req.body.name
     try {
-      const filePath: string = `./data/objects${req.query.directory}${name}`
+      const filePath: string = `./data/objekts${req.query.directory}${name}`
       const stat = await fs.promises.stat(filePath)
       if (stat.isDirectory()) {
         await fs.promises.rmdir(filePath)

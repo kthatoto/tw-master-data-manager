@@ -5,8 +5,8 @@
       Images.pane(:editable="true")
     el-tab-pane(label="Tiles")
       Tiles.pane
-    el-tab-pane(label="Objects")
-      Objects.pane
+    el-tab-pane(label="Objekts")
+      Objekts.pane
     el-tab-pane(label="NPCs")
     el-tab-pane(label="Enemies")
 </template>
@@ -16,9 +16,10 @@ import { defineComponent } from '@vue/composition-api'
 
 import Images from '@/components/Console/Images.vue'
 import Tiles from '@/components/Console/Tiles.vue'
+import Objekts from '@/components/Console/Objekts.vue'
 
 export default defineComponent({
-  components: { Images, Tiles }
+  components: { Images, Tiles, Objekts }
 })
 </script>
 

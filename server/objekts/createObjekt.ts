@@ -1,14 +1,14 @@
 import fs from 'fs'
 
 export default (app: any, method: 'post', path: string) => {
-  app[method]('/objects', async (req: any, res: any) => {
+  app[method]('/objekts', async (req: any, res: any) => {
     const name: string = req.body.name
     const collision: boolean = req.body.collision
     const imagePath: string = req.body.imagePath
     const data = JSON.stringify({ name, collision, imagePath })
 
     try {
-      const filePath: string = `./data/objects${req.query.directory}${name}`
+      const filePath: string = `./data/objekts${req.query.directory}${name}`
       await fs.promises.writeFile(filePath, data)
       res.send(null)
     } catch (err: any) {

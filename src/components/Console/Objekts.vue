@@ -1,8 +1,8 @@
 <template lang="pug">
-.objects
-  .objects__header
+.objekts
+  .objekts__header
     .buttons
-      el-button.button(icon="el-icon-plus" type="primary" @click="openObjectCreateModal($refs)") Object作成
+      el-button.button(icon="el-icon-plus" type="primary" @click="openObjektCreateModal($refs)") Objekt作成
       el-button.button(icon="el-icon-plus" type="primary" @click="openDirectoryCreateModal($refs)") フォルダ作成
     .nav
       icon.home-icon(name="home" @click.native="backToHome")
@@ -10,18 +10,18 @@
         icon.icon(name="chevron-right")
         span(@click="backDirectory(i)") {{ breadcrumb }}
 
-  .objects__content.content(v-if="!showingObject")
-    .objects__item(v-for="o in directories" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
+  .objekts__content.content(v-if="!showingObjekt")
+    .objekts__item(v-for="o in directories" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
       .focus(v-if="selectingName === o.name")
       Icon.icon(name="folder" @dblclick.native="appendDirectory(o.name)" @click.right.prevent.native="confirmDelete(o.name)")
       span(@dblclick="openDirectoryNameEditModal($refs, o)") {{ o.name }}
-    .objects__item(v-for="o in objects" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
+    .objekts__item(v-for="o in objekts" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
       .focus(v-if="selectingName === o.name")
-      img(:src="o.raw" @dblclick="showObject(o.name)" @click.right.prevent="confirmDelete(o.name)")
-      span(@dblclick="openObjectEditModal($refs, o)") {{ o.name }}
+      img(:src="o.raw" @dblclick="showObjekt(o.name)" @click.right.prevent="confirmDelete(o.name)")
+      span(@dblclick="openObjektEditModal($refs, o)") {{ o.name }}
 
-  .objects__detail.content(v-else)
-    ObjectDetail(:refs="$refs")
+  .objekts__detail.content(v-else)
+    ObjektDetail(:refs="$refs")
 
   el-dialog.dialog(:visible.sync="directoryCreating.flag")
     p フォルダの作成
@@ -29,13 +29,13 @@
     .buttons
       el-button(type="primary" @click="createDirectory" :disabled="directoryCreating.name.length === 0") 作成
 
-  el-dialog.dialog(:visible.sync="objectCreating.flag" width="700px")
-    p Objectの作成
+  el-dialog.dialog(:visible.sync="objektCreating.flag" width="700px")
+    p Objektの作成
     .form
       .form__column.-left
-        el-input(v-model="objectCreating.name" ref="objectCreateInput")
-        el-checkbox(v-model="objectCreating.collision") 衝突
-        el-button(type="primary" @click="createObject" :disabled="!objectCreatable") 作成
+        el-input(v-model="objektCreating.name" ref="objektCreateInput")
+        el-checkbox(v-model="objektCreating.collision") 衝突
+        el-button(type="primary" @click="createObjekt" :disabled="!objektCreatable") 作成
       .form__column.-right
         Images.form__images(:editable="false")
 
@@ -45,46 +45,46 @@
     .buttons
       el-button(type="primary" @click="editDirectoryName" :disabled="directoryEditing.name.length === 0") 更新
 
-  el-dialog.dialog(:visible.sync="objectEditing.flag")
-    p Objectの変更
+  el-dialog.dialog(:visible.sync="objektEditing.flag")
+    p Objektの変更
     .form
       .form__column.-left
-        el-input(v-model="objectEditing.name" ref="objectNameEditor")
-        el-checkbox(v-model="objectEditing.collision") 衝突
-        el-button(type="primary" @click="editObject" :disabled="!objectEditable") 変更
+        el-input(v-model="objektEditing.name" ref="objektNameEditor")
+        el-checkbox(v-model="objektEditing.collision") 衝突
+        el-button(type="primary" @click="editObjekt" :disabled="!objektEditable") 変更
       .form__column.-right
         Images.form__images(:editable="false")
 
   el-dialog.dialog(:visible.sync="deleting.flag")
     p 「{{ deleting.name }}」削除していい？
     .buttons
-      el-button(type="danger" @click="deleteObject") 削除
+      el-button(type="danger" @click="deleteObjekt") 削除
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import ObjectDetail from '@/components/Console/ObjectDetail.vue'
+import ObjektDetail from '@/components/Console/ObjektDetail.vue'
 import Images from '@/components/Console/Images.vue'
 
 export default defineComponent({
-  components: { ObjectDetail, Images },
+  components: { ObjektDetail, Images },
   setup () {
-    const objectsStore = appStores.objectsStore
+    const objektsStore = appStores.objektsStore
 
     onMounted(() => {
-      objectsStore.fetchObjects()
+      objektsStore.fetchObjekts()
     })
 
-    return { ...objectsStore }
+    return { ...objektsStore }
   }
 })
 </script>
 
 <style lang="stylus" scoped>
-console(objects)
-.objects
+console(objekts)
+.objekts
   .form
     display: flex
     justify-content: space-between

@@ -1,15 +1,15 @@
 import fs from 'fs'
 
 export default (app: any, method: 'patch', path: string) => {
-  app[method]('/objects', async (req: any, res: any) => {
+  app[method]('/objekts', async (req: any, res: any) => {
     const beforeName: string = req.body.beforeName
     const name: string = req.body.name
     const collision: boolean = req.body.collision
     const imagePath: string = req.body.imagePath
     const data = JSON.stringify({ name, collision, imagePath })
 
-    const beforeFilePath = `./data/objects${req.query.directory}${beforeName}`
-    const afterFilePath = `./data/objects${req.query.directory}${name}`
+    const beforeFilePath = `./data/objekts${req.query.directory}${beforeName}`
+    const afterFilePath = `./data/objekts${req.query.directory}${name}`
 
     try {
       if (!fs.existsSync(beforeFilePath)) {
@@ -17,7 +17,7 @@ export default (app: any, method: 'patch', path: string) => {
       }
       const stat = await fs.promises.stat(beforeFilePath)
       if (stat.isDirectory()) {
-        return res.send({ message: `「${beforeName}」はobjectではありません` })
+        return res.send({ message: `「${beforeName}」はobjektではありません` })
       }
       if (beforeFilePath !== afterFilePath) {
         fs.renameSync(beforeFilePath, afterFilePath)

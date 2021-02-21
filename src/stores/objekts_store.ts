@@ -4,7 +4,7 @@ import { Message } from 'element-ui'
 
 import { ImagesStore } from '@/stores/images_store.ts'
 
-export interface Object {
+export interface Objekt {
   fullPath: string
   name: string
   size: number
@@ -20,26 +20,26 @@ interface Directory {
   isFile: false
 }
 
-export const buildObjectsStore = (stores: {
+export const buildObjektsStore = (stores: {
   imagesStore: ImagesStore
 }) => {
   const state = reactive<{
     currentDirectory: string
-    objects: Object[]
+    objekts: Objekt[]
     directories: Directory[]
-    showingObjectIndex: number | undefined
+    showingObjektIndex: number | undefined
     selectingName: string | undefined
   }>({
     currentDirectory: '/',
-    objects: [],
+    objekts: [],
     directories: [],
-    showingObjectIndex: undefined,
+    showingObjektIndex: undefined,
     selectingName: undefined
   })
 
-  const fetchObjects = async () => {
-    const res = await axios.get(`/api/objects?directory=${state.currentDirectory}`)
-    state.objects = res.data.objects
+  const fetchObjekts = async () => {
+    const res = await axios.get(`/api/objekts?directory=${state.currentDirectory}`)
+    state.objekts = res.data.objekts
     state.directories = res.data.directories
   }
 
@@ -58,7 +58,7 @@ export const buildObjectsStore = (stores: {
   const createDirectory = async () => {
     if (directoryCreating.name.length === 0) return
     const params = { name: directoryCreating.name }
-    const res = await axios.post(`/api/objects/directories?directory=${state.currentDirectory}`, params)
+    const res = await axios.post(`/api/objekts/directories?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
         message: res.data.message,
@@ -69,12 +69,12 @@ export const buildObjectsStore = (stores: {
         message: '作成完了！',
         type: 'success'
       })
-      fetchObjects()
+      fetchObjekts()
     }
     directoryCreating.flag = false
   }
 
-  const objectCreating = reactive<{
+  const objektCreating = reactive<{
     flag: boolean
     name: string
     collision: boolean
@@ -83,25 +83,25 @@ export const buildObjectsStore = (stores: {
     name: '',
     collision: false
   })
-  const openObjectCreateModal = (refs: any) => {
-    objectCreating.flag = true
-    objectCreating.name = ''
-    objectCreating.collision = false
-    setTimeout(() => refs.objectCreateInput.focus(), 500)
+  const openObjektCreateModal = (refs: any) => {
+    objektCreating.flag = true
+    objektCreating.name = ''
+    objektCreating.collision = false
+    setTimeout(() => refs.objektCreateInput.focus(), 500)
   }
-  const objectCreatable = computed<boolean>(() => {
-    if (objectCreating.name.length === 0) return false
+  const objektCreatable = computed<boolean>(() => {
+    if (objektCreating.name.length === 0) return false
     if (!stores.imagesStore.selectingImagePath.value) return false
     return true
   })
-  const createObject = async () => {
-    if (!objectCreatable.value) return
+  const createObjekt = async () => {
+    if (!objektCreatable.value) return
     const params = {
-      name: objectCreating.name,
+      name: objektCreating.name,
       imagePath: stores.imagesStore.selectingImagePath.value,
-      collision: objectCreating.collision
+      collision: objektCreating.collision
     }
-    const res = await axios.post(`/api/objects?directory=${state.currentDirectory}`, params)
+    const res = await axios.post(`/api/objekts?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
         message: res.data.message,
@@ -112,9 +112,9 @@ export const buildObjectsStore = (stores: {
         message: '作成完了！',
         type: 'success'
       })
-      fetchObjects()
+      fetchObjekts()
     }
-    objectCreating.flag = false
+    objektCreating.flag = false
   }
 
   const directoryEditing = reactive<{
@@ -137,7 +137,7 @@ export const buildObjectsStore = (stores: {
   const editDirectoryName = async () => {
     if (directoryEditing.name.length === 0) return
     const params = { before: directoryEditing.beforeName, after: directoryEditing.name }
-    const res = await axios.patch(`/api/objects/directories?directory=${state.currentDirectory}`, params)
+    const res = await axios.patch(`/api/objekts/directories?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
         message: res.data.message,
@@ -148,12 +148,12 @@ export const buildObjectsStore = (stores: {
         message: '更新完了！',
         type: 'success'
       })
-      fetchObjects()
+      fetchObjekts()
     }
     directoryEditing.flag = false
   }
 
-  const objectEditing = reactive<{
+  const objektEditing = reactive<{
     flag: boolean
     beforeName: string
     name: string
@@ -164,30 +164,30 @@ export const buildObjectsStore = (stores: {
     name: '',
     collision: false
   })
-  const openObjectEditModal = (refs: any, o: Object) => {
-    objectEditing.flag = true
-    objectEditing.beforeName = o.name
-    objectEditing.collision = o.collision
+  const openObjektEditModal = (refs: any, o: Objekt) => {
+    objektEditing.flag = true
+    objektEditing.beforeName = o.name
+    objektEditing.collision = o.collision
     stores.imagesStore.setSelection(o.imagePath)
     setTimeout(() => {
-      refs.objectNameEditor.focus()
-      objectEditing.name = o.name
+      refs.objektNameEditor.focus()
+      objektEditing.name = o.name
     })
   }
-  const objectEditable = computed<boolean>(() => {
-    if (objectEditing.name.length === 0) return false
+  const objektEditable = computed<boolean>(() => {
+    if (objektEditing.name.length === 0) return false
     if (!stores.imagesStore.selectingImagePath.value) return false
     return true
   })
-  const editObject = async () => {
-    if (objectEditing.name.length === 0) return
+  const editObjekt = async () => {
+    if (objektEditing.name.length === 0) return
     const params = {
-      beforeName: objectEditing.beforeName,
-      name: objectEditing.name,
-      collision: objectEditing.collision,
+      beforeName: objektEditing.beforeName,
+      name: objektEditing.name,
+      collision: objektEditing.collision,
       imagePath: stores.imagesStore.selectingImagePath.value
     }
-    const res = await axios.patch(`/api/objects?directory=${state.currentDirectory}`, params)
+    const res = await axios.patch(`/api/objekts?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
         message: res.data.message,
@@ -198,9 +198,9 @@ export const buildObjectsStore = (stores: {
         message: '更新完了！',
         type: 'success'
       })
-      fetchObjects()
+      fetchObjekts()
     }
-    objectEditing.flag = false
+    objektEditing.flag = false
   }
 
   const deleting = reactive<{
@@ -214,9 +214,9 @@ export const buildObjectsStore = (stores: {
     deleting.flag = true
     deleting.name = name
   }
-  const deleteObject = async () => {
+  const deleteObjekt = async () => {
     const params = { name: deleting.name }
-    const res = await axios.patch(`/api/objects/delete?directory=${state.currentDirectory}`, params)
+    const res = await axios.patch(`/api/objekts/delete?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
       Message({
         message: res.data.message,
@@ -227,38 +227,38 @@ export const buildObjectsStore = (stores: {
         message: '削除完了！',
         type: 'success'
       })
-      state.showingObjectIndex = undefined
-      fetchObjects()
+      state.showingObjektIndex = undefined
+      fetchObjekts()
     }
     deleting.flag = false
   }
 
-  const showObject = (filename: string) => {
-    const index = state.objects.findIndex((i: Object) => i.name === filename)
+  const showObjekt = (filename: string) => {
+    const index = state.objekts.findIndex((i: Objekt) => i.name === filename)
     if (index < 0) return
-    state.showingObjectIndex = index
+    state.showingObjektIndex = index
   }
-  const showingObject = computed<Object | undefined>(() => {
-    if (state.showingObjectIndex === undefined) return
-    return state.objects[state.showingObjectIndex]
+  const showingObjekt = computed<Objekt | undefined>(() => {
+    if (state.showingObjektIndex === undefined) return
+    return state.objekts[state.showingObjektIndex]
   })
 
   const backToHome = () => {
     state.currentDirectory = '/'
-    state.showingObjectIndex = undefined
-    fetchObjects()
+    state.showingObjektIndex = undefined
+    fetchObjekts()
   }
   const appendDirectory = (dir: string) => {
     state.currentDirectory = `${state.currentDirectory}${dir}/`
-    fetchObjects()
+    fetchObjekts()
   }
   const backDirectory = (i: number) => {
     state.currentDirectory = breadcrumbs.value.reduce((newDirectory: string, breadcrumb: string, j: number) => {
       if (j <= i) newDirectory += `${breadcrumb}/`
       return newDirectory
     }, '/')
-    state.showingObjectIndex = undefined
-    fetchObjects()
+    state.showingObjektIndex = undefined
+    fetchObjekts()
   }
   const breadcrumbs = computed<string[]>(() => {
     return state.currentDirectory.split('/').filter((v: any) => v)
@@ -266,32 +266,32 @@ export const buildObjectsStore = (stores: {
 
   return {
     ...toRefs(state),
-    fetchObjects,
+    fetchObjekts,
 
     directoryCreating,
     openDirectoryCreateModal,
     createDirectory,
 
-    objectCreating,
-    openObjectCreateModal,
-    objectCreatable,
-    createObject,
+    objektCreating,
+    openObjektCreateModal,
+    objektCreatable,
+    createObjekt,
 
     directoryEditing,
     openDirectoryNameEditModal,
     editDirectoryName,
 
-    objectEditing,
-    openObjectEditModal,
-    objectEditable,
-    editObject,
+    objektEditing,
+    openObjektEditModal,
+    objektEditable,
+    editObjekt,
 
     deleting,
     confirmDelete,
-    deleteObject,
+    deleteObjekt,
 
-    showObject,
-    showingObject,
+    showObjekt,
+    showingObjekt,
     backToHome,
     appendDirectory,
     backDirectory,
@@ -299,4 +299,4 @@ export const buildObjectsStore = (stores: {
   }
 }
 
-export type ObjectsStore = ReturnType<typeof buildObjectsStore>
+export type ObjektsStore = ReturnType<typeof buildObjektsStore>

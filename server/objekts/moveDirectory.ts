@@ -3,9 +3,9 @@ import fs from 'fs'
 export default (app: any, method: 'patch', path: string) => {
   app[method](path, async (req: any, res: any) => {
     const before: string = req.body.before
-    const beforeFilePath = `./data/objects${req.query.directory}${before}`
+    const beforeFilePath = `./data/objekts${req.query.directory}${before}`
     const after: string = req.body.after
-    const afterFilePath = `./data/objects${req.query.directory}${after}`
+    const afterFilePath = `./data/objekts${req.query.directory}${after}`
     try {
       const stat = await fs.promises.stat(beforeFilePath)
       if (!stat.isDirectory()) {

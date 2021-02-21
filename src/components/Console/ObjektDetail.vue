@@ -1,13 +1,13 @@
 <template lang="pug">
 .detail
-  img(:src="showingObject.raw")
-  h3 {{ showingObject.name }}
+  img(:src="showingObjekt.raw")
+  h3 {{ showingObjekt.name }}
   p サイズ：{{ bytes }}
-  p 衝突：{{ showingObject.collision ? 'あり' : 'なし' }}
-  p 画像：{{ showingObject.imagePath }}
+  p 衝突：{{ showingObjekt.collision ? 'あり' : 'なし' }}
+  p 画像：{{ showingObjekt.imagePath }}
   .buttons
-    el-button(type="primary" @click="openObjectEditModal(refs, showingObject)") 変更
-    el-button(type="danger" @click="confirmDelete(showingObject.name)") 削除
+    el-button(type="primary" @click="openObjektEditModal(refs, showingObjekt)") 変更
+    el-button(type="danger" @click="confirmDelete(showingObjekt.name)") 削除
 </template>
 
 <script lang="ts">
@@ -24,15 +24,15 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const objectsStore = appStores.objectsStore
+    const objektsStore = appStores.objektsStore
 
     const bytes = computed<string>(() => {
-      if (!objectsStore.showingObject.value) return ''
-      return bytesCalculate(objectsStore.showingObject.value.size)
+      if (!objektsStore.showingObjekt.value) return ''
+      return bytesCalculate(objektsStore.showingObjekt.value.size)
     })
 
     return {
-      ...objectsStore,
+      ...objektsStore,
       bytes
     }
   }
