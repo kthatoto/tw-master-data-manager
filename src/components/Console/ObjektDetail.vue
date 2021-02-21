@@ -1,6 +1,6 @@
 <template lang="pug">
 .detail
-  img(:src="showingObjekt.raw")
+  ConsoleImage(:raw="showingObjekt.raw" width="100%" height="300px" lineHeight="300px")
   h3 {{ showingObjekt.name }}
   p サイズ：{{ bytes }}
   p 衝突：{{ showingObjekt.collision ? 'あり' : 'なし' }}
@@ -15,8 +15,10 @@ import { defineComponent, computed } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
 import bytesCalculate from '@/utils/bytesCalculator'
+import ConsoleImage from '@/components/atoms/ConsoleImage.vue'
 
 export default defineComponent({
+  components: { ConsoleImage },
   props: {
     refs: {
       type: Object,

@@ -1,8 +1,8 @@
 <template lang="pug">
 img(v-if="raw" :src="raw" @dblclick="dblclick" @click.right.prevent="clickRight"
-  :style="{ width: `${size}px`, height: `${size}px` }")
+  :style="{ width, height }")
 .noimage(v-else @dblclick="dblclick" @click.right.prevent="clickRight"
-  :style="{ width: `${size}px`, height: `${size}px`, lineHeight: `${size}px` }") No Image
+  :style="{ width, height, lineHeight }") No Image
 </template>
 
 <script lang="ts">
@@ -11,20 +11,34 @@ import { defineComponent } from '@vue/composition-api'
 export default defineComponent({
   props: {
     raw: {
-      type: String as () => string | null,
+      type: String,
+      required: false,
       default: null
     },
     dblclick: {
-      type: Function as () => Function | null,
+      type: Function,
+      required: false,
       default: null
     },
     clickRight: {
-      type: Function as () => Function | null,
+      type: Function,
+      required: false,
       default: null
     },
-    size: {
-      type: Number,
-      required: true
+    width: {
+      type: String,
+      required: false,
+      default: null
+    },
+    height: {
+      type: String,
+      required: false,
+      default: null
+    },
+    lineHeight: {
+      type: String,
+      required: false,
+      default: null
     }
   }
 })
