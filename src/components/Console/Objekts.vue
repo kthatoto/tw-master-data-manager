@@ -17,7 +17,10 @@
       span(@dblclick="openDirectoryNameEditModal($refs, o)") {{ o.name }}
     .objekts__item(v-for="o in objekts" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
       .focus(v-if="selectingName === o.name")
-      img(:src="o.raw" @dblclick="showObjekt(o.name)" @click.right.prevent="confirmDelete(o.name)")
+      ConsoleImage(
+        :raw="o.raw" :dblclick="() => showObjekt(o.name)" :clickRight="() => confirmDelete(o.name)"
+        width="80px" height="80px" lineHeight="80px"
+      )
       span(@dblclick="openObjektEditModal($refs, o)") {{ o.name }}
 
   .objekts__detail.content(v-else)
@@ -67,9 +70,10 @@ import { defineComponent, onMounted } from '@vue/composition-api'
 import { appStores } from '@/stores/appStores.ts'
 import ObjektDetail from '@/components/Console/ObjektDetail.vue'
 import Images from '@/components/Console/Images.vue'
+import ConsoleImage from '@/components/atoms/ConsoleImage.vue'
 
 export default defineComponent({
-  components: { ObjektDetail, Images },
+  components: { ObjektDetail, Images, ConsoleImage },
   setup () {
     const objektsStore = appStores.objektsStore
 

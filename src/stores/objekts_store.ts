@@ -155,7 +155,7 @@ export const buildObjektsStore = (stores: {
     objektEditing.flag = true
     objektEditing.beforeName = o.name
     objektEditing.collision = o.collision
-    stores.imagesStore.setSelection(o.imagePath)
+    stores.imagesStore.setSelection(o.imagePath, !!o.raw)
     setTimeout(() => {
       refs.objektNameEditor.focus()
       objektEditing.name = o.name
