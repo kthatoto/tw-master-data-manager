@@ -17,7 +17,7 @@
       span(@dblclick="openDirectoryNameEditModal($refs, o)") {{ o.name }}
     .tiles__item(v-for="o in tiles" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
       .focus(v-if="selectingName === o.name")
-      img(:src="o.raw" @dblclick="showTile(o.name)" @click.right.prevent="confirmDelete(o.name)")
+      ConsoleImage(:raw="o.raw" :dblclick="() => showTile(o.name)" :clickRight="() => confirmDelete(o.name)" :size="80")
       span(@dblclick="openTileEditModal($refs, o)") {{ o.name }}
 
   .tiles__detail.content(v-else)
@@ -67,9 +67,10 @@ import { defineComponent, onMounted } from '@vue/composition-api'
 import { appStores } from '@/stores/appStores.ts'
 import TileDetail from '@/components/Console/TileDetail.vue'
 import Images from '@/components/Console/Images.vue'
+import ConsoleImage from '@/components/atoms/ConsoleImage.vue'
 
 export default defineComponent({
-  components: { TileDetail, Images },
+  components: { TileDetail, Images, ConsoleImage },
   setup () {
     const tilesStore = appStores.tilesStore
 
