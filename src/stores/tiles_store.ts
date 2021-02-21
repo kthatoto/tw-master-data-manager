@@ -1,24 +1,10 @@
 import { reactive, computed, toRefs } from '@vue/composition-api'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { Message } from 'element-ui'
 
 import { ImagesStore } from '@/stores/images_store.ts'
-
-export interface Tile {
-  fullPath: string
-  name: string
-  size: number
-  collision: boolean
-  imagePath: string
-  raw: string
-  isFile: true
-}
-
-interface Directory {
-  fullPath: string
-  name: string
-  isFile: false
-}
+import { Directory } from '~domains/index.ts'
+import { Tile, TilesResponse } from '~domains/tiles.ts'
 
 export const buildTilesStore = (stores: {
   imagesStore: ImagesStore
@@ -38,7 +24,7 @@ export const buildTilesStore = (stores: {
   })
 
   const fetchTiles = async () => {
-    const res = await axios.get(`/api/tiles?directory=${state.currentDirectory}`)
+    const res: AxiosResponse<TilesResponse> = await axios.get(`/api/tiles?directory=${state.currentDirectory}`)
     state.tiles = res.data.tiles
     state.directories = res.data.directories
   }

@@ -1,26 +1,15 @@
 import { reactive, computed, toRefs } from '@vue/composition-api'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { Message } from 'element-ui'
+
+import { Directory } from '~domains/index.ts'
+import { Image, ImagesResponse } from '~domains/images.ts'
 
 interface UploadingFile {
   name: string
   raw: File
   size: number
   uid: number
-}
-
-interface Image {
-  fullPath: string
-  name: string
-  size: number
-  raw: string
-  isFile: true
-}
-
-interface Directory {
-  fullPath: string
-  name: string
-  isFile: false
 }
 
 export const buildImagesStore = () => {
@@ -39,9 +28,10 @@ export const buildImagesStore = () => {
   })
 
   const fetchImages = async () => {
-    const res = await axios.get(`/api/images?directory=${state.currentDirectory}`)
-    state.images = res.data.images
-    state.directories = res.data.directories
+    const res: AxiosResponse<ImagesResponse> = await axios.get(`/api/images?directory=${state.currentDirectory}`)
+    const data: ImagesResponse = res.data
+    state.images = data.images
+    state.directories = data.directories
   }
 
   const uploadImage = async (file: UploadingFile) => {

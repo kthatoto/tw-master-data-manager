@@ -1,24 +1,10 @@
 import { reactive, computed, toRefs } from '@vue/composition-api'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { Message } from 'element-ui'
 
 import { ImagesStore } from '@/stores/images_store.ts'
-
-export interface Objekt {
-  fullPath: string
-  name: string
-  size: number
-  collision: boolean
-  imagePath: string
-  raw: string
-  isFile: true
-}
-
-interface Directory {
-  fullPath: string
-  name: string
-  isFile: false
-}
+import { Directory } from '~domains/index.ts'
+import { Objekt, ObjektsResponse } from '~domains/objekts.ts'
 
 export const buildObjektsStore = (stores: {
   imagesStore: ImagesStore
@@ -38,9 +24,10 @@ export const buildObjektsStore = (stores: {
   })
 
   const fetchObjekts = async () => {
-    const res = await axios.get(`/api/objekts?directory=${state.currentDirectory}`)
-    state.objekts = res.data.objekts
-    state.directories = res.data.directories
+    const res: AxiosResponse<ObjektsResponse> = await axios.get(`/api/objekts?directory=${state.currentDirectory}`)
+    const data: ObjektsResponse = res.data
+    state.objekts = data.objekts
+    state.directories = data.directories
   }
 
   const directoryCreating = reactive<{
