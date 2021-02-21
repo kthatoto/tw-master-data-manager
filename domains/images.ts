@@ -1,12 +1,6 @@
-import { Directory } from '~domains/index.ts'
+import { Directory, BasicObject } from '~domains/index.ts'
 
-export interface Image {
-  fullPath: string
-  name: string
-  isFile: true
-  size: number
-  raw: string
-}
+export interface Image extends BasicObject
 
 export interface ImagesResponse {
   images: Image[]

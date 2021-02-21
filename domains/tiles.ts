@@ -1,13 +1,8 @@
-import { Directory } from '~domains/index.ts'
+import { Directory, BasicObject } from '~domains/index.ts'
 
-export interface Tile {
-  fullPath: string
-  name: string
+export interface Tile extends BasicObject {
   collision: boolean
   imagePath: string
-  isFile: true
-  size: number
-  raw: string | null
 }
 
 export interface TileJson {

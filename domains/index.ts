@@ -3,3 +3,11 @@ export interface Directory {
   name: string
   isFile: false
 }
+
+export interface BasicObject {
+  fullPath: string
+  name: string
+  isFile: true
+  size: number
+  raw: string | null
+}
