@@ -4,8 +4,8 @@ export default (app: any, method: 'get', path: string) => {
   app[method](path, async (req: any, res: any) => {
     const response: any = { objekts: [], directories: [] }
 
-    const objekts = await fs.promises.readdir(`./data/objekts${req.query.directory}`, {})
-    for (const obj of objekts) {
+    const objects = await fs.promises.readdir(`./data/objekts${req.query.directory}`, {})
+    for (const obj of objects) {
       const filePath: string = `./data/objekts${req.query.directory}${obj}`
       const stat = await fs.promises.stat(filePath)
       if (stat.isDirectory()) {
