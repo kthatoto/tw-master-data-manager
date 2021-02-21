@@ -1,5 +1,7 @@
 import { Directory } from '~domains/index.ts'
 
+export type ObjektType = 'normal' | 'chest'
+
 export interface Objekt {
   fullPath: string
   name: string
