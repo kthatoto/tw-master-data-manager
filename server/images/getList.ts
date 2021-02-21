@@ -5,10 +5,7 @@ import { Image, ImagesResponse } from '~domains/images.ts'
 
 export default (app: any, method: 'get', path: string) => {
   app[method](path, async (req: any, res: any) => {
-    const response: ImagesResponse = {
-      images: [],
-      directories: []
-    }
+    const response: ImagesResponse = { images: [], directories: [] }
 
     const objects = await fs.promises.readdir(`./data/images${req.query.directory}`, {})
     for (const obj of objects) {
