@@ -24,15 +24,15 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const tilesStore = appStores.tilesStore
+    const objectsStore = appStores.objectsStore
 
     const bytes = computed<string>(() => {
-      if (!tilesStore.showingObject.value) return ''
-      return bytesCalculate(tilesStore.showingObject.value.size)
+      if (!objectsStore.showingObject.value) return ''
+      return bytesCalculate(objectsStore.showingObject.value.size)
     })
 
     return {
-      ...tilesStore,
+      ...objectsStore,
       bytes
     }
   }
