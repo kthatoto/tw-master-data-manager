@@ -11,3 +11,9 @@ export interface BasicObject {
   size: number
   raw: string | null
 }
+
+export type Currency = 'gold'
+export interface Value {
+  currency: Currency
+  amount: number
+}
