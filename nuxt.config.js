@@ -40,7 +40,10 @@ export default {
   ],
   axios: {},
   build: {
-    transpile: [/^element-ui/]
+    transpile: [/^element-ui/],
+    extend (config) {
+      config.resolve.alias['~domains'] = path.join(__dirname, 'domains')
+    }
   },
   serverMiddleware: ['~~/server/']
 }
