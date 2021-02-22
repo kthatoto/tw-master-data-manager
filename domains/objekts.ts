@@ -1,15 +1,10 @@
-import { Directory } from '~domains/index.ts'
+import { Directory, BasicObject } from '~domains/index.ts'
 
-export type ObjektType = 'normal' | 'chest'
+export type ObjektCategory = 'normal' | 'chest'
 
-export interface Objekt {
-  fullPath: string
-  name: string
+export interface Objekt extends BasicObject {
   collision: boolean
   imagePath: string
-  isFile: true
-  size: number
-  raw: string | null
 }
 
 export interface ObjektJson {
