@@ -11,7 +11,6 @@ export interface Item extends BasicObject {
 
 export interface ItemJson {
   name: string
-  collision: boolean
   imagePath: string
   category: string
   subCategory: string
