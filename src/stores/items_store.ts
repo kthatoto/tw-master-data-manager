@@ -206,6 +206,10 @@ export const buildItemsStore = (stores: {
     setTimeout(() => {
       refs.itemNameEditor.focus()
       itemEditing.name = o.name
+      itemEditing.category = o.category
+      itemEditing.subCategory = o.subCategory
+      itemEditing.value = o.value
+      itemEditing.effect = o.effect
     })
   }
   const itemEditable = computed<boolean>(() => {

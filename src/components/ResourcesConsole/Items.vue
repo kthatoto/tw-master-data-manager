@@ -44,6 +44,12 @@
         el-input-number(v-model="itemCreating.value.amount" placeholder="価値")
         el-select(v-model="itemCreating.value.currency" placeholder="通貨")
           el-option(v-for="currency in valueCurrencies" :key="currency" :label="currency" :value="currency")
+        p 効果
+        el-input-number(v-model="itemCreating.effect.amount" placeholder="効果量")
+        el-select(v-model="itemCreating.effect.amountType" placeholder="効果量単位")
+          el-option(v-for="(label, key) in itemEffectAmountTypeLabels" :key="key" :label="label" :value="key")
+        p 効果時間(秒)
+        el-input-number(v-model="itemCreating.effect.durationSecond" placeholder="効果時間")
         el-button(type="primary" @click="createItem" :disabled="!itemCreatable") 作成
       .form__column.-right
         Images.form__images(:editable="false")
@@ -59,6 +65,23 @@
     .form
       .form__column.-left
         el-input(v-model="itemEditing.name" ref="itemNameEditor")
+        p カテゴリ
+        el-select(v-model="itemEditing.category" placeholder="カテゴリ")
+          el-option(v-for="(label, category) in itemCategoryLabels" :key="category" :label="label" :value="category")
+        p サブカテゴリ
+        el-select(v-model="itemEditing.subCategory" placeholder="サブカテゴリ")
+          el-option(v-for="(label, subCategory) in itemSubCategoryLabels" :key="subCategory" :label="label" :value="subCategory")
+        p 価値
+        el-input-number(v-model="itemEditing.value.amount" placeholder="価値")
+        el-select(v-model="itemEditing.value.currency" placeholder="通貨")
+          el-option(v-for="currency in valueCurrencies" :key="currency" :label="currency" :value="currency")
+        p 効果
+        el-input-number(v-model="itemEditing.effect.amount" placeholder="効果量")
+        el-select(v-model="itemEditing.effect.amountType" placeholder="効果量単位")
+          el-option(v-for="(label, key) in itemEffectAmountTypeLabels" :key="key" :label="label" :value="key")
+        p 効果時間(秒)
+        el-input-number(v-model="itemEditing.effect.durationSecond" placeholder="効果時間")
+
         el-button(type="primary" @click="editItem" :disabled="!itemEditable") 変更
       .form__column.-right
         Images.form__images(:editable="false")
@@ -76,7 +99,7 @@ import { appStores } from '@/stores/appStores.ts'
 import Images from '@/components/MapResourcesConsole/Images.vue'
 import ConsoleImage from '@/components/atoms/ConsoleImage.vue'
 import { valueCurrencies } from '~domains/index.ts'
-import { itemCategoryLabels, itemSubCategoryLabels } from '~domains/items.ts'
+import { itemCategoryLabels, itemSubCategoryLabels, itemEffectAmountTypeLabels } from '~domains/items.ts'
 
 export default defineComponent({
   components: { Images, ConsoleImage },
@@ -91,7 +114,8 @@ export default defineComponent({
       ...itemsStore,
       valueCurrencies,
       itemCategoryLabels,
-      itemSubCategoryLabels
+      itemSubCategoryLabels,
+      itemEffectAmountTypeLabels
     }
   }
 })

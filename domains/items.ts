@@ -47,6 +47,10 @@ export const itemsSubCategoryRequiredEffectKeys: { [key in ItemSubCategory]: Ite
   'materials': []
 }
 
+export const itemEffectAmountTypeLabels = {
+  'absolute': '絶対値',
+  'percentage': '割合'
+}
 export const itemEffectAmountTypes = ['absolute', 'percentage']
 export type ItemEffectAmountType = 'absolute' | 'percentage'
 export interface ItemEffect {
