@@ -34,10 +34,16 @@
     .form
       .form__column.-left
         el-input(v-model="itemCreating.name" ref="itemCreateInput")
+        p カテゴリ
         el-select(v-model="itemCreating.category" placeholder="カテゴリ")
           el-option(v-for="(label, category) in itemCategoryLabels" :key="category" :label="label" :value="category")
+        p サブカテゴリ
         el-select(v-model="itemCreating.subCategory" placeholder="サブカテゴリ")
           el-option(v-for="(label, subCategory) in itemSubCategoryLabels" :key="subCategory" :label="label" :value="subCategory")
+        p 価値
+        el-input-number(v-model="itemCreating.value.amount" placeholder="価値")
+        el-select(v-model="itemCreating.value.currency" placeholder="通貨")
+          el-option(v-for="currency in valueCurrencies" :key="currency" :label="currency" :value="currency")
         el-button(type="primary" @click="createItem" :disabled="!itemCreatable") 作成
       .form__column.-right
         Images.form__images(:editable="false")
@@ -69,6 +75,7 @@ import { defineComponent, onMounted } from '@vue/composition-api'
 import { appStores } from '@/stores/appStores.ts'
 import Images from '@/components/MapResourcesConsole/Images.vue'
 import ConsoleImage from '@/components/atoms/ConsoleImage.vue'
+import { valueCurrencies } from '~domains/index.ts'
 import { itemCategoryLabels, itemSubCategoryLabels } from '~domains/items.ts'
 
 export default defineComponent({
@@ -82,6 +89,7 @@ export default defineComponent({
 
     return {
       ...itemsStore,
+      valueCurrencies,
       itemCategoryLabels,
       itemSubCategoryLabels
     }
@@ -100,6 +108,8 @@ console(items)
         flex: 1
         padding-right: 20px
         border-right: 1px solid lightgray
+        p, .el-select
+          margin-bottom: 10px
       &.-right
         width: 400px
     &__images
