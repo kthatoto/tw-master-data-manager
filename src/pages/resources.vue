@@ -23,7 +23,7 @@ export default defineComponent({
     flex-direction: column
   &__content
     flex: 1
-    width: 650px
+    width: 750px
     border-right: 1px solid gray
 </style>
 

@@ -44,6 +44,7 @@ export default defineComponent({
     height: 100%
     display: flex
   .list
+    width: 400px
     border-right: 1px solid lightgray
   .detail
     flex: 1
