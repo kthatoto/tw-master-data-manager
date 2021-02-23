@@ -17,6 +17,7 @@ export default defineComponent({
 <style lang="stylus" scoped>
 .resources
   display: flex
+  background-color: lightgray
   &__wrapper
     display: flex
     flex-direction: column
