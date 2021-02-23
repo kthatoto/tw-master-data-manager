@@ -1,7 +1,7 @@
 <template lang="pug">
-img(v-if="raw" :src="raw" @dblclick="dblclick" @click.right.prevent="clickRight"
+img(v-if="raw" :src="raw" @dblclick="_dblclick" @click.right.prevent="_clickRight"
   :style="{ width, height }")
-.noimage(v-else @dblclick="dblclick" @click.right.prevent="clickRight"
+.noimage(v-else @dblclick="_dblclick" @click.right.prevent="_clickRight"
   :style="{ width, height, lineHeight }") No Image
 </template>
 
@@ -40,6 +40,18 @@ export default defineComponent({
       required: false,
       default: null
     }
+  },
+  setup (props) {
+    const _dblclick = () => {
+      if (props.dblclick) props.dblclick()
+    }
+    const _clickRight = () => {
+      if (props.clickRight) props.clickRight()
+    }
+
+    return {
+      _dblclick, _clickRight
+    }
   }
 })
 </script>
@@ -56,4 +68,6 @@ img, .noimage
   text-align: center
   font-weight: bold
   font-size: 12px
+  height: 100px
+  line-height: 100px
 </style>

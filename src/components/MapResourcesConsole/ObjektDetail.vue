@@ -1,6 +1,6 @@
 <template lang="pug">
 .detail
-  ConsoleImage(:raw="showingObjekt.raw" width="100%" height="300px" lineHeight="300px")
+  ConsoleImage(:raw="showingObjekt.raw" width="100%")
   h3 {{ showingObjekt.name }}
   p サイズ：{{ bytes }}
   p 衝突：{{ showingObjekt.collision ? 'あり' : 'なし' }}
