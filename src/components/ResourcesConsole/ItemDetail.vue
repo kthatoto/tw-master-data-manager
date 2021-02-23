@@ -35,6 +35,5 @@ export default defineComponent({
 </script>
 
 <style lang="stylus" scoped>
-.detail
-  padding: 10px
+console-detail()
 </style>

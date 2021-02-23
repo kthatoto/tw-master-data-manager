@@ -26,7 +26,3 @@ export default defineComponent({
     width: 750px
     border-right: 1px solid gray
 </style>
-
-<style lang="stylus" scoped>
-console-detail()
-</style>
