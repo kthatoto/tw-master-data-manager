@@ -34,6 +34,10 @@
     .form
       .form__column.-left
         el-input(v-model="itemCreating.name" ref="itemCreateInput")
+        el-select(v-model="itemCreating.category" placeholder="カテゴリ")
+          el-option(v-for="(label, category) in itemCategoryLabels" :key="category" :label="label" :value="category")
+        el-select(v-model="itemCreating.subCategory" placeholder="サブカテゴリ")
+          el-option(v-for="(label, subCategory) in itemSubCategoryLabels" :key="subCategory" :label="label" :value="subCategory")
         el-button(type="primary" @click="createItem" :disabled="!itemCreatable") 作成
       .form__column.-right
         Images.form__images(:editable="false")
@@ -65,6 +69,7 @@ import { defineComponent, onMounted } from '@vue/composition-api'
 import { appStores } from '@/stores/appStores.ts'
 import Images from '@/components/MapResourcesConsole/Images.vue'
 import ConsoleImage from '@/components/atoms/ConsoleImage.vue'
+import { itemCategoryLabels, itemSubCategoryLabels } from '~domains/items.ts'
 
 export default defineComponent({
   components: { Images, ConsoleImage },
@@ -75,7 +80,11 @@ export default defineComponent({
       itemsStore.fetchItems()
     })
 
-    return { ...itemsStore }
+    return {
+      ...itemsStore,
+      itemCategoryLabels,
+      itemSubCategoryLabels
+    }
   }
 })
 </script>

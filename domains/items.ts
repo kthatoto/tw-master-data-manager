@@ -1,7 +1,7 @@
 import { Directory, BasicObject, Value } from '~domains/index.ts'
 
 export type ItemCategory = 'supplies' | 'materials' | 'equipments'
-export const ItemCategoryLabels = {
+export const itemCategoryLabels = {
   'supplies': '消耗品',
   'materials': '素材',
   'equipments': '装備品'
@@ -24,10 +24,10 @@ export const itemSubCategoryLabels = {
   'buff.maxhp': 'MaxHP一時上昇',
   'buff.maxmp': 'MaxMP一時上昇',
   'buff.atk': 'ATK一時上昇',
-  'buff.def': 'DEF',
-  'buff.agility': 'Agility',
-  'buff.accuracy': 'Accuracy',
-  'buff.luck': 'Luck',
+  'buff.def': 'DEF一時上昇',
+  'buff.agility': 'Agility一時上昇',
+  'buff.accuracy': 'Accuracy一時上昇',
+  'buff.luck': 'Luck一時上昇',
   'buff.exp': '獲得経験値UP',
   'materials': '素材'
 }
