@@ -68,8 +68,8 @@
 import { defineComponent, onMounted } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import ObjektDetail from '@/components/Console/ObjektDetail.vue'
-import Images from '@/components/Console/Images.vue'
+import ObjektDetail from '@/components/MapResourcesConsole/ObjektDetail.vue'
+import Images from '@/components/MapResourcesConsole/Images.vue'
 import ConsoleImage from '@/components/atoms/ConsoleImage.vue'
 
 export default defineComponent({

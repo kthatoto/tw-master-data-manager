@@ -14,9 +14,9 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import Images from '@/components/Console/Images.vue'
-import Tiles from '@/components/Console/Tiles.vue'
-import Objekts from '@/components/Console/Objekts.vue'
+import Images from '@/components/MapResourcesConsole/Images.vue'
+import Tiles from '@/components/MapResourcesConsole/Tiles.vue'
+import Objekts from '@/components/MapResourcesConsole/Objekts.vue'
 
 export default defineComponent({
   components: { Images, Tiles, Objekts }
