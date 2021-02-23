@@ -1,16 +1,16 @@
 <template lang="pug">
 .resources
   .resources__wrapper
-    ResourcesEditor.resources__content
+    ResourcesConsole.resources__content
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import ResourcesEditor from '@/components/ResourcesEditor.vue'
+import ResourcesConsole from '@/components/ResourcesConsole.vue'
 
 export default defineComponent({
-  components: { ResourcesEditor }
+  components: { ResourcesConsole }
 })
 </script>
 
