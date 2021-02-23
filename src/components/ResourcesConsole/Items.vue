@@ -34,7 +34,6 @@
     .form
       .form__column.-left
         el-input(v-model="itemCreating.name" ref="itemCreateInput")
-        el-checkbox(v-model="itemCreating.collision") 衝突
         el-button(type="primary" @click="createItem" :disabled="!itemCreatable") 作成
       .form__column.-right
         Images.form__images(:editable="false")
@@ -50,7 +49,6 @@
     .form
       .form__column.-left
         el-input(v-model="itemEditing.name" ref="itemNameEditor")
-        el-checkbox(v-model="itemEditing.collision") 衝突
         el-button(type="primary" @click="editItem" :disabled="!itemEditable") 変更
       .form__column.-right
         Images.form__images(:editable="false")
