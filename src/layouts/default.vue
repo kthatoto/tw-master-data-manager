@@ -1,8 +1,8 @@
 <template lang="pug">
 .default
   .header
-    nuxt-link(to="/") Map
-    nuxt-link(to="/resources") Resources
+    a(href="/") Map
+    a(href="/resources") Resources
   Nuxt.main
 </template>
 
