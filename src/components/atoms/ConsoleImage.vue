@@ -1,7 +1,7 @@
 <template lang="pug">
-img(v-if="raw" :src="raw" @dblclick="_dblclick" @click.right.prevent="_clickRight"
+img(v-if="raw" :src="raw" @dblclick="dblclick" @click.right.prevent="clickRight"
   :style="{ width, height }")
-.noimage(v-else @dblclick="_dblclick" @click.right.prevent="_clickRight"
+.noimage(v-else @dblclick="dblclick" @click.right.prevent="clickRight"
   :style="{ width, height, lineHeight }") No Image
 </template>
 
@@ -12,16 +12,6 @@ export default defineComponent({
   props: {
     raw: {
       type: String,
-      required: false,
-      default: null
-    },
-    dblclick: {
-      type: Function,
-      required: false,
-      default: null
-    },
-    clickRight: {
-      type: Function,
       required: false,
       default: null
     },
@@ -41,16 +31,16 @@ export default defineComponent({
       default: null
     }
   },
-  setup (props) {
-    const _dblclick = () => {
-      if (props.dblclick) props.dblclick()
+  setup (_, context) {
+    const dblclick = () => {
+      context.emit('dblclick')
     }
-    const _clickRight = () => {
-      if (props.clickRight) props.clickRight()
+    const clickRight = () => {
+      context.emit('clickRight')
     }
 
     return {
-      _dblclick, _clickRight
+      dblclick, clickRight
     }
   }
 })
