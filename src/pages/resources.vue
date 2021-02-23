@@ -23,6 +23,10 @@ export default defineComponent({
     flex-direction: column
   &__content
     flex: 1
-    width: 600px
+    width: 650px
     border-right: 1px solid gray
+</style>
+
+<style lang="stylus" scoped>
+console-detail()
 </style>
