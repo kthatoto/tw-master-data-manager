@@ -3,8 +3,17 @@ import axios, { AxiosResponse } from 'axios'
 import { Message } from 'element-ui'
 
 import { ImagesStore } from '@/stores/images_store.ts'
-import { Directory } from '~domains/index.ts'
-import { Item, ItemsResponse } from '~domains/items.ts'
+import { Directory, Value, valueCurrencies } from '~domains/index.ts'
+import {
+  Item,
+  ItemsResponse,
+  ItemCategory,
+  ItemSubCategory,
+  ItemEffect,
+  ItemEffectKey,
+  itemEffectAmountTypes,
+  itemsSubCategoryRequiredEffectKeys
+} from '~domains/items.ts'
 
 export const buildItemsStore = (stores: {
   imagesStore: ImagesStore
@@ -64,25 +73,55 @@ export const buildItemsStore = (stores: {
   const itemCreating = reactive<{
     flag: boolean
     name: string
+    category?: ItemCategory
+    subCategory?: ItemSubCategory
+    value: Value
+    effect: ItemEffect
   }>({
     flag: false,
-    name: ''
+    name: '',
+    category: undefined,
+    subCategory: undefined,
+    value: {
+      currency: 'gold',
+      amount: 10
+    },
+    effect: {
+      amount: undefined,
+      amountType: 'absolute',
+      durationSecond: undefined
+    }
   })
   const openItemCreateModal = (refs: any) => {
     itemCreating.flag = true
     itemCreating.name = ''
+    itemCreating.category = undefined
+    itemCreating.subCategory = undefined
+    itemCreating.value = { currency: 'gold', amount: 10 }
+    itemCreating.effect = { amount: undefined, amountType: 'absolute', durationSecond: undefined }
     setTimeout(() => refs.itemCreateInput.focus(), 500)
   }
   const itemCreatable = computed<boolean>(() => {
     if (itemCreating.name.length === 0) return false
     if (!stores.imagesStore.selectingImagePath.value) return false
+    if (!itemCreating.category) return false
+    if (!itemCreating.subCategory) return false
+    if (itemCreating.value.amount < 0) return false
+    if (!valueCurrencies.includes(itemCreating.value.currency)) return false
+    if (itemCreating.effect.amountType && !itemEffectAmountTypes.includes(itemCreating.effect.amountType)) return false
+    const requiredEffectKeys: ItemEffectKey[] = itemsSubCategoryRequiredEffectKeys[itemCreating.subCategory]
+    if (!requiredEffectKeys.every((key: ItemEffectKey) => itemCreating.effect[key])) return false
     return true
   })
   const createItem = async () => {
     if (!itemCreatable.value) return
     const params = {
       name: itemCreating.name,
-      imagePath: stores.imagesStore.selectingImagePath.value
+      imagePath: stores.imagesStore.selectingImagePath.value,
+      category: itemCreating.category,
+      subCategory: itemCreating.subCategory,
+      value: itemCreating.value,
+      effect: itemCreating.effect
     }
     const res = await axios.post(`/api/items?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
@@ -140,10 +179,25 @@ export const buildItemsStore = (stores: {
     flag: boolean
     beforeName: string
     name: string
+    category?: ItemCategory
+    subCategory?: ItemSubCategory
+    value: Value
+    effect: ItemEffect
   }>({
     flag: false,
     beforeName: '',
-    name: ''
+    name: '',
+    category: undefined,
+    subCategory: undefined,
+    value: {
+      currency: 'gold',
+      amount: 10
+    },
+    effect: {
+      amount: undefined,
+      amountType: 'absolute',
+      durationSecond: undefined
+    }
   })
   const openItemEditModal = (refs: any, o: Item) => {
     itemEditing.flag = true
@@ -157,14 +211,25 @@ export const buildItemsStore = (stores: {
   const itemEditable = computed<boolean>(() => {
     if (itemEditing.name.length === 0) return false
     if (!stores.imagesStore.selectingImagePath.value) return false
+    if (!itemEditing.category) return false
+    if (!itemEditing.subCategory) return false
+    if (itemEditing.value.amount < 0) return false
+    if (!valueCurrencies.includes(itemEditing.value.currency)) return false
+    if (itemCreating.effect.amountType && !itemEffectAmountTypes.includes(itemCreating.effect.amountType)) return false
+    const requiredEffectKeys: ItemEffectKey[] = itemsSubCategoryRequiredEffectKeys[itemEditing.subCategory]
+    if (!requiredEffectKeys.every((key: ItemEffectKey) => itemEditing.effect[key])) return false
     return true
   })
   const editItem = async () => {
-    if (itemEditing.name.length === 0) return
+    if (!itemEditable.value) return
     const params = {
       beforeName: itemEditing.beforeName,
       name: itemEditing.name,
-      imagePath: stores.imagesStore.selectingImagePath.value
+      imagePath: stores.imagesStore.selectingImagePath.value,
+      category: itemEditing.category,
+      subCategory: itemEditing.subCategory,
+      value: itemEditing.value,
+      effect: itemEditing.effect
     }
     const res = await axios.patch(`/api/items?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {

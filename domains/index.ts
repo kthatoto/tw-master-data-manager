@@ -12,6 +12,7 @@ export interface BasicObject {
   raw: string | null
 }
 
+export const valueCurrencies = ['gold']
 export type Currency = 'gold'
 export interface Value {
   currency: Currency
