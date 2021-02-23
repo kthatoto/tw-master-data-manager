@@ -1,7 +1,8 @@
 <template lang="pug">
 .default
   .header
-    nuxt-link(to="/") Home
+    a(href="/") Map
+    a(href="/resources") Resources
   Nuxt.main
 </template>
 
@@ -25,7 +26,7 @@
   a
     color: white
     display: inline-block
-    width: 100px
+    width: 120px
     height: 50px
     line-height: 50px
     text-align: center

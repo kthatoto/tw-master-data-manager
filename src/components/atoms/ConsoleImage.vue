@@ -15,16 +15,6 @@ export default defineComponent({
       required: false,
       default: null
     },
-    dblclick: {
-      type: Function,
-      required: false,
-      default: null
-    },
-    clickRight: {
-      type: Function,
-      required: false,
-      default: null
-    },
     width: {
       type: String,
       required: false,
@@ -39,6 +29,18 @@ export default defineComponent({
       type: String,
       required: false,
       default: null
+    }
+  },
+  setup (_, context) {
+    const dblclick = () => {
+      context.emit('dblclick')
+    }
+    const clickRight = () => {
+      context.emit('clickRight')
+    }
+
+    return {
+      dblclick, clickRight
     }
   }
 })
@@ -56,4 +58,6 @@ img, .noimage
   text-align: center
   font-weight: bold
   font-size: 12px
+  height: 100px
+  line-height: 100px
 </style>

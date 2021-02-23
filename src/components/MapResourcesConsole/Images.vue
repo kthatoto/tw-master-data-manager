@@ -50,7 +50,7 @@
 import { defineComponent, onMounted } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import ImageDetail from '@/components/Console/ImageDetail.vue'
+import ImageDetail from '@/components/MapResourcesConsole/ImageDetail.vue'
 
 export default defineComponent({
   components: { ImageDetail },

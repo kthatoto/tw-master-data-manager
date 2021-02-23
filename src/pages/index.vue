@@ -1,17 +1,17 @@
 <template lang="pug">
 .index
-  Editor.editor
-  Console.console
+  MapEditor.editor
+  MapResourcesConsole.console
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import Editor from '@/components/Editor.vue'
-import Console from '@/components/Console.vue'
+import MapEditor from '@/components/MapEditor.vue'
+import MapResourcesConsole from '@/components/MapResourcesConsole.vue'
 
 export default defineComponent({
-  components: { Editor, Console }
+  components: { MapEditor, MapResourcesConsole }
 })
 </script>
 
