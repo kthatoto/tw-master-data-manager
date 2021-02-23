@@ -1,18 +1,10 @@
 import { Directory, BasicObject, Value } from '~domains/index.ts'
 
 export type ItemCategory = 'supplies' | 'materials' | 'equipments'
-export const itemSubCategoryLabels = {
-  'potions.healhp': 'HP回復薬',
-  'potions.healmp': 'MP回復薬',
-  'buff.maxhp': 'MaxHP一時上昇',
-  'buff.maxmp': 'MaxMP一時上昇',
-  'buff.atk': 'ATK一時上昇',
-  'buff.def': 'DEF',
-  'buff.agility': 'Agility',
-  'buff.accuracy': 'Accuracy',
-  'buff.luck': 'Luck',
-  'buff.exp': '獲得経験値UP',
-  'materials': '素材'
+export const ItemCategoryLabels = {
+  'supplies': '消耗品',
+  'materials': '素材',
+  'equipments': '装備品'
 }
 export type ItemSubCategory =
   'potions.healhp' |
@@ -26,6 +18,19 @@ export type ItemSubCategory =
   'buff.luck' |
   'buff.exp' |
   'materials'
+export const itemSubCategoryLabels = {
+  'potions.healhp': 'HP回復薬',
+  'potions.healmp': 'MP回復薬',
+  'buff.maxhp': 'MaxHP一時上昇',
+  'buff.maxmp': 'MaxMP一時上昇',
+  'buff.atk': 'ATK一時上昇',
+  'buff.def': 'DEF',
+  'buff.agility': 'Agility',
+  'buff.accuracy': 'Accuracy',
+  'buff.luck': 'Luck',
+  'buff.exp': '獲得経験値UP',
+  'materials': '素材'
+}
 
 export type ItemEffectKey = 'amount' | 'amountType' | 'durationSecond'
 export const itemsSubCategoryRequiredEffectKeys: { [key in ItemSubCategory]: ItemEffectKey[] } = {
@@ -43,9 +48,10 @@ export const itemsSubCategoryRequiredEffectKeys: { [key in ItemSubCategory]: Ite
 }
 
 export const itemEffectAmountTypes = ['absolute', 'percentage']
+export type ItemEffectAmountType = 'absolute' | 'percentage'
 export interface ItemEffect {
   amount?: number
-  amountType?: 'absolute' | 'percentage'
+  amountType?: ItemEffectAmountType
   durationSecond?: number
 }
 export interface Item extends BasicObject {
