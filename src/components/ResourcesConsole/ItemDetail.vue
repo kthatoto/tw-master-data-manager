@@ -5,7 +5,7 @@
   p サイズ：{{ bytes }}
   p 画像：{{ showingItem.imagePath }}
   .buttons
-    el-button(type="primary" @click="openItemEditModal(refs, showingItem)") 変更
+    el-button(type="primary" @click="openItemEditModal(showingItem)") 変更
     el-button(type="danger" @click="confirmDelete(showingItem.name)") 削除
 </template>
 

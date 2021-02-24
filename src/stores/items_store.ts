@@ -199,12 +199,11 @@ export const buildItemsStore = (stores: {
       durationSecond: undefined
     }
   })
-  const openItemEditModal = (refs: any, o: Item) => {
+  const openItemEditModal = (o: Item) => {
     itemEditing.flag = true
     itemEditing.beforeName = o.name
     stores.imagesStore.setSelection(o.imagePath, !!o.raw)
     setTimeout(() => {
-      refs.itemNameEditor.focus()
       itemEditing.name = o.name
       itemEditing.category = o.category
       itemEditing.subCategory = o.subCategory
