@@ -4,7 +4,7 @@ import { Message } from 'element-ui'
 
 import { ImagesStore } from '@/stores/images_store.ts'
 import { Directory } from '~domains/index.ts'
-import { Objekt, ObjektsResponse } from '~domains/objekts.ts'
+import { Objekt, ObjektsResponse, ObjektCategory, ObjektChest } from '~domains/objekts.ts'
 
 export const buildObjektsStore = (stores: {
   imagesStore: ImagesStore
@@ -65,20 +65,27 @@ export const buildObjektsStore = (stores: {
     flag: boolean
     name: string
     collision: boolean
+    category: ObjektCategory
+    chest?: ObjektChest
   }>({
     flag: false,
     name: '',
-    collision: false
+    collision: false,
+    category: 'normal',
+    chest: undefined
   })
   const openObjektCreateModal = (refs: any) => {
     objektCreating.flag = true
     objektCreating.name = ''
     objektCreating.collision = false
+    objektCreating.category = 'normal'
+    objektCreating.chest = undefined
     setTimeout(() => refs.objektCreateInput.focus(), 500)
   }
   const objektCreatable = computed<boolean>(() => {
     if (objektCreating.name.length === 0) return false
     if (!stores.imagesStore.selectingImagePath.value) return false
+    if (objektCreating.category === 'chest' && !objektCreating.chest) return false
     return true
   })
   const createObjekt = async () => {
@@ -86,7 +93,9 @@ export const buildObjektsStore = (stores: {
     const params = {
       name: objektCreating.name,
       imagePath: stores.imagesStore.selectingImagePath.value,
-      collision: objektCreating.collision
+      collision: objektCreating.collision,
+      category: objektCreating.category,
+      chest: objektCreating.chest
     }
     const res = await axios.post(`/api/objekts?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {
@@ -145,16 +154,22 @@ export const buildObjektsStore = (stores: {
     beforeName: string
     name: string
     collision: boolean
+    category: ObjektCategory
+    chest?: ObjektChest
   }>({
     flag: false,
     beforeName: '',
     name: '',
-    collision: false
+    collision: false,
+    category: 'normal',
+    chest: undefined
   })
   const openObjektEditModal = (refs: any, o: Objekt) => {
     objektEditing.flag = true
     objektEditing.beforeName = o.name
     objektEditing.collision = o.collision
+    objektEditing.category = o.category
+    objektEditing.chest = o.chest
     stores.imagesStore.setSelection(o.imagePath, !!o.raw)
     setTimeout(() => {
       refs.objektNameEditor.focus()
@@ -164,6 +179,7 @@ export const buildObjektsStore = (stores: {
   const objektEditable = computed<boolean>(() => {
     if (objektEditing.name.length === 0) return false
     if (!stores.imagesStore.selectingImagePath.value) return false
+    if (objektEditing.category === 'chest' && !objektEditing.chest) return false
     return true
   })
   const editObjekt = async () => {
@@ -172,7 +188,9 @@ export const buildObjektsStore = (stores: {
       beforeName: objektEditing.beforeName,
       name: objektEditing.name,
       collision: objektEditing.collision,
-      imagePath: stores.imagesStore.selectingImagePath.value
+      imagePath: stores.imagesStore.selectingImagePath.value,
+      category: objektEditing.category,
+      chest: objektEditing.chest
     }
     const res = await axios.patch(`/api/objekts?directory=${state.currentDirectory}`, params)
     if (res.data && res.data.message) {

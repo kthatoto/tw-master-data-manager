@@ -10,14 +10,6 @@ export interface Objekt extends BasicObject {
   collision: boolean
   imagePath: string
   category: ObjektCategory
-  chest: 
-}
-
-export interface ObjektJson {
-  name: string
-  collision: boolean
-  imagePath: string
-  category: ObjektCategory
   chest?: {
     items: {
       itemPath: string
@@ -26,6 +18,23 @@ export interface ObjektJson {
     }[]
     respawnDurationSecond: number
   }
+}
+
+export interface ObjektChest {
+  items: {
+    itemPath: string
+    minAmount: number
+    maxAmount: number
+  }[]
+  respawnDurationSecond: number
+}
+
+export interface ObjektJson {
+  name: string
+  collision: boolean
+  imagePath: string
+  category: ObjektCategory
+  chest?: ObjektChest
 }
 
 export interface ObjektsResponse {

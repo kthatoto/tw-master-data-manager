@@ -1,13 +1,15 @@
 import fs from 'fs'
 
-import { ObjektJson } from '~domains/objekts.ts'
+import { ObjektJson, ObjektCategory, ObjektChest } from '~domains/objekts.ts'
 
 export default (app: any, method: 'post', path: string) => {
   app[method]('/objekts', async (req: any, res: any) => {
     const name: string = req.body.name
     const collision: boolean = req.body.collision
     const imagePath: string = req.body.imagePath
-    const objektJson: ObjektJson = { name, collision, imagePath }
+    const category: ObjektCategory = req.body.category
+    const chest: ObjektChest | undefined = req.body.chest
+    const objektJson: ObjektJson = { name, collision, imagePath, category, chest }
     const data = JSON.stringify(objektJson)
 
     try {
