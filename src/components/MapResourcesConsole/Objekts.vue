@@ -38,6 +38,21 @@
       .form__column.-left
         el-input(v-model="objektCreating.name" ref="objektCreateInput")
         el-checkbox(v-model="objektCreating.collision") 衝突
+        p カテゴリ
+        el-select(v-model="objektCreating.category" @change="onChangeObjektCreatingCategory")
+          el-option(v-for="(label, category) in objektCategoryLabels" :key="category" :label="label" :value="category")
+        template(v-if="objektCreating.category === 'chest'")
+          p チェスト内容
+          .item(v-for="(item, i) in objektCreating.chest.items" :key="i")
+            p
+              label Itemパス
+              el-input(:value="item.itemPath" @input="e => onChangeObjektCreatingChestItems(e, i, 'itemPath')")
+            p
+              label 最小量
+              el-input-number(:value="item.minAmount" @input="e => onChangeObjektCreatingChestItems(e, i, 'minAmount')")
+            p
+              label 最大量
+              el-input-number(:value="item.maxAmount" @input="e => onChangeObjektCreatingChestItems(e, i, 'maxAmount')")
         el-button(type="primary" @click="createObjekt" :disabled="!objektCreatable") 作成
       .form__column.-right
         Images.form__images(:editable="false")
@@ -54,6 +69,21 @@
       .form__column.-left
         el-input(v-model="objektEditing.name" ref="objektNameEditor")
         el-checkbox(v-model="objektEditing.collision") 衝突
+        p カテゴリ
+        el-select(v-model="objektEditing.category" @change="onChangeObjektEditingCategory")
+          el-option(v-for="(label, category) in objektCategoryLabels" :key="category" :label="label" :value="category")
+        template(v-if="objektEditing.category === 'chest'")
+          p チェスト内容
+          .item(v-for="(item, i) in objektEditing.chest.items" :key="i")
+            p
+              label Itemパス
+              el-input(:value="item.itemPath" @input="e => onChangeObjektEditingChestItems(e, i, 'itemPath')")
+            p
+              label 最小量
+              el-input-number(:value="item.minAmount" @input="e => onChangeObjektEditingChestItems(e, i, 'minAmount')")
+            p
+              label 最大量
+              el-input-number(:value="item.maxAmount" @input="e => onChangeObjektEditingChestItems(e, i, 'maxAmount')")
         el-button(type="primary" @click="editObjekt" :disabled="!objektEditable") 変更
       .form__column.-right
         Images.form__images(:editable="false")
@@ -71,6 +101,7 @@ import { appStores } from '@/stores/appStores.ts'
 import ObjektDetail from '@/components/MapResourcesConsole/ObjektDetail.vue'
 import Images from '@/components/MapResourcesConsole/Images.vue'
 import ConsoleImage from '@/components/atoms/ConsoleImage.vue'
+import { objektCategoryLabels } from '~domains/objekts.ts'
 
 export default defineComponent({
   components: { ObjektDetail, Images, ConsoleImage },
@@ -81,7 +112,48 @@ export default defineComponent({
       objektsStore.fetchObjekts()
     })
 
-    return { ...objektsStore }
+    const onChangeObjektCreatingCategory = () => {
+      if (objektsStore.objektCreating.category !== 'chest') {
+        objektsStore.objektCreating.chest = undefined
+        return
+      }
+      objektsStore.objektCreating.chest = {
+        items: [{ itemPath: '', minAmount: 1, maxAmount: 1 }],
+        respawnDurationSecond: 24 * 60 * 60
+      }
+    }
+    const onChangeObjektCreatingChestItems = (newValue: any, i: number, key: 'itemPath' | 'minAmount' | 'maxAmount') => {
+      if (!objektsStore.objektCreating.chest) return
+      if (!objektsStore.objektCreating.chest.items[i]) return
+      // @ts-ignore
+      objektsStore.objektCreating.chest.items[i][key] = newValue
+    }
+
+    const onChangeObjektEditingCategory = () => {
+      if (objektsStore.objektEditing.category !== 'chest') {
+        objektsStore.objektEditing.chest = undefined
+        return
+      }
+      objektsStore.objektEditing.chest = {
+        items: [{ itemPath: '', minAmount: 1, maxAmount: 1 }],
+        respawnDurationSecond: 24 * 60 * 60
+      }
+    }
+    const onChangeObjektEditingChestItems = (newValue: any, i: number, key: 'itemPath' | 'minAmount' | 'maxAmount') => {
+      if (!objektsStore.objektEditing.chest) return
+      if (!objektsStore.objektEditing.chest.items[i]) return
+      // @ts-ignore
+      objektsStore.objektEditing.chest.items[i][key] = newValue
+    }
+
+    return {
+      ...objektsStore,
+      objektCategoryLabels,
+      onChangeObjektCreatingCategory,
+      onChangeObjektCreatingChestItems,
+      onChangeObjektEditingCategory,
+      onChangeObjektEditingChestItems
+    }
   }
 })
 </script>
@@ -97,6 +169,8 @@ console(objekts)
         flex: 1
         padding-right: 20px
         border-right: 1px solid lightgray
+        p, .el-select
+          margin-bottom: 10px
       &.-right
         width: 400px
     &__images
