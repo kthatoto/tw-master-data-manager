@@ -47,6 +47,8 @@ export default defineComponent({
 </script>
 
 <style lang="stylus" scoped>
+img
+  image-rendering: pixelated
 img, .noimage
   border: 1px solid lightgray
   object-fit: contain
