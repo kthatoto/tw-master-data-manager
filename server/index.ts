@@ -6,6 +6,8 @@ import tilesHandle from './tiles/index'
 import objektsHandle from './objekts/index'
 import itemsHandle from './items/index'
 
+import createDirectory from './createDirectory'
+
 const app = express()
 
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -15,6 +17,8 @@ imagesHandle(app)
 tilesHandle(app)
 objektsHandle(app)
 itemsHandle(app)
+
+createDirectory(app, 'post', '/directories')
 
 export default {
   path: '/api/',
