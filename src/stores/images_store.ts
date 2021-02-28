@@ -27,7 +27,11 @@ export const buildImagesStore = () => {
     selectingName: undefined
   })
 
-  const fetchImages = async () => {
+  const directory = computed<string>(() => {
+    return 'images' + state.currentDirectory
+  })
+
+  const fetchResources = async () => {
     const res: AxiosResponse<ImagesResponse> = await axios.get(`/api/images?directory=${state.currentDirectory}`)
     const data: ImagesResponse = res.data
     state.images = data.images
@@ -40,38 +44,7 @@ export const buildImagesStore = () => {
     params.append('filename', file.name)
     const headers = { 'content-type': 'multipart/form-data' }
     await axios.post(`/api/images?directory=${state.currentDirectory}`, params, { headers })
-    fetchImages()
-  }
-
-  const creating = reactive<{
-    flag: boolean
-    name: string
-  }>({
-    flag: false,
-    name: ''
-  })
-  const openCreateModal = (refs: any) => {
-    creating.flag = true
-    creating.name = ''
-    setTimeout(() => refs.createInput.focus(), 50)
-  }
-  const createDirectory = async () => {
-    if (creating.name.length === 0) return
-    const params = { name: creating.name }
-    const res = await axios.post(`/api/images/directories?directory=${state.currentDirectory}`, params)
-    if (res.data && res.data.message) {
-      Message({
-        message: res.data.message,
-        type: 'error'
-      })
-    } else {
-      Message({
-        message: '作成完了！',
-        type: 'success'
-      })
-      fetchImages()
-    }
-    creating.flag = false
+    fetchResources()
   }
 
   const editing = reactive<{
@@ -117,7 +90,7 @@ export const buildImagesStore = () => {
         message: '更新完了！',
         type: 'success'
       })
-      fetchImages()
+      fetchResources()
     }
     editing.flag = false
   }
@@ -147,7 +120,7 @@ export const buildImagesStore = () => {
         type: 'success'
       })
       state.showingImageIndex = undefined
-      fetchImages()
+      fetchResources()
     }
     deleting.flag = false
   }
@@ -165,11 +138,11 @@ export const buildImagesStore = () => {
   const backToHome = () => {
     state.currentDirectory = '/'
     state.showingImageIndex = undefined
-    fetchImages()
+    fetchResources()
   }
   const appendDirectory = (dir: string) => {
     state.currentDirectory = `${state.currentDirectory}${dir}/`
-    fetchImages()
+    fetchResources()
   }
   const backDirectory = (i: number) => {
     state.currentDirectory = breadcrumbs.value.reduce((newDirectory: string, breadcrumb: string, j: number) => {
@@ -177,7 +150,7 @@ export const buildImagesStore = () => {
       return newDirectory
     }, '/')
     state.showingImageIndex = undefined
-    fetchImages()
+    fetchResources()
   }
   const breadcrumbs = computed<string[]>(() => {
     return state.currentDirectory.split('/').filter((v: any) => v)
@@ -205,12 +178,9 @@ export const buildImagesStore = () => {
 
   return {
     ...toRefs(state),
-    fetchImages,
+    directory,
+    fetchResources,
     uploadImage,
-
-    creating,
-    openCreateModal,
-    createDirectory,
 
     editing,
     openEditModal,

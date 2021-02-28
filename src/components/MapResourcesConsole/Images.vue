@@ -9,7 +9,7 @@
         :show-file-list="false"
       )
         el-button(icon="el-icon-plus" type="primary") 画像作成
-      el-button.button(icon="el-icon-plus" type="primary" @click="openCreateModal($refs)") フォルダ作成
+      el-button.button(icon="el-icon-plus" type="primary" @click="openCreateDirectoryModal($refs, 'createDirectoryName')") フォルダ作成
     .nav
       icon.home-icon(name="home" @click.native="backToHome")
       .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
@@ -28,11 +28,11 @@
   .images__detail.content(v-else)
     ImageDetail(:refs="$refs" :editable="editable")
 
-  el-dialog.dialog(v-if="editable" :visible.sync="creating.flag")
+  el-dialog.dialog(v-if="editable" :visible.sync="creatingDirectory.flag")
     p フォルダの作成
-    el-input(v-model="creating.name" ref="createInput")
+    el-input(v-model="creatingDirectory.name" ref="createDirectoryName")
     .buttons
-      el-button(type="primary" @click="createDirectory" :disabled="creating.name.length === 0") 作成
+      el-button(type="primary" @click="createDirectory('images')" :disabled="creatingDirectory.name.length === 0") 作成
 
   el-dialog.dialog(v-if="editable" :visible.sync="editing.flag")
     el-input(v-model="editing.name" ref="nameEditor")
@@ -62,13 +62,17 @@ export default defineComponent({
     }
   },
   setup (_, context) {
+    const commonStore = appStores.commonStore
     const imagesStore = appStores.imagesStore
 
     onMounted(() => {
-      imagesStore.fetchImages()
+      imagesStore.fetchResources()
     })
 
-    return { ...imagesStore }
+    return {
+      ...commonStore,
+      ...imagesStore
+    }
   }
 })
 </script>

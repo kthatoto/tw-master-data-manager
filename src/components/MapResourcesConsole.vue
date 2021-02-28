@@ -4,9 +4,9 @@
     el-tab-pane(label="Images")
       Images.pane(:editable="true")
     el-tab-pane(label="Tiles")
-      Tiles.pane
+      // Tiles.pane
     el-tab-pane(label="Objekts")
-      Objekts.pane
+      // Objekts.pane
     el-tab-pane(label="NPCs")
     el-tab-pane(label="Enemies")
 </template>
