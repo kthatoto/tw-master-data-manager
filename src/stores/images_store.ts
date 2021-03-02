@@ -68,7 +68,7 @@ export const buildImagesStore = () => {
     resourceForm.flag = true
     resourceForm.action = 'edit'
     resourceForm.beforeName = resource.name
-    resourceForm.raw = resource.raw
+    resourceForm.raw = resource.raw || undefined
     const splited: string[] = resource.name.split('.')
     resourceForm.extension = '.' + splited.pop()
     resourceForm.name = splited.join('.')
