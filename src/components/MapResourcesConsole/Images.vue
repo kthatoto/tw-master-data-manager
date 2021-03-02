@@ -7,14 +7,17 @@
 
     template(slot="resourceCreateModal")
       el-dialog.dialog(v-if="resourceCreating" :visible.sync="resourceForm.flag")
-        el-upload(
+        h2(slot="title") Image作成
+        h3 Image
+        el-upload.row(
           action=""
           :auto-upload="false"
           :on-change="uploadImage"
           :show-file-list="false"
         )
-          el-button(icon="el-icon-plus" type="primary") 画像追加
-        el-input(v-model="resourceForm.name" ref="resourceName")
+          el-button(icon="el-icon-plus" type="primary") Image選択
+        img.preview.row(:src="'data:image;base64,' + resourceForm.raw")
+        el-input.row(v-model="resourceForm.name" ref="resourceName")
           template(slot="append") {{ resourceForm.extension }}
         .buttons
           el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") 作成
@@ -26,13 +29,6 @@
         .buttons
           el-button(type="primary" @click="editResource" :disabled="!resourceFormValid") 更新
 </template>
-      el-upload.button(
-        action=""
-        :auto-upload="false"
-        :on-change="uploadImage"
-        :show-file-list="false"
-      )
-        el-button(icon="el-icon-plus" type="primary") 画像作成
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
@@ -61,3 +57,21 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="stylus" scoped>
+.images
+  .dialog
+    .row
+      margin-bottom: 10px
+    .preview
+      margin-bottom: 10px
+      width: 200px
+      height: 200px
+      object-fit: contain
+      image-rendering: pixelated
+      border: 1px solid gray
+    .buttons
+      text-align: right
+      .el-button
+        width: 120px
+</style>

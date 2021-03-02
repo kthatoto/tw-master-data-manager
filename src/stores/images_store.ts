@@ -44,7 +44,7 @@ export const buildImagesStore = () => {
     beforeName: string
     name: string
     extension: string
-    raw?: File
+    raw?: string
   }>({
     flag: false,
     action: undefined,
@@ -86,26 +86,22 @@ export const buildImagesStore = () => {
     const splited: string[] = file.name.split('.')
     resourceForm.extension = '.' + splited.pop()
     resourceForm.name = splited.join('.')
-    // const params = new FormData()
-    // params.append('file', file.raw)
-    // params.append('filename', file.name)
-    // const headers = { 'content-type': 'multipart/form-data' }
-    // await axios.post(`/api/images?directory=${state.currentDirectory}`, params, { headers })
-    // fetchResources()
-  }
 
-  const createResource = async () => {
-    if (!resourceFormValid.value) return
-    if (!resourceForm.raw) return
     const fileReader = new FileReader()
     fileReader.onload = (() => {
       return (e: any) => {
         const binaryData = e.target.result
         const base64String = window.btoa(binaryData)
-        console.log(base64String)
+        resourceForm.raw = base64String
       }
     })()
     fileReader.readAsBinaryString(resourceForm.raw)
+  }
+
+  const createResource = async () => {
+    if (!resourceFormValid.value) return
+    if (!resourceForm.raw) return
+    console.log('create!')
   }
 
   // const editName = async () => {

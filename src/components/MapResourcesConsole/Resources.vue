@@ -29,15 +29,16 @@
   template(v-if="editable")
 
     el-dialog.dialog(:visible.sync="directoryForm.flag")
-      p(v-if="directoryCreating") フォルダ作成
-      p(v-else-if="directoryEditing") フォルダ名前変更
+      template(slot="title")
+        h2(v-if="directoryCreating") フォルダ作成
+        h2(v-else-if="directoryEditing") フォルダ名変更
       el-input(v-model="directoryForm.name" ref="directoryName")
       .buttons
         el-button(v-if="directoryCreating" type="primary" @click="createDirectory" :disabled="!directoryFormValid") 作成
         el-button(v-else-if="directoryEditing" type="primary" @click="editDirectory" :disabled="!directoryFormValid") 変更
 
     el-dialog.dialog(:visible.sync="deleteForm.flag")
-      p 「{{ deleteForm.name }}」削除していい？
+      h2(slot="title") 「{{ deleteForm.name }}」削除していい？
       .buttons
         el-button(type="danger" @click="deleteObject(resourceKey)") 削除
 
