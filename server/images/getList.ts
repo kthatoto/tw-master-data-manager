@@ -23,7 +23,7 @@ export default (app: any, method: 'get', path: string) => {
           name: obj,
           isFile: true,
           size: stat.size,
-          raw: 'data:image;base64,' + data
+          raw: data
         })
       }
     }

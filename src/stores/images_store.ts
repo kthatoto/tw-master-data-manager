@@ -64,16 +64,14 @@ export const buildImagesStore = () => {
     resourceForm.extension = ''
     resourceForm.raw = undefined
   }
-  const openResourceEditModal = (refs: any, resource: Image) => {
+  const openResourceEditModal = (resource: Image) => {
     resourceForm.flag = true
     resourceForm.action = 'edit'
     resourceForm.beforeName = resource.name
-    setTimeout(() => {
-      refs.resourceName.focus()
-      const splited: string[] = resource.name.split('.')
-      resourceForm.extension = '.' + splited.pop()
-      resourceForm.name = splited.join('.')
-    }, 50)
+    resourceForm.raw = resource.raw
+    const splited: string[] = resource.name.split('.')
+    resourceForm.extension = '.' + splited.pop()
+    resourceForm.name = splited.join('.')
   }
 
   const resourceFormValid = computed<boolean>(() => {
@@ -197,8 +195,6 @@ export const buildImagesStore = () => {
     uploadImage,
     createResource,
 
-    // editing,
-    // openEditModal,
     // editName,
 
     showResource,

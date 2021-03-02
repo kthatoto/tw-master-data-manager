@@ -21,7 +21,7 @@
         :raw="o.raw" @dblclick="showResource(o.name)" @clickRight="confirmDelete(o.name)"
         width="80px" height="80px" lineHeight="80px"
       )
-      span(@dblclick="openResourceEditModal($refs, o)") {{ o.name }}
+      span(@dblclick="openResourceEditModal(o)") {{ o.name }}
 
   .resources__detail.content(v-else)
     slot(name="detail")

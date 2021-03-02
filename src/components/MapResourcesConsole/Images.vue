@@ -17,6 +17,7 @@
         )
           el-button(icon="el-icon-plus" type="primary") Image選択
         img.preview.row(v-if="resourceForm.raw" :src="'data:image;base64,' + resourceForm.raw")
+        h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
           template(slot="append") {{ resourceForm.extension }}
         .buttons
@@ -24,7 +25,18 @@
 
     template(slot="resourceEditModal")
       el-dialog.dialog(v-if="resourceEditing" :visible.sync="resourceForm.flag")
-        el-input(v-model="resourceForm.name" ref="resourceName")
+        h2(slot="title") Image変更
+        h3 Image
+        el-upload.row(
+          action=""
+          :auto-upload="false"
+          :on-change="uploadImage"
+          :show-file-list="false"
+        )
+          el-button(icon="el-icon-plus" type="primary") Image選択
+        img.preview.row(v-if="resourceForm.raw" :src="'data:image;base64,' + resourceForm.raw")
+        h3 名前
+        el-input.row(v-model="resourceForm.name" ref="resourceName")
           template(slot="append") {{ resourceForm.extension }}
         .buttons
           el-button(type="primary" @click="editResource" :disabled="!resourceFormValid") 更新
