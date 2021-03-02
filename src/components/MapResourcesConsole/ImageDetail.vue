@@ -1,11 +1,11 @@
 <template lang="pug">
 .detail
-  img(:src="showingImage.raw")
-  h3 {{ showingImage.name }}
+  img(:src="showingResource.raw")
+  h3 {{ showingResource.name }}
   p サイズ：{{ bytes }}
   .buttons(v-if="editable")
-    el-button(type="primary" @click="openEditModal(refs, showingImage)") 名前変更
-    el-button(type="danger" @click="confirmDelete(showingImage.name)") 削除
+    // el-button(type="primary" @click="openEditModal(refs, showingResource)") 名前変更
+    el-button(type="danger" @click="confirmDelete(showingResource.name)") 削除
 </template>
 
 <script lang="ts">
@@ -27,14 +27,16 @@ export default defineComponent({
     }
   },
   setup (props) {
+    const commonStore = appStores.commonStore
     const imagesStore = appStores.imagesStore
 
     const bytes = computed<string>(() => {
-      if (!imagesStore.showingImage.value) return ''
-      return bytesCalculate(imagesStore.showingImage.value.size)
+      if (!imagesStore.showingResource.value) return ''
+      return bytesCalculate(imagesStore.showingResource.value.size)
     })
 
     return {
+      ...commonStore,
       ...imagesStore,
       bytes
     }
