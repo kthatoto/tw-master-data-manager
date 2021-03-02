@@ -1,6 +1,6 @@
 import { reactive, computed, toRefs } from '@vue/composition-api'
 import axios, { AxiosResponse } from 'axios'
-// import { Message } from 'element-ui'
+import { Message } from 'element-ui'
 
 import { Directory } from '~domains/index.ts'
 import { Image, ImagesResponse } from '~domains/images.ts'
@@ -99,8 +99,28 @@ export const buildImagesStore = () => {
 
   const createResource = async () => {
     if (!resourceFormValid.value) return
-    if (!resourceForm.raw) return
-    console.log('create!')
+    const params = {
+      filePath: state.currentDirectory + resourceForm.name,
+      raw: resourceForm.raw
+    }
+    const res = await axios.post('/api/images', params)
+    handleResponse(res, '作成完了！', fetchResources, resourceForm)
+  }
+
+  const handleResponse = (res: any, successMessage: string, fetchResources: Function, flagManager: any) => {
+    if (res.data && res.data.message) {
+      Message({
+        message: res.data.message,
+        type: 'error'
+      })
+    } else {
+      Message({
+        message: successMessage,
+        type: 'success'
+      })
+      fetchResources()
+    }
+    flagManager.flag = false
   }
 
   // const editName = async () => {
