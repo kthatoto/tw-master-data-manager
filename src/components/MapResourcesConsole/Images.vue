@@ -16,7 +16,7 @@
           :show-file-list="false"
         )
           el-button(icon="el-icon-plus" type="primary") Image選択
-        img.preview.row(:src="'data:image;base64,' + resourceForm.raw")
+        img.preview.row(v-if="resourceForm.raw" :src="'data:image;base64,' + resourceForm.raw")
         el-input.row(v-model="resourceForm.name" ref="resourceName")
           template(slot="append") {{ resourceForm.extension }}
         .buttons
