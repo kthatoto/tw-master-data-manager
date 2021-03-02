@@ -100,7 +100,7 @@ export const buildImagesStore = () => {
   const createResource = async () => {
     if (!resourceFormValid.value) return
     const params = {
-      filePath: state.currentDirectory + resourceForm.name,
+      filePath: state.currentDirectory + resourceForm.name + resourceForm.extension,
       raw: resourceForm.raw
     }
     const res = await axios.post('/api/images', params)
