@@ -82,7 +82,6 @@ export const buildImagesStore = () => {
     return true
   })
   const uploadImage = async (file: ImageFile) => {
-    resourceForm.raw = file.raw
     const splited: string[] = file.name.split('.')
     resourceForm.extension = '.' + splited.pop()
     resourceForm.name = splited.join('.')
