@@ -94,7 +94,7 @@ export const buildImagesStore = () => {
         resourceForm.raw = base64String
       }
     })()
-    fileReader.readAsBinaryString(resourceForm.raw)
+    fileReader.readAsBinaryString(file.raw)
   }
 
   const createResource = async () => {
