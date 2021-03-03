@@ -1,9 +1,9 @@
 import { reactive, computed } from '@vue/composition-api'
 import axios from 'axios'
-import { Message } from 'element-ui'
 
 import { AppStores } from '@/stores/appStores.ts'
 import { Directory } from '~domains/index.ts'
+import handleResponse from '@/utils/handleResponse.ts'
 
 export type StoreKey = 'images'
 
@@ -51,19 +51,7 @@ export const buildCommonStore = (stores: AppStores) => {
       name: directoryForm.name
     }
     const res = await axios.post('/api/directories', params)
-    if (res.data && res.data.message) {
-      Message({
-        message: res.data.message,
-        type: 'error'
-      })
-    } else {
-      Message({
-        message: '作成完了！',
-        type: 'success'
-      })
-      store.fetchResources()
-    }
-    directoryForm.flag = false
+    handleResponse(res, '作成完了！', store.fetchResources, directoryForm)
   }
 
   const deleteForm = reactive<{
@@ -81,20 +69,10 @@ export const buildCommonStore = (stores: AppStores) => {
     const store = getStoreByKey(key)
     const path = `${store.currentDirectory.value}${deleteForm.name}`
     const res = await axios.delete(`/api/objects?path=${path}`)
-    if (res.data && res.data.message) {
-      Message({
-        message: res.data.message,
-        type: 'error'
-      })
-    } else {
-      Message({
-        message: '削除完了！',
-        type: 'success'
-      })
+    const result: boolean = handleResponse(res, '削除完了！', store.fetchResources, deleteForm)
+    if (result) {
       store.showingResourceIndex.value = undefined
-      store.fetchResources()
     }
-    deleteForm.flag = false
     deleteForm.name = ''
   }
 

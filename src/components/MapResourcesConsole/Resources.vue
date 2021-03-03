@@ -34,8 +34,8 @@
         h2(v-else-if="directoryEditing") フォルダ名変更
       el-input(v-model="directoryForm.name" ref="directoryName")
       .buttons
-        el-button(v-if="directoryCreating" type="primary" @click="createDirectory" :disabled="!directoryFormValid") 作成
-        el-button(v-else-if="directoryEditing" type="primary" @click="editDirectory" :disabled="!directoryFormValid") 変更
+        el-button(v-if="directoryCreating" type="primary" @click="createDirectory(resourceKey)" :disabled="!directoryFormValid") 作成
+        el-button(v-else-if="directoryEditing" type="primary" @click="editDirectory(resourceKey)" :disabled="!directoryFormValid") 変更
 
     el-dialog.dialog(:visible.sync="deleteForm.flag")
       h2(slot="title") 「{{ deleteForm.name }}」削除していい？

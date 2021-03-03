@@ -1,9 +1,9 @@
 import { reactive, computed, toRefs } from '@vue/composition-api'
 import axios, { AxiosResponse } from 'axios'
-import { Message } from 'element-ui'
 
 import { Directory } from '~domains/index.ts'
 import { Image, ImagesResponse } from '~domains/images.ts'
+import handleResponse from '@/utils/handleResponse.ts'
 
 interface ImageFile {
   name: string
@@ -109,22 +109,6 @@ export const buildImagesStore = () => {
     }
     const res = await axios.patch('/api/images', params)
     handleResponse(res, '編集完了！', fetchResources, resourceForm)
-  }
-
-  const handleResponse = (res: any, successMessage: string, fetchResources: Function, flagManager: any) => {
-    if (res.data && res.data.message) {
-      Message({
-        message: res.data.message,
-        type: 'error'
-      })
-    } else {
-      Message({
-        message: successMessage,
-        type: 'success'
-      })
-      fetchResources()
-    }
-    flagManager.flag = false
   }
 
   const showResource = (name: string) => {
