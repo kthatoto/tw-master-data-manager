@@ -78,7 +78,7 @@ export const buildCommonStore = (stores: AppStores) => {
   }
   const deleteObject = async (key: StoreKey) => {
     const store = getStoreByKey(key)
-    const path = `${store.currentDirectory.value}${deleteForm.name}`
+    const path = `${store.currentDirectory.value}${key}/${deleteForm.name}`
     const res = await axios.delete(`/api/objects?path=${path}`)
     const result: boolean = handleResponse(res, '削除完了！', store.fetchResources, deleteForm)
     if (result) {
