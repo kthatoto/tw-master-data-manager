@@ -4,9 +4,7 @@
     el-tab-pane(label="Images")
       Images.pane(:editable="true")
     el-tab-pane(label="Tiles")
-      // Tiles.pane
     el-tab-pane(label="Objekts")
-      // Objekts.pane
     el-tab-pane(label="NPCs")
     el-tab-pane(label="Enemies")
 </template>
@@ -15,11 +13,9 @@
 import { defineComponent } from '@vue/composition-api'
 
 import Images from '@/components/MapResourcesConsole/Images.vue'
-import Tiles from '@/components/MapResourcesConsole/Tiles.vue'
-import Objekts from '@/components/MapResourcesConsole/Objekts.vue'
 
 export default defineComponent({
-  components: { Images, Tiles, Objekts }
+  components: { Images }
 })
 </script>
 
