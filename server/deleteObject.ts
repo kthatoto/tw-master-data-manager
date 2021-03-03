@@ -3,7 +3,7 @@ import fs from 'fs'
 export default (app: any, method: 'delete', path: string) => {
   app[method](path, async (req: any, res: any) => {
     const objectPath: string = req.query.path
-    const fullObjectPath: string = `${app.get('baseDirectory')}${objectPath}`
+    const fullObjectPath: string = `${app.get('baseDirectory')}/${objectPath}`
     try {
       const stat = await fs.promises.stat(fullObjectPath)
       if (stat.isDirectory()) {
