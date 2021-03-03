@@ -1,5 +1,5 @@
 <template lang="pug">
-img(v-if="raw" :src="raw" @dblclick="dblclick" @click.right.prevent="clickRight"
+img(v-if="raw" :src="'data:image;base64,' + raw" @dblclick="dblclick" @click.right.prevent="clickRight"
   :style="{ width, height }")
 .noimage(v-else @dblclick="dblclick" @click.right.prevent="clickRight"
   :style="{ width, height, lineHeight }") No Image

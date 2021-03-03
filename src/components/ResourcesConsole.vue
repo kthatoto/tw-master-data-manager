@@ -2,24 +2,17 @@
 .console
   el-tabs(type="border-card")
     el-tab-pane(label="Items")
-      .pane
-        Items.list(:editable="true")
-        ItemDetail.detail(v-if="showingItem")
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import Items from '@/components/ResourcesConsole/Items.vue'
-import ItemDetail from '@/components/ResourcesConsole/ItemDetail.vue'
-import { appStores } from '@/stores/appStores.ts'
+// import { appStores } from '@/stores/appStores.ts'
 
 export default defineComponent({
-  components: { Items, ItemDetail },
+  components: {},
   setup () {
-    const itemsStore = appStores.itemsStore
-
-    return { ...itemsStore }
+    return {}
   }
 })
 </script>

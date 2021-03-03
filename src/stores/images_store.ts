@@ -1,11 +1,11 @@
 import { reactive, computed, toRefs } from '@vue/composition-api'
 import axios, { AxiosResponse } from 'axios'
-import { Message } from 'element-ui'
 
 import { Directory } from '~domains/index.ts'
 import { Image, ImagesResponse } from '~domains/images.ts'
+import handleResponse from '@/utils/handleResponse.ts'
 
-interface UploadingFile {
+interface ImageFile {
   name: string
   raw: File
   size: number
@@ -15,220 +15,135 @@ interface UploadingFile {
 export const buildImagesStore = () => {
   const state = reactive<{
     currentDirectory: string
-    images: Image[]
+    resources: Image[]
     directories: Directory[]
-    showingImageIndex: number | undefined
+    showingResourceIndex: number | undefined
     selectingName: string | undefined
   }>({
     currentDirectory: '/',
-    images: [],
+    resources: [],
     directories: [],
-    showingImageIndex: undefined,
+    showingResourceIndex: undefined,
     selectingName: undefined
   })
 
-  const fetchImages = async () => {
+  const fetchResources = async () => {
     const res: AxiosResponse<ImagesResponse> = await axios.get(`/api/images?directory=${state.currentDirectory}`)
     const data: ImagesResponse = res.data
-    state.images = data.images
+    state.resources = data.resources
     state.directories = data.directories
   }
 
-  const uploadImage = async (file: UploadingFile) => {
-    const params = new FormData()
-    params.append('file', file.raw)
-    params.append('filename', file.name)
-    const headers = { 'content-type': 'multipart/form-data' }
-    await axios.post(`/api/images?directory=${state.currentDirectory}`, params, { headers })
-    fetchImages()
-  }
-
-  const creating = reactive<{
+  const resourceForm = reactive<{
     flag: boolean
-    name: string
-  }>({
-    flag: false,
-    name: ''
-  })
-  const openCreateModal = (refs: any) => {
-    creating.flag = true
-    creating.name = ''
-    setTimeout(() => refs.createInput.focus(), 50)
-  }
-  const createDirectory = async () => {
-    if (creating.name.length === 0) return
-    const params = { name: creating.name }
-    const res = await axios.post(`/api/images/directories?directory=${state.currentDirectory}`, params)
-    if (res.data && res.data.message) {
-      Message({
-        message: res.data.message,
-        type: 'error'
-      })
-    } else {
-      Message({
-        message: '作成完了！',
-        type: 'success'
-      })
-      fetchImages()
-    }
-    creating.flag = false
-  }
-
-  const editing = reactive<{
-    flag: boolean
-    isFile: boolean
+    action?: 'create' | 'edit'
     beforeName: string
     name: string
     extension: string
+    raw?: string
   }>({
     flag: false,
-    isFile: false,
+    action: undefined,
     beforeName: '',
     name: '',
-    extension: ''
+    extension: '',
+    raw: undefined
   })
-  const openEditModal = (refs: any, o: Image | Directory) => {
-    editing.flag = true
-    editing.isFile = o.isFile
-    editing.beforeName = o.name
-    setTimeout(() => {
-      refs.nameEditor.focus()
-      if (o.isFile) {
-        const splited: string[] = o.name.split('.')
-        editing.extension = '.' + splited.pop()
-        editing.name = splited.join('.')
-      } else {
-        editing.name = o.name
+  const resourceCreating = computed<boolean>(() => resourceForm.action === 'create')
+  const resourceEditing = computed<boolean>(() => resourceForm.action === 'edit')
+
+  const openResourceCreateModal = () => {
+    resourceForm.flag = true
+    resourceForm.action = 'create'
+    resourceForm.beforeName = ''
+    resourceForm.name = ''
+    resourceForm.extension = ''
+    resourceForm.raw = undefined
+  }
+  const openResourceEditModal = (resource: Image) => {
+    resourceForm.flag = true
+    resourceForm.action = 'edit'
+    resourceForm.beforeName = resource.name
+    resourceForm.raw = resource.raw || undefined
+    const splited: string[] = resource.name.split('.')
+    resourceForm.extension = '.' + splited.pop()
+    resourceForm.name = splited.join('.')
+  }
+
+  const resourceFormValid = computed<boolean>(() => {
+    if (!resourceForm.name) return false
+    if (!resourceForm.raw) return false
+    return true
+  })
+  const uploadImage = async (file: ImageFile) => {
+    const splited: string[] = file.name.split('.')
+    resourceForm.extension = '.' + splited.pop()
+    resourceForm.name = splited.join('.')
+
+    const fileReader = new FileReader()
+    fileReader.onload = (() => {
+      return (e: any) => {
+        const binaryData = e.target.result
+        const base64String = window.btoa(binaryData)
+        resourceForm.raw = base64String
       }
-    }, 50)
-  }
-  const editName = async () => {
-    if (editing.name.length === 0) return
-    const afterName = editing.isFile ? editing.name + editing.extension : editing.name
-    const params = { before: editing.beforeName, after: afterName }
-    const res = await axios.patch(`/api/images?directory=${state.currentDirectory}`, params)
-    if (res.data && res.data.message) {
-      Message({
-        message: res.data.message,
-        type: 'error'
-      })
-    } else {
-      Message({
-        message: '更新完了！',
-        type: 'success'
-      })
-      fetchImages()
-    }
-    editing.flag = false
+    })()
+    fileReader.readAsBinaryString(file.raw)
   }
 
-  const deleting = reactive<{
-    flag: boolean
-    name: string
-  }>({
-    flag: false,
-    name: ''
-  })
-  const confirmDelete = (name: string) => {
-    deleting.flag = true
-    deleting.name = name
-  }
-  const deleteObject = async () => {
-    const params = { name: deleting.name }
-    const res = await axios.patch(`/api/images/delete?directory=${state.currentDirectory}`, params)
-    if (res.data && res.data.message) {
-      Message({
-        message: res.data.message,
-        type: 'error'
-      })
-    } else {
-      Message({
-        message: '削除完了！',
-        type: 'success'
-      })
-      state.showingImageIndex = undefined
-      fetchImages()
+  const createResource = async () => {
+    if (!resourceFormValid.value) return
+    const params = {
+      filePath: state.currentDirectory + resourceForm.name + resourceForm.extension,
+      raw: resourceForm.raw
     }
-    deleting.flag = false
+    const res = await axios.post('/api/images', params)
+    handleResponse(res, '作成完了！', fetchResources, resourceForm)
+  }
+  const editResource = async () => {
+    if (!resourceFormValid.value) return
+    const params = {
+      beforeFilePath: state.currentDirectory + resourceForm.beforeName,
+      filePath: state.currentDirectory + resourceForm.name + resourceForm.extension,
+      raw: resourceForm.raw
+    }
+    const res = await axios.patch('/api/images', params)
+    handleResponse(res, '編集完了！', fetchResources, resourceForm)
   }
 
-  const showImage = (filename: string) => {
-    const index = state.images.findIndex((i: Image) => i.name === filename)
+  const showResource = (name: string) => {
+    const index = state.resources.findIndex((r: Image) => r.name === name)
     if (index < 0) return
-    state.showingImageIndex = index
+    state.showingResourceIndex = index
   }
-  const showingImage = computed<Image | undefined>(() => {
-    if (state.showingImageIndex === undefined) return
-    return state.images[state.showingImageIndex]
+  const showingResource = computed<Image | undefined>(() => {
+    if (state.showingResourceIndex === undefined) return
+    return state.resources[state.showingResourceIndex]
   })
 
-  const backToHome = () => {
-    state.currentDirectory = '/'
-    state.showingImageIndex = undefined
-    fetchImages()
-  }
-  const appendDirectory = (dir: string) => {
-    state.currentDirectory = `${state.currentDirectory}${dir}/`
-    fetchImages()
-  }
-  const backDirectory = (i: number) => {
-    state.currentDirectory = breadcrumbs.value.reduce((newDirectory: string, breadcrumb: string, j: number) => {
-      if (j <= i) newDirectory += `${breadcrumb}/`
-      return newDirectory
-    }, '/')
-    state.showingImageIndex = undefined
-    fetchImages()
-  }
   const breadcrumbs = computed<string[]>(() => {
     return state.currentDirectory.split('/').filter((v: any) => v)
   })
 
-  const selectingImagePath = computed<string | undefined>(() => {
-    if (!state.selectingName) return
-    if (!state.images.map((i: Image) => i.name).includes(state.selectingName)) return
-    return `${state.currentDirectory}${state.selectingName}`
-  })
-  const setSelection = (imagePath: string, imageExists: boolean) => {
-    if (!imageExists) {
-      state.currentDirectory = '/'
-      state.selectingName = ''
-      return
-    }
-    const paths = imagePath.split('/').filter((v: string) => v)
-    state.selectingName = paths.pop()
-    if (paths.length === 0) {
-      state.currentDirectory = '/'
-    } else {
-      state.currentDirectory = `/${paths.join('/')}/`
-    }
-  }
-
   return {
     ...toRefs(state),
-    fetchImages,
+    fetchResources,
+    resourceForm,
+    resourceCreating,
+    resourceEditing,
+
+    openResourceCreateModal,
+    openResourceEditModal,
+
+    resourceFormValid,
     uploadImage,
+    createResource,
+    editResource,
 
-    creating,
-    openCreateModal,
-    createDirectory,
+    showResource,
+    showingResource,
 
-    editing,
-    openEditModal,
-    editName,
-
-    deleting,
-    confirmDelete,
-    deleteObject,
-
-    showImage,
-    showingImage,
-    backToHome,
-    appendDirectory,
-    backDirectory,
-    breadcrumbs,
-
-    selectingImagePath,
-    setSelection
+    breadcrumbs
   }
 }
 

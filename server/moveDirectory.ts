@@ -2,18 +2,21 @@ import fs from 'fs'
 
 export default (app: any, method: 'patch', path: string) => {
   app[method](path, async (req: any, res: any) => {
-    const before: string = req.body.before
-    const beforeFilePath = `./data/objekts${req.query.directory}${before}`
-    const after: string = req.body.after
-    const afterFilePath = `./data/objekts${req.query.directory}${after}`
+    const directory: string = req.body.directory
+    const beforeName: string = req.body.beforeName
+    const name: string = req.body.name
+
+    const beforeFilePath: string = `${app.get('baseDirectory')}/${directory}${beforeName}`
+    const afterFilePath: string = `${app.get('baseDirectory')}/${directory}${name}`
     try {
       const stat = await fs.promises.stat(beforeFilePath)
       if (!stat.isDirectory()) {
-        return res.send({ message: `「${before}」はディレクトリではありません` })
+        return res.send({ message: `「${directory}${beforeName}」はフォルダではありません` })
       }
       if (fs.existsSync(afterFilePath)) {
-        return res.send({ message: `「${after}」は既に存在してます` })
+        return res.send({ message: `「${directory}${name}」は既に存在してます` })
       }
+
       fs.rename(beforeFilePath, afterFilePath, (err: any) => {
         if (err) throw err
         res.send(null)
