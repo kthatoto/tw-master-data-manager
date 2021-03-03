@@ -2,8 +2,8 @@ import fs from 'fs'
 
 export default (app: any, method: 'patch', path: string) => {
   app[method](path, async (req: any, res: any) => {
-    const beforeFilePath = `./data/images${req.body.beforeFilePath}`
-    const afterFilePath = `./data/images${req.body.filePath}`
+    const beforeFilePath = `${app.get('baseDirectory')}/images${req.body.beforeFilePath}`
+    const afterFilePath = `${app.get('baseDirectory')}/images${req.body.filePath}`
     const raw: string = req.body.raw
     try {
       if (!fs.existsSync(beforeFilePath)) {
