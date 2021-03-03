@@ -1,11 +1,11 @@
 import getList from './getList'
 import create from './create'
-import move from './move'
+import edit from './edit'
 import deleteObject from './deleteObject'
 
 export default (app: any) => {
   getList(app, 'get', '/images')
   create(app, 'post', '/images')
-  move(app, 'patch', '/images')
+  edit(app, 'patch', '/images')
   deleteObject(app, 'patch', '/images/delete')
 }

@@ -104,6 +104,16 @@ export const buildImagesStore = () => {
     const res = await axios.post('/api/images', params)
     handleResponse(res, '作成完了！', fetchResources, resourceForm)
   }
+  const editResource = async () => {
+    if (!resourceFormValid.value) return
+    const params = {
+      beforeFilePath: state.currentDirectory + resourceForm.beforeName,
+      filePath: state.currentDirectory + resourceForm.name + resourceForm.extension,
+      raw: resourceForm.raw
+    }
+    const res = await axios.post('/api/images', params)
+    handleResponse(res, '編集完了！', fetchResources, resourceForm)
+  }
 
   const handleResponse = (res: any, successMessage: string, fetchResources: Function, flagManager: any) => {
     if (res.data && res.data.message) {
@@ -120,26 +130,6 @@ export const buildImagesStore = () => {
     }
     flagManager.flag = false
   }
-
-  // const editName = async () => {
-  //   if (editing.name.length === 0) return
-  //   const afterName = editing.isFile ? editing.name + editing.extension : editing.name
-  //   const params = { before: editing.beforeName, after: afterName }
-  //   const res = await axios.patch(`/api/images?directory=${state.currentDirectory}`, params)
-  //   if (res.data && res.data.message) {
-  //     Message({
-  //       message: res.data.message,
-  //       type: 'error'
-  //     })
-  //   } else {
-  //     Message({
-  //       message: '更新完了！',
-  //       type: 'success'
-  //     })
-  //     fetchResources()
-  //   }
-  //   editing.flag = false
-  // }
 
   const showResource = (name: string) => {
     const index = state.resources.findIndex((r: Image) => r.name === name)
@@ -194,8 +184,7 @@ export const buildImagesStore = () => {
     resourceFormValid,
     uploadImage,
     createResource,
-
-    // editName,
+    editResource,
 
     showResource,
     showingResource,
