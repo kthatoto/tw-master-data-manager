@@ -5,16 +5,12 @@ import { Message } from 'element-ui'
 import { AppStores } from '@/stores/appStores.ts'
 import { Directory } from '~domains/index.ts'
 
-export type StoreKey = 'images' | 'tiles' | 'objekts' | 'items'
+export type StoreKey = 'images'
 
 export const buildCommonStore = (stores: AppStores) => {
   const getStoreByKey = (key: StoreKey) => {
-    return stores.imagesStore
-    // if (key === 'images') return stores.imagesStore
-    // if (key === 'tiles') return stores.tilesStore
-    // if (key === 'objekts') return stores.objektsStore
-    // if (key === 'items') return stores.itemsStore
-    // throw new Error(`Not handled key '${key}'`)
+    if (key === 'images') return stores.imagesStore
+    throw new Error(`Not handled key '${key}'`)
   }
 
   const directoryForm = reactive<{
@@ -51,7 +47,7 @@ export const buildCommonStore = (stores: AppStores) => {
     if (!directoryFormValid.value) return
     const store = getStoreByKey(key)
     const params = {
-      directory: store.directory.value,
+      directory: `${key}${store.currentDirectory.value}`,
       name: directoryForm.name
     }
     const res = await axios.post('/api/directories', params)

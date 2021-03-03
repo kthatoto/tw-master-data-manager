@@ -1,10 +1,9 @@
 import fs from 'fs'
 
-export default (app: any, method: 'patch', path: string) => {
+export default (app: any, method: 'delete', path: string) => {
   app[method](path, async (req: any, res: any) => {
-    const name: string = req.body.name
+    const filePath: string = `${app.get('baseDirectory')}/${req.query.filePath}`
     try {
-      const filePath: string = `./data/images${req.query.directory}${name}`
       const stat = await fs.promises.stat(filePath)
       if (stat.isDirectory()) {
         await fs.promises.rmdir(filePath)

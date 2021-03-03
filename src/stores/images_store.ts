@@ -27,10 +27,6 @@ export const buildImagesStore = () => {
     selectingName: undefined
   })
 
-  const directory = computed<string>(() => {
-    return 'images' + state.currentDirectory
-  })
-
   const fetchResources = async () => {
     const res: AxiosResponse<ImagesResponse> = await axios.get(`/api/images?directory=${state.currentDirectory}`)
     const data: ImagesResponse = res.data
@@ -147,7 +143,6 @@ export const buildImagesStore = () => {
 
   return {
     ...toRefs(state),
-    directory,
     fetchResources,
     resourceForm,
     resourceCreating,
