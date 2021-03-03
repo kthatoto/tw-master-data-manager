@@ -107,7 +107,7 @@ export const buildImagesStore = () => {
       filePath: state.currentDirectory + resourceForm.name + resourceForm.extension,
       raw: resourceForm.raw
     }
-    const res = await axios.post('/api/images', params)
+    const res = await axios.patch('/api/images', params)
     handleResponse(res, '編集完了！', fetchResources, resourceForm)
   }
 
