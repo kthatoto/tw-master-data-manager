@@ -17,7 +17,7 @@ imagesHandle(app)
 
 createDirectory(app, 'post', '/directories')
 moveDirectory(app, 'patch', '/directories')
-deleteObject(app, 'delete', '/')
+deleteObject(app, 'delete', '/objects')
 
 export default {
   path: '/api/',
