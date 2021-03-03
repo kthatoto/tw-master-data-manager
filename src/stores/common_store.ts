@@ -53,6 +53,17 @@ export const buildCommonStore = (stores: AppStores) => {
     const res = await axios.post('/api/directories', params)
     handleResponse(res, '作成完了！', store.fetchResources, directoryForm)
   }
+  const editDirectory = async (key: StoreKey) => {
+    if (!directoryFormValid.value) return
+    const store = getStoreByKey(key)
+    const params = {
+      directory: `${key}${store.currentDirectory.value}`,
+      beforeName: directoryForm.beforeName,
+      name: directoryForm.name
+    }
+    const res = await axios.patch('/api/directories', params)
+    handleResponse(res, '変更完了！', store.fetchResources, directoryForm)
+  }
 
   const deleteForm = reactive<{
     flag: boolean
@@ -106,6 +117,7 @@ export const buildCommonStore = (stores: AppStores) => {
     directoryEditing,
     directoryFormValid,
     createDirectory,
+    editDirectory,
 
     deleteForm,
     confirmDelete,

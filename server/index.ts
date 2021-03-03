@@ -4,6 +4,7 @@ import bodyParser from 'body-parser'
 import imagesHandle from './images/index'
 
 import createDirectory from './createDirectory'
+import moveDirectory from './moveDirectory'
 import deleteObject from './deleteObject'
 
 const app = express()
@@ -15,6 +16,7 @@ app.use(bodyParser.json())
 imagesHandle(app)
 
 createDirectory(app, 'post', '/directories')
+moveDirectory(app, 'patch', '/directories')
 deleteObject(app, 'delete', '/')
 
 export default {
