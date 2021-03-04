@@ -18,7 +18,8 @@
     "paths": {
       "~/*": ["src/*"],
       "@/*": ["src/*"],
-      "~domains/*": ["domains/*"]
+      "~domains/*": ["domains/*"],
+      "~server/*": ["server/*"]
     },
     "types": [
       "@nuxt/types",
