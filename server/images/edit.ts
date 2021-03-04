@@ -1,7 +1,16 @@
 import fs from 'fs'
+import { Application, Request, Response } from 'express'
 
-export default (app: any, method: 'patch', path: string) => {
-  app[method](path, async (req: any, res: any) => {
+import { ResponseMessage, DefaultResponseBody } from '~server/index'
+
+export interface ImagesEditRequestBody {
+  beforeFilePath: string
+  filePath: string
+  raw: string
+}
+
+export default (app: Application, method: 'patch', path: string) => {
+  app[method](path, async (req: Request<any, any, ImagesEditRequestBody>, res: Response<DefaultResponseBody>) => {
     const beforeFilePath = `${app.get('baseDirectory')}/images${req.body.beforeFilePath}`
     const afterFilePath = `${app.get('baseDirectory')}/images${req.body.filePath}`
     const raw: string = req.body.raw

@@ -1,8 +1,11 @@
 import fs from 'fs'
+import { Application, Request, Response } from 'express'
 
-export default (app: any, method: 'delete', path: string) => {
-  app[method](path, async (req: any, res: any) => {
-    const objectPath: string = req.query.path
+import { ResponseMessage, DefaultResponseBody } from '~server/index'
+
+export default (app: Application, method: 'delete', path: string) => {
+  app[method](path, async (req: Request, res: Response<DefaultResponseBody>) => {
+    const objectPath = req.query.path
     const fullObjectPath: string = `${app.get('baseDirectory')}/${objectPath}`
     try {
       const stat = await fs.promises.stat(fullObjectPath)

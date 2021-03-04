@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Application } from 'express'
 import bodyParser from 'body-parser'
 
 import imagesHandle from './images/index'
@@ -7,7 +7,7 @@ import createDirectory from './createDirectory'
 import moveDirectory from './moveDirectory'
 import deleteObject from './deleteObject'
 
-const app = express()
+const app: Application = express()
 app.set('baseDirectory', './data')
 
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -23,3 +23,9 @@ export default {
   path: '/api/',
   handler: app
 }
+
+export interface ResponseMessage {
+  message: string
+  err?: any
+}
+export type DefaultResponseBody = ResponseMessage | null

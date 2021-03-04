@@ -1,7 +1,16 @@
 import fs from 'fs'
+import { Application, Request, Response } from 'express'
 
-export default (app: any, method: 'patch', path: string) => {
-  app[method](path, async (req: any, res: any) => {
+import { ResponseMessage, DefaultResponseBody } from '~server/index'
+
+export interface MoveDirectoryRequestBody {
+  directory: string
+  beforeName: string
+  name: string
+}
+
+export default (app: Application, method: 'patch', path: string) => {
+  app[method](path, async (req: Request<any, any, MoveDirectoryRequestBody>, res: Response<DefaultResponseBody>) => {
     const directory: string = req.body.directory
     const beforeName: string = req.body.beforeName
     const name: string = req.body.name
