@@ -9,12 +9,10 @@ import deleteObject from './deleteObject'
 
 const app: Application = express()
 app.set('baseDirectory', './data')
-
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 imagesHandle(app)
-
 createDirectory(app, 'post', '/directories')
 moveDirectory(app, 'patch', '/directories')
 deleteObject(app, 'delete', '/objects')
