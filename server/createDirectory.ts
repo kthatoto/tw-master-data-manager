@@ -1,7 +1,15 @@
 import fs from 'fs'
+import { Application, Request, Response } from 'express'
+
+import { ResponseMessage, DefaultResponseBody } from '~server/index'
+
+export interface CreateDirectoryRequestBody {
+  directory: string
+  name: string
+}
 
 export default (app: any, method: 'post', path: string) => {
-  app[method]('/directories', async (req: any, res: any) => {
+  app[method]('/directories', async (req: Request<any, any, CreateDirectoryRequestBody>, res: Response<DefaultResponseBody>) => {
     const directory: string = req.body.directory
     const name: string = req.body.name
     try {

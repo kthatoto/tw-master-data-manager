@@ -28,3 +28,4 @@ export interface ResponseMessage {
   message: string
   err?: any
 }
+export type DefaultResponseBody = ResponseMessage | null

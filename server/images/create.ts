@@ -1,7 +1,15 @@
 import fs from 'fs'
+import { Application, Request, Response } from 'express'
 
-export default (app: any, method: 'post', path: string) => {
-  app[method](path, async (req: any, res: any) => {
+import { ResponseMessage, DefaultResponseBody } from '~server/index'
+
+export interface ImagesCreateRequestBody {
+  filePath: string
+  raw: string
+}
+
+export default (app: Application, method: 'post', path: string) => {
+  app[method](path, async (req: Request<any, any, ImagesCreateRequestBody>, res: Response<DefaultResponseBody>) => {
     const filePath: string = req.body.filePath
     const fullFilePath: string = `${app.get('baseDirectory')}/images${filePath}`
     const raw: string = req.body.raw
