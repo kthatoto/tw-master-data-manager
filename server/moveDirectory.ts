@@ -1,7 +1,10 @@
 import fs from 'fs'
+import { Application, Request, Response } from 'express'
 
-export default (app: any, method: 'patch', path: string) => {
-  app[method](path, async (req: any, res: any) => {
+import { ResponseMessage } from '~server/index'
+
+export default (app: Application, method: 'patch', path: string) => {
+  app[method](path, async (req: Request, res: Response<null | ResponseMessage>) => {
     const directory: string = req.body.directory
     const beforeName: string = req.body.beforeName
     const name: string = req.body.name

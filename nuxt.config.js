@@ -43,6 +43,7 @@ export default {
     transpile: [/^element-ui/],
     extend (config) {
       config.resolve.alias['~domains'] = path.join(__dirname, 'domains')
+      config.resolve.alias['~server'] = path.join(__dirname, 'server')
     }
   },
   serverMiddleware: ['~~/server/']
