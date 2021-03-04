@@ -1,9 +1,10 @@
 import fs from 'fs'
+import { Application, Request, Response } from 'express'
 
 import { ImagesResponse } from '~domains/images.ts'
 
-export default (app: any, method: 'get', path: string) => {
-  app[method](path, async (req: any, res: any) => {
+export default (app: Application, method: 'get', path: string) => {
+  app[method](path, async (req: Request, res: Response<ImagesResponse>) => {
     const response: ImagesResponse = { resources: [], directories: [] }
 
     const objects = await fs.promises.readdir(`${app.get('baseDirectory')}/images${req.query.directory}`, {})
