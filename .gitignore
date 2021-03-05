@@ -37,3 +37,4 @@ sw.*
 *.swp
 
 /data
+/testdata
