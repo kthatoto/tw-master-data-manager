@@ -1,4 +1,4 @@
-import express, { Application } from 'express'
+import express, { Application, Request, Response } from 'express'
 import bodyParser from 'body-parser'
 
 import imagesHandle from './images/index'
@@ -11,6 +11,10 @@ const app: Application = express()
 app.set('baseDirectory', './data')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use((req: Request, res: Response, next: Function) => {
+  console.log(req.headers)
+  next()
+})
 
 imagesHandle(app)
 createDirectory(app, 'post', '/directories')
