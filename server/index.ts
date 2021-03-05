@@ -12,7 +12,11 @@ app.set('baseDirectory', './data')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use((req: Request, res: Response, next: Function) => {
-  console.log(req.headers)
+  if (req.headers.cypress) {
+    app.set('baseDirectory', './testdata')
+  } else {
+    app.set('baseDirectory', './data')
+  }
   next()
 })
 

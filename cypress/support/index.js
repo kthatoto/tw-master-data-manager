@@ -20,8 +20,9 @@ import './commands'
 // require('./commands')
 
 beforeEach(() => {
-  cy.intercept({
-    url: '*',
-    headers: { cypress: 'true' }
+  cy.server({
+    onAnyRequest: (route, proxy) => {
+      proxy.xhr.setRequestHeader('cypress', 'true');
+    }
   })
 })
