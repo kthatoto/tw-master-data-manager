@@ -25,7 +25,10 @@ beforeEach(() => {
       proxy.xhr.setRequestHeader('cypress', 'true');
     }
   })
+
+  cy.visit('http://localhost:3000/')
 })
+
 afterEach(() => {
   cy.exec('find testdata -type file | xargs rm')
 })
