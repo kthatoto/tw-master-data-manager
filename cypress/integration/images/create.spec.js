@@ -24,6 +24,7 @@ context('Images Create', () => {
       cy.wait(100)
       cy.get('.dialog.-directoryCreate input.el-input__inner').type(directoryName)
       cy.contains('.dialog.-directoryCreate button.el-button', '作成').click()
+      cy.wait(100)
       cy.get('.resources__item svg').dblclick()
 
       const sampleImage = 'field1.png'
