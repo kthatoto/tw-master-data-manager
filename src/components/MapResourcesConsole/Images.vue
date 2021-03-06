@@ -6,7 +6,7 @@
       ImageDetail(:refs="$refs" :editable="editable")
 
     template(slot="resourceCreateModal")
-      el-dialog.dialog(v-if="resourceCreating" :visible.sync="resourceForm.flag")
+      el-dialog.dialog.-imageCreate(v-if="resourceCreating" :visible.sync="resourceForm.flag")
         h2(slot="title") Image作成
         h3 Image
         el-upload.row(
@@ -24,7 +24,7 @@
           el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") 作成
 
     template(slot="resourceEditModal")
-      el-dialog.dialog(v-if="resourceEditing" :visible.sync="resourceForm.flag")
+      el-dialog.dialog.-imageEdit(v-if="resourceEditing" :visible.sync="resourceForm.flag")
         h2(slot="title") Image変更
         h3 Image
         el-upload.row(
