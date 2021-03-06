@@ -26,3 +26,6 @@ beforeEach(() => {
     }
   })
 })
+afterEach(() => {
+  cy.exec('find testdata -type file | xargs rm')
+})
