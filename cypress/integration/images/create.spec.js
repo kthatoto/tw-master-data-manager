@@ -6,7 +6,7 @@ context('Images Create', () => {
       cy.wait(100)
       cy.get('input[type="file"]').attachFile(sampleImage)
       cy.get('.dialog.-imageCreate input.el-input__inner').clear().type('sample')
-      cy.wait(200)
+      cy.wait(100)
       cy.contains('.dialog.-imageCreate button.el-button', '作成').click()
       cy.wait(100)
       cy.contains('作成完了！').should('be.visible')
