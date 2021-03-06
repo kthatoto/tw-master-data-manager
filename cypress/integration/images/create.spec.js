@@ -1,7 +1,7 @@
 context('Images Create', () => {
   context('Success', () => {
     it('creates an image', () => {
-      const sampleImage = 'chrome.png'
+      const sampleImage = 'field1.png'
       cy.contains('images作成').click()
       cy.wait(100)
       cy.get('input[type="file"]').attachFile(sampleImage)
@@ -27,7 +27,7 @@ context('Images Create', () => {
       cy.contains('.dialog.-directoryCreate button.el-button', '作成').click()
       cy.get('.resources__item svg').dblclick()
 
-      const sampleImage = 'chrome.png'
+      const sampleImage = 'field1.png'
       cy.contains('images作成').click()
       cy.wait(100)
       cy.get('input[type="file"]').attachFile(sampleImage)
@@ -49,7 +49,7 @@ context('Images Create', () => {
 
   context('Failure', () => {
     it('fails to create an image because name is duplicate to another image', () => {
-      const sampleImage = 'chrome.png'
+      const sampleImage = 'field1.png'
       cy.contains('images作成').click()
       cy.wait(100)
       cy.get('input[type="file"]').attachFile(sampleImage)
