@@ -2,11 +2,7 @@ import express, { Application, Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 
-import imagesHandle from './images/index'
-
-import createDirectory from './createDirectory'
-import moveDirectory from './moveDirectory'
-import deleteObject from './deleteObject'
+import apiHandle from './api/index'
 
 const app: Application = express()
 app.set('baseDirectory', './data')
@@ -25,10 +21,7 @@ mongoose.connect(
   { useNewUrlParser: true }
 )
 
-imagesHandle(app)
-createDirectory(app, 'post', '/directories')
-moveDirectory(app, 'patch', '/directories')
-deleteObject(app, 'delete', '/objects')
+apiHandle(app)
 
 export default {
   path: '/api/',
