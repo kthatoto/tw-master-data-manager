@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from 'express'
 import bodyParser from 'body-parser'
+import mongoose from 'mongoose'
 
 import imagesHandle from './images/index'
 
@@ -19,6 +20,10 @@ app.use((req: Request, res: Response, next: Function) => {
   }
   next()
 })
+mongoose.connect(
+  'mongodb://root:rootroot@localhost:27017/tw-master?authSource=admin',
+  { useNewUrlParser: true }
+)
 
 imagesHandle(app)
 createDirectory(app, 'post', '/directories')
