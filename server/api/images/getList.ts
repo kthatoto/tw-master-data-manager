@@ -14,15 +14,13 @@ export default (app: Application, method: 'get', path: string) => {
       if (stat.isDirectory()) {
         response.directories.push({
           fullPath: filePath,
-          name: obj,
-          isFile: false
+          name: obj
         })
       } else {
         const data = await fs.promises.readFile(filePath, 'base64')
         response.resources.push({
           fullPath: filePath,
           name: obj,
-          isFile: true,
           size: stat.size,
           raw: data
         })

@@ -60,7 +60,6 @@ export interface ItemEffect {
 }
 export interface Item extends BasicObject {
   imagePath: string
-  isFile: true
   category: ItemCategory
   subCategory: ItemSubCategory
   value: Value
