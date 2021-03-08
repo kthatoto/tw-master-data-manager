@@ -8,7 +8,6 @@ import handleResponse from '@/utils/handleResponse.ts'
 interface ImageFile {
   name: string
   raw: File
-  size: number
   uid: number
 }
 

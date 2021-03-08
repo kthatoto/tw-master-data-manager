@@ -1,10 +1,17 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { Schema, Document } from 'mongoose'
 
-const Image = new Schema({
+export interface IImage extends Document {
+  name: string
+  path: string
+  data?: string
+  objectType: 'file' | 'directory'
+}
+
+const ImageSchema: Schema = new Schema({
   name: { type: String, required: true },
   path: { type: String, required: true },
   data: { type: String },
-  objectType: { type: String, required: true } // as 'file' | 'directory'
+  objectType: { type: String, required: true }
 })
 
-default export mongoose.model('Image', Image)
+export default mongoose.model<IImage>('Image', ImageSchema)

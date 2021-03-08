@@ -6,7 +6,6 @@ export interface Directory {
 export interface BasicObject {
   path: string
   name: string
-  size: number
   data: string | null
 }
 
