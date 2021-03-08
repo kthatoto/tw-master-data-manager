@@ -20,9 +20,9 @@ export default (app: Application, method: 'get', path: string) => {
         const data = await fs.promises.readFile(path, 'base64')
         response.resources.push({
           path,
+          data,
           name: obj,
           size: stat.size,
-          raw: data
         })
       }
     }

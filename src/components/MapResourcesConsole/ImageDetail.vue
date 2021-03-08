@@ -1,6 +1,6 @@
 <template lang="pug">
 .detail
-  img(:src="'data:image;base64,' + showingResource.raw")
+  img(:src="'data:image;base64,' + showingResource.data")
   h3 {{ showingResource.name }}
   p サイズ：{{ bytes }}
   .buttons(v-if="editable")

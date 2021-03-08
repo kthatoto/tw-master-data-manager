@@ -7,7 +7,7 @@ export interface BasicObject {
   path: string
   name: string
   size: number
-  raw: string | null
+  data: string | null
 }
 
 export const valueCurrencies = ['gold']

@@ -1,5 +1,5 @@
 <template lang="pug">
-img(v-if="raw" :src="'data:image;base64,' + raw" @dblclick="dblclick" @click.right.prevent="clickRight"
+img(v-if="data" :src="'data:image;base64,' + data" @dblclick="dblclick" @click.right.prevent="clickRight"
   :style="{ width, height }")
 .noimage(v-else @dblclick="dblclick" @click.right.prevent="clickRight"
   :style="{ width, height, lineHeight }") No Image
@@ -10,7 +10,7 @@ import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
   props: {
-    raw: {
+    data: {
       type: String,
       required: false,
       default: null
