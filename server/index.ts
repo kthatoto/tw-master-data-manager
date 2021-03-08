@@ -18,7 +18,10 @@ app.use((req: Request, res: Response, next: Function) => {
 })
 mongoose.connect(
   'mongodb://root:rootroot@localhost:27017/tw-master?authSource=admin',
-  { useNewUrlParser: true }
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
 )
 
 apiHandle(app)
