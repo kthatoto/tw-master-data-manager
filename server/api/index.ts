@@ -18,3 +18,4 @@ export interface ResponseMessage {
   err?: any
 }
 export type DefaultResponseBody = ResponseMessage | null
+export type ResourceKey = 'images' | 'tiles'
