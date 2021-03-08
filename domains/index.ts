@@ -1,10 +1,10 @@
 export interface Directory {
-  fullPath: string
+  path: string
   name: string
 }
 
 export interface BasicObject {
-  fullPath: string
+  path: string
   name: string
   size: number
   raw: string | null

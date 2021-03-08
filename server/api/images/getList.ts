@@ -9,17 +9,17 @@ export default (app: Application, method: 'get', path: string) => {
 
     const objects = await fs.promises.readdir(`${app.get('baseDirectory')}/images${req.query.directory}`, {})
     for (const obj of objects) {
-      const filePath: string = `${app.get('baseDirectory')}/images${req.query.directory}${obj}`
-      const stat = await fs.promises.stat(filePath)
+      const path: string = `${app.get('baseDirectory')}/images${req.query.directory}${obj}`
+      const stat = await fs.promises.stat(path)
       if (stat.isDirectory()) {
         response.directories.push({
-          fullPath: filePath,
+          path,
           name: obj
         })
       } else {
-        const data = await fs.promises.readFile(filePath, 'base64')
+        const data = await fs.promises.readFile(path, 'base64')
         response.resources.push({
-          fullPath: filePath,
+          path,
           name: obj,
           size: stat.size,
           raw: data
