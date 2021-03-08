@@ -12,3 +12,9 @@ export default (app: Application) => {
   moveDirectory(app, 'patch', '/directories')
   deleteObject(app, 'delete', '/objects')
 }
+
+export interface ResponseMessage {
+  message: string
+  err?: any
+}
+export type DefaultResponseBody = ResponseMessage | null

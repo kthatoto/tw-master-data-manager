@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { Application, Request, Response } from 'express'
 
-import { ResponseMessage, DefaultResponseBody } from '~server/index'
+import { ResponseMessage, DefaultResponseBody } from '~server/api/index'
 
 export interface ImagesEditRequestBody {
   beforeFilePath: string
