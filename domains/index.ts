@@ -6,7 +6,7 @@ export interface Directory {
 export interface BasicObject {
   path: string
   name: string
-  data: string | null
+  data?: string
 }
 
 export const valueCurrencies = ['gold']

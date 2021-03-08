@@ -7,7 +7,7 @@ import Image, { IImage } from '~server/models/image.ts'
 export default (app: Application, method: 'get', path: string) => {
   app[method](path, async (req: Request, res: Response<ImagesResponse>) => {
     const response: ImagesResponse = { resources: [], directories: [] }
-    const directoryPath = req.query.directory
+    const directoryPath: string = req.query.directory as string
 
     // const objects = await fs.promises.readdir(`${app.get('baseDirectory')}/images${req.query.directory}`, {})
     // for (const obj of objects) {
@@ -29,12 +29,21 @@ export default (app: Application, method: 'get', path: string) => {
     //   }
     // }
 
-    // const images: IImage = await Image.find({ path: directoryPath })
-    // images.forEach((image: IImage) => {
-    //   if (image.objectType === 'file') {
-    //     response.
-    //   }
-    // })
+    const images: IImage[] = await Image.find({ path: directoryPath })
+    images.forEach((image: IImage) => {
+      if (image.objectType === 'file') {
+        response.resources.push({
+          path: image.path,
+          name: image.name,
+          data: image.data
+        })
+      } else if (image.objectType === 'directory') {
+        response.directories.push({
+          path: image.path,
+          name: image.name
+        })
+      }
+    })
 
     res.send(response)
   })
