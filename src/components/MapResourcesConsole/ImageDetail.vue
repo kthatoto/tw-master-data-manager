@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
 
@@ -30,8 +30,7 @@ export default defineComponent({
 
     return {
       ...commonStore,
-      ...imagesStore,
-      bytes
+      ...imagesStore
     }
   }
 })
