@@ -2,7 +2,7 @@ import fs from 'fs'
 import { Application, Request, Response } from 'express'
 
 import { ResponseMessage, DefaultResponseBody, ResourceKey } from '~server/api/index'
-import Image from '~server/models/image.ts'
+import Image from '../models/image'
 
 export interface CreateDirectoryRequestBody {
   resourceKey: ResourceKey
