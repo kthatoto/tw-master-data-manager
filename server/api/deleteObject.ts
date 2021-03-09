@@ -7,8 +7,8 @@ import Image from '../models/image'
 export default (app: Application, method: 'delete', path: string) => {
   app[method](path, async (req: Request, res: Response<DefaultResponseBody>) => {
     const resourceKey: ResourceKey = req.query.resourceKey as ResourceKey
-    const path = req.query.path
-    const name = req.query.name
+    const path = req.query.path as string
+    const name = req.query.name as string
 
     const Model = {
       images: Image
@@ -19,16 +19,14 @@ export default (app: Application, method: 'delete', path: string) => {
       return
     }
 
-    let result: boolean
+    let result: boolean = true
     let message: string = ''
     if (doc.objectType === 'file') {
-      result = await doc.remove()
-      if (!result) message = '削除に失敗しました'
+      await doc.remove()
     } else if (doc.objectType === 'directory') {
       const docs: ResourceModel[] = await Model.find({ path: `${path}${name}/` })
       if (docs.length === 0) {
-        result = await doc.remove()
-        if (!result) message = '削除に失敗しました'
+        await doc.remove()
       } else {
         result = false
         message = `「${path}${name}/」の中は空じゃないので消せません`
