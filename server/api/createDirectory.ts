@@ -1,4 +1,3 @@
-import fs from 'fs'
 import { Application, Request, Response } from 'express'
 
 import { ResponseMessage, DefaultResponseBody, ResourceKey } from '~server/api/index'
