@@ -16,12 +16,13 @@ export default (app: any, method: 'post', path: string) => {
     const path: string = req.body.path
     const name: string = req.body.name
 
+    let newDirectory: any
     if (resourceKey === 'images') {
-      const newDirectory = new Image({
+      newDirectory = new Image({
         name, path, objectType: 'directory'
       })
-      await newDirectory.save()
-      res.send(null)
     }
+    await newDirectory.save()
+    res.send(null)
   })
 }
