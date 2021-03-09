@@ -25,11 +25,14 @@ export default (app: Application, method: 'patch', path: string) => {
       res.send({ message: `「${path}${beforeName}」が見つかりません` })
       return
     }
-    const children: IImage[] = await Image.find({ path: { $regex: `^${path}${beforeName}/` } })
+    const oldPath: string = `${path}${beforeName}/`
+    const newPath: string = `${path}${name}/`
+    const children: IImage[] = await Image.find({ path: { $regex: `^${oldPath}` } })
     children.forEach(async (child: IImage) => {
+      const newChildPath: string = child.path.replace(oldPath, newPath)
       await Image.findOneAndUpdate(
         { path: child.path, name: child.name },
-        { path: `${path}${name}/` }
+        { path: newChildPath }
       )
     })
     res.send(null)
