@@ -47,7 +47,8 @@ export const buildCommonStore = (stores: AppStores) => {
     if (!directoryFormValid.value) return
     const store = getStoreByKey(key)
     const params = {
-      directory: `${key}${store.currentDirectory.value}`,
+      resourceKey: key,
+      path: store.currentDirectory.value,
       name: directoryForm.name
     }
     const res = await axios.post('/api/directories', params)
