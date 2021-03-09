@@ -25,27 +25,13 @@ export default (app: Application, method: 'patch', path: string) => {
       res.send({ message: `「${path}${beforeName}」が見つかりません` })
       return
     }
-    // const children: IImage[] = await Image.find(
-    //   { path, name }
-    // )
-
-    // const beforeFilePath: string = `${app.get('baseDirectory')}/${directory}${beforeName}`
-    // const afterFilePath: string = `${app.get('baseDirectory')}/${directory}${name}`
-    // try {
-    //   const stat = await fs.promises.stat(beforeFilePath)
-    //   if (!stat.isDirectory()) {
-    //     return res.send({ message: `「${directory}${beforeName}」はフォルダではありません` })
-    //   }
-    //   if (fs.existsSync(afterFilePath)) {
-    //     return res.send({ message: `「${directory}${name}」は既に存在してます` })
-    //   }
-    //
-    //   fs.rename(beforeFilePath, afterFilePath, (err: any) => {
-    //     if (err) throw err
-    //     res.send(null)
-    //   })
-    // } catch (err: any) {
-    //   res.send({ message: '把握していない不具合', err })
-    // }
+    const children: IImage[] = await Image.find({ path: { $regex: `^${path}${beforeName}/` } })
+    children.forEach(async (child: IImage) => {
+      await Image.findOneAndUpdate(
+        { path: child.path, name: child.name },
+        { path: `${path}${name}/` }
+      )
+    })
+    res.send(null)
   })
 }
