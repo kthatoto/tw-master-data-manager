@@ -53,12 +53,12 @@
 import { defineComponent, PropType, onMounted } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import { StoreKey } from '@/stores/common_store.ts'
+import { ResourceKey } from '~server/api/index.ts'
 
 export default defineComponent({
   props: {
     resourceKey: {
-      type: String as PropType<StoreKey>,
+      type: String as PropType<ResourceKey>,
       required: true
     },
     editable: {
