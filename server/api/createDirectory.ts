@@ -1,6 +1,6 @@
 import { Application, Request, Response } from 'express'
 
-import { ResourceKey } from '~server/index'
+import { ResourceKey, ResourceModel } from '~server/index'
 import { ResponseMessage, DefaultResponseBody } from '~server/api/index'
 import Image from '../models/image'
 
@@ -19,9 +19,13 @@ export default (app: any, method: 'post', path: string) => {
     const Model = {
       images: Image
     }[resourceKey]
-    const newDirectory = new Model({
-      name, path, objectType: 'directory'
-    })
+
+    const already: boolean = await Model.exists({ path, name })
+    if (already) {
+      res.send({ message: `「${path}${name}/」は既に存在してます` })
+      return
+    }
+    const newDirectory = new Model({ name, path, objectType: 'directory' })
     await newDirectory.save()
     res.send(null)
   })

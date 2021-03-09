@@ -21,6 +21,11 @@ export default (app: Application, method: 'patch', path: string) => {
     const Model = {
       images: Image
     }[resourceKey]
+    const already: boolean = await Model.exists({ path, name })
+    if (already) {
+      res.send({ message: `「${path}${name}/」は既に存在してます` })
+      return
+    }
     const result: ResourceModel | null = await Model.findOneAndUpdate(
       { path, name: beforeName },
       { $set: { name } }
