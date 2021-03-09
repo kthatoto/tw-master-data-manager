@@ -30,3 +30,7 @@ export default {
   path: '/api/',
   handler: app
 }
+
+import { IImage } from './models/image'
+export type ResourceModel = IImage
+export type ResourceKey = 'images'

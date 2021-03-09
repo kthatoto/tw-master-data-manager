@@ -5,7 +5,7 @@ import { AppStores } from '@/stores/appStores.ts'
 import { Directory } from '~domains/index.ts'
 import handleResponse from '@/utils/handleResponse.ts'
 
-import { ResourceKey } from '~server/api/index.ts'
+import { ResourceKey } from '~server/index.ts'
 import { CreateDirectoryRequestBody } from '~server/api/createDirectory.ts'
 import { MoveDirectoryRequestBody } from '~server/api/moveDirectory.ts'
 

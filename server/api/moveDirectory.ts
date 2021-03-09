@@ -1,7 +1,8 @@
 import { Application, Request, Response } from 'express'
 
-import { ResponseMessage, DefaultResponseBody, ResourceKey } from '~server/api/index'
-import Image, { IImage } from '../models/image'
+import { ResourceKey, ResourceModel } from '~server/index'
+import { ResponseMessage, DefaultResponseBody } from '~server/api/index'
+import Image from '../models/image'
 
 export interface MoveDirectoryRequestBody {
   resourceKey: ResourceKey
@@ -17,7 +18,10 @@ export default (app: Application, method: 'patch', path: string) => {
     const beforeName: string = req.body.beforeName
     const name: string = req.body.name
 
-    const result: IImage | null = await Image.findOneAndUpdate(
+    const Model = {
+      images: Image
+    }[resourceKey]
+    const result: ResourceModel | null = await Model.findOneAndUpdate(
       { path, name: beforeName },
       { $set: { name } }
     )
@@ -27,10 +31,10 @@ export default (app: Application, method: 'patch', path: string) => {
     }
     const oldPath: string = `${path}${beforeName}/`
     const newPath: string = `${path}${name}/`
-    const children: IImage[] = await Image.find({ path: { $regex: `^${oldPath}` } })
-    children.forEach(async (child: IImage) => {
+    const children: ResourceModel[] = await Model.find({ path: { $regex: `^${oldPath}` } })
+    children.forEach(async (child: ResourceModel) => {
       const newChildPath: string = child.path.replace(oldPath, newPath)
-      await Image.findOneAndUpdate(
+      await Model.findOneAndUpdate(
         { path: child.path, name: child.name },
         { path: newChildPath }
       )

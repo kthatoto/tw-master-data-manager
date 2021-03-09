@@ -53,7 +53,7 @@
 import { defineComponent, PropType, onMounted } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import { ResourceKey } from '~server/api/index.ts'
+import { ResourceKey } from '~server/index.ts'
 
 export default defineComponent({
   props: {

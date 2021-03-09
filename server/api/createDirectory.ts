@@ -1,6 +1,7 @@
 import { Application, Request, Response } from 'express'
 
-import { ResponseMessage, DefaultResponseBody, ResourceKey } from '~server/api/index'
+import { ResourceKey } from '~server/index'
+import { ResponseMessage, DefaultResponseBody } from '~server/api/index'
 import Image from '../models/image'
 
 export interface CreateDirectoryRequestBody {
@@ -15,12 +16,12 @@ export default (app: any, method: 'post', path: string) => {
     const path: string = req.body.path
     const name: string = req.body.name
 
-    let newDirectory: any
-    if (resourceKey === 'images') {
-      newDirectory = new Image({
-        name, path, objectType: 'directory'
-      })
-    }
+    const Model = {
+      images: Image
+    }[resourceKey]
+    const newDirectory = new Model({
+      name, path, objectType: 'directory'
+    })
     await newDirectory.save()
     res.send(null)
   })

@@ -1,10 +1,10 @@
 import { Application } from 'express'
 
-import imagesHandle from './images/index'
-
 import createDirectory from './createDirectory'
 import moveDirectory from './moveDirectory'
 import deleteObject from './deleteObject'
+
+import imagesHandle from './images/index'
 
 export default (app: Application) => {
   imagesHandle(app)
@@ -18,4 +18,3 @@ export interface ResponseMessage {
   err?: any
 }
 export type DefaultResponseBody = ResponseMessage | null
-export type ResourceKey = 'images'
