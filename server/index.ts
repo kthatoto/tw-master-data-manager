@@ -5,19 +5,24 @@ import mongoose from 'mongoose'
 import apiHandle from './api/index'
 
 const app: Application = express()
-app.set('baseDirectory', './data')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+const productionDatabaseName = 'tw-master'
+const cypressDatabaseName = 'tw-master-cypress'
 app.use((req: Request, res: Response, next: Function) => {
-  if (req.headers.cypress) {
-    app.set('baseDirectory', './testdata')
-  } else {
-    app.set('baseDirectory', './data')
+  const currentDatabaseName = mongoose.connection.db.databaseName
+  if (req.headers.cypress && currentDatabaseName === productionDatabaseName) {
+    mongoose.disconnect()
+    mongoose.connect(`mongodb://root:rootroot@localhost:27017/${cypressDatabaseName}?authSource=admin`)
+  } else if (!req.headers.cypress && currentDatabaseName === cypressDatabaseName) {
+    // mongoose.disconnect()
+    // mongoose.connect(`mongodb://root:rootroot@localhost:27017/${productionDatabaseName}?authSource=admin`)
   }
   next()
 })
 mongoose.connect(
-  'mongodb://root:rootroot@localhost:27017/tw-master?authSource=admin',
+  `mongodb://root:rootroot@localhost:27017/${productionDatabaseName}?authSource=admin`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
