@@ -10,23 +10,26 @@ app.use(bodyParser.json())
 
 const productionDatabaseName = 'tw-master'
 const cypressDatabaseName = 'tw-master-cypress'
-app.use((req: Request, res: Response, next: Function) => {
+app.use(async (req: Request, res: Response, next: Function) => {
   const currentDatabaseName = mongoose.connection.db.databaseName
   if (req.headers.cypress && currentDatabaseName === productionDatabaseName) {
-    mongoose.disconnect()
-    mongoose.connect(`mongodb://root:rootroot@localhost:27017/${cypressDatabaseName}?authSource=admin`)
+    await mongoose.disconnect()
+    await mongoose.connect(
+      `mongodb://root:rootroot@localhost:27017/${cypressDatabaseName}?authSource=admin`,
+      { useNewUrlParser: true, useUnifiedTopology: true }
+    )
   } else if (!req.headers.cypress && currentDatabaseName === cypressDatabaseName) {
-    // mongoose.disconnect()
-    // mongoose.connect(`mongodb://root:rootroot@localhost:27017/${productionDatabaseName}?authSource=admin`)
+    await mongoose.disconnect()
+    await mongoose.connect(
+      `mongodb://root:rootroot@localhost:27017/${productionDatabaseName}?authSource=admin`,
+      { useNewUrlParser: true, useUnifiedTopology: true }
+    )
   }
   next()
 })
 mongoose.connect(
   `mongodb://root:rootroot@localhost:27017/${productionDatabaseName}?authSource=admin`,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  }
+  { useNewUrlParser: true, useUnifiedTopology: true }
 )
 
 apiHandle(app)

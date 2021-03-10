@@ -20,10 +20,6 @@ import './commands'
 // require('./commands')
 
 beforeEach(() => {
-  cy.exec('rm -rf testdata')
-  cy.exec('mkdir testdata')
-  cy.exec('mkdir testdata/images')
-
   cy.server({
     onAnyRequest: (route, proxy) => {
       proxy.xhr.setRequestHeader('cypress', 'true');
