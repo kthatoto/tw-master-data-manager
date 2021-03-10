@@ -1,31 +1,33 @@
-import fs from 'fs'
 import { Application, Request, Response } from 'express'
 
 import { ResponseMessage, DefaultResponseBody } from '~server/api/index'
+import Image from '../../models/image'
 
 export interface ImagesEditRequestBody {
-  beforeFilePath: string
-  filePath: string
+  path: string
+  beforeName: string
+  name: string
   data: string
 }
 
 export default (app: Application, method: 'patch', path: string) => {
   app[method](path, async (req: Request<any, any, ImagesEditRequestBody>, res: Response<DefaultResponseBody>) => {
-    const beforeFilePath = `${app.get('baseDirectory')}/images${req.body.beforeFilePath}`
-    const afterFilePath = `${app.get('baseDirectory')}/images${req.body.filePath}`
-    const data: string = req.body.data
-    try {
-      if (!fs.existsSync(beforeFilePath)) {
-        return res.send({ message: `「${beforeFilePath}」は存在しません` })
-      }
-      if (fs.existsSync(afterFilePath)) {
-        return res.send({ message: `「${afterFilePath}」は既に存在してます` })
-      }
-      await fs.promises.rename(beforeFilePath, afterFilePath)
-      await fs.promises.writeFile(afterFilePath, data, 'base64')
-      res.send(null)
-    } catch (err: any) {
-      res.send({ message: '把握していない不具合', err })
+    const { path, beforeName, name, data } = req.body
+
+    const target: boolean = await Image.exists({ path, name: beforeName, directory: 'file' })
+    if (!target) {
+      res.send({ message: `「${path}${beforeName}」は存在しません` })
+      return
     }
+    const already: boolean = await Image.exists({ path, name, directory: 'file' })
+    if (already) {
+      res.send({ message: `「${path}${name}」は既に存在してます` })
+      return
+    }
+    await Image.findOneAndUpdate(
+      { path, name: beforeName },
+      { $set: { name, data } }
+    )
+    res.send(null)
   })
 }

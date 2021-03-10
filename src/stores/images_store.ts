@@ -5,6 +5,9 @@ import { Directory } from '~domains/index.ts'
 import { Image, ImagesResponse } from '~domains/images.ts'
 import handleResponse from '@/utils/handleResponse.ts'
 
+import { ImagesCreateRequestBody } from '~server/api/images/create.ts'
+import { ImagesEditRequestBody } from '~server/api/images/edit.ts'
+
 interface ImageFile {
   name: string
   raw: File
@@ -92,8 +95,10 @@ export const buildImagesStore = () => {
 
   const createResource = async () => {
     if (!resourceFormValid.value) return
-    const params = {
-      filePath: state.currentDirectory + resourceForm.name + resourceForm.extension,
+    if (!resourceForm.data) return
+    const params: ImagesCreateRequestBody = {
+      path: state.currentDirectory,
+      name: resourceForm.name + resourceForm.extension,
       data: resourceForm.data
     }
     const res = await axios.post('/api/images', params)
@@ -101,9 +106,11 @@ export const buildImagesStore = () => {
   }
   const editResource = async () => {
     if (!resourceFormValid.value) return
-    const params = {
-      beforeFilePath: state.currentDirectory + resourceForm.beforeName,
-      filePath: state.currentDirectory + resourceForm.name + resourceForm.extension,
+    if (!resourceForm.data) return
+    const params: ImagesEditRequestBody = {
+      path: state.currentDirectory,
+      beforeName: resourceForm.beforeName,
+      name: resourceForm.name + resourceForm.extension,
       data: resourceForm.data
     }
     const res = await axios.patch('/api/images', params)

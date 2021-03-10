@@ -13,10 +13,7 @@ export interface MoveDirectoryRequestBody {
 
 export default (app: Application, method: 'patch', path: string) => {
   app[method](path, async (req: Request<any, any, MoveDirectoryRequestBody>, res: Response<DefaultResponseBody>) => {
-    const resourceKey: ResourceKey = req.body.resourceKey
-    const path: string = req.body.path
-    const beforeName: string = req.body.beforeName
-    const name: string = req.body.name
+    const { resourceKey, path, beforeName, name } = req.body
 
     const Model = {
       images: Image

@@ -12,9 +12,7 @@ export interface CreateDirectoryRequestBody {
 
 export default (app: any, method: 'post', path: string) => {
   app[method]('/directories', async (req: Request<any, any, CreateDirectoryRequestBody>, res: Response<DefaultResponseBody>) => {
-    const resourceKey: ResourceKey = req.body.resourceKey
-    const path: string = req.body.path
-    const name: string = req.body.name
+    const { resourceKey, path, name } = req.body
 
     const Model = {
       images: Image
