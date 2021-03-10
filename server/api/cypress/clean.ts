@@ -1,7 +1,7 @@
 import { Application, Request, Response } from 'express'
 import mongoose from 'mongoose'
 
-import { cypressDatabaseName } from '~server/index'
+import { cypressDatabaseName } from '../../index'
 
 export default (app: Application, method: 'delete', path: string) => {
   app[method](path, async (req: Request, res: Response) => {
