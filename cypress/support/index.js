@@ -26,6 +26,6 @@ beforeEach(() => {
     }
   })
 
-  cy.request('DELETE', '/api/cypress/clean')
+  cy.request('DELETE', 'http://localhost:3000/api/cypress/clean')
   cy.visit('http://localhost:3000/')
 })
