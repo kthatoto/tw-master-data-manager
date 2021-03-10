@@ -8,8 +8,8 @@ const app: Application = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-const productionDatabaseName = 'tw-master'
-const cypressDatabaseName = 'tw-master-cypress'
+export const productionDatabaseName = 'tw-master'
+export const cypressDatabaseName = 'tw-master-cypress'
 app.use(async (req: Request, res: Response, next: Function) => {
   const currentDatabaseName = mongoose.connection.db.databaseName
   if (req.headers.cypress && currentDatabaseName === productionDatabaseName) {
