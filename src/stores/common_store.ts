@@ -5,10 +5,12 @@ import { AppStores } from '@/stores/appStores.ts'
 import { Directory } from '~domains/index.ts'
 import handleResponse from '@/utils/handleResponse.ts'
 
-export type StoreKey = 'images'
+import { ResourceKey } from '~server/index.ts'
+import { CreateDirectoryRequestBody } from '~server/api/createDirectory.ts'
+import { MoveDirectoryRequestBody } from '~server/api/moveDirectory.ts'
 
 export const buildCommonStore = (stores: AppStores) => {
-  const getStoreByKey = (key: StoreKey) => {
+  const getStoreByKey = (key: ResourceKey) => {
     if (key === 'images') return stores.imagesStore
     throw new Error(`Not handled key '${key}'`)
   }
@@ -43,21 +45,23 @@ export const buildCommonStore = (stores: AppStores) => {
     if (!directoryForm.name) return false
     return true
   })
-  const createDirectory = async (key: StoreKey) => {
+  const createDirectory = async (key: ResourceKey) => {
     if (!directoryFormValid.value) return
     const store = getStoreByKey(key)
-    const params = {
-      directory: `${key}${store.currentDirectory.value}`,
+    const params: CreateDirectoryRequestBody = {
+      resourceKey: key,
+      path: store.currentDirectory.value,
       name: directoryForm.name
     }
     const res = await axios.post('/api/directories', params)
     handleResponse(res, '作成完了！', store.fetchResources, directoryForm)
   }
-  const editDirectory = async (key: StoreKey) => {
+  const editDirectory = async (key: ResourceKey) => {
     if (!directoryFormValid.value) return
     const store = getStoreByKey(key)
-    const params = {
-      directory: `${key}${store.currentDirectory.value}`,
+    const params: MoveDirectoryRequestBody = {
+      resourceKey: key,
+      path: store.currentDirectory.value,
       beforeName: directoryForm.beforeName,
       name: directoryForm.name
     }
@@ -76,10 +80,11 @@ export const buildCommonStore = (stores: AppStores) => {
     deleteForm.flag = true
     deleteForm.name = name
   }
-  const deleteObject = async (key: StoreKey) => {
+  const deleteObject = async (key: ResourceKey) => {
     const store = getStoreByKey(key)
-    const path = `${key}${store.currentDirectory.value}${deleteForm.name}`
-    const res = await axios.delete(`/api/objects?path=${path}`)
+    const path = store.currentDirectory.value
+    const name = deleteForm.name
+    const res = await axios.delete(`/api/objects?resourceKey=${key}&path=${path}&name=${name}`)
     const result: boolean = handleResponse(res, '削除完了！', store.fetchResources, deleteForm)
     if (result) {
       store.showingResourceIndex.value = undefined
@@ -87,13 +92,13 @@ export const buildCommonStore = (stores: AppStores) => {
     deleteForm.name = ''
   }
 
-  const backToHome = (key: StoreKey) => {
+  const backToHome = (key: ResourceKey) => {
     const store = getStoreByKey(key)
     store.currentDirectory.value = '/'
     store.showingResourceIndex.value = undefined
     store.fetchResources()
   }
-  const backDirectory = (key: StoreKey, i: number) => {
+  const backDirectory = (key: ResourceKey, i: number) => {
     const store = getStoreByKey(key)
     store.currentDirectory.value = store.breadcrumbs.value.reduce((newDirectory: string, breadcrumb: string, j: number) => {
       if (j <= i) newDirectory += `${breadcrumb}/`
@@ -102,7 +107,7 @@ export const buildCommonStore = (stores: AppStores) => {
     store.showingResourceIndex.value = undefined
     store.fetchResources()
   }
-  const appendDirectory = (key: StoreKey, dir: string) => {
+  const appendDirectory = (key: ResourceKey, dir: string) => {
     const store = getStoreByKey(key)
     store.currentDirectory.value = `${store.currentDirectory.value}${dir}/`
     store.fetchResources()

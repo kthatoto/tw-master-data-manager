@@ -5,10 +5,12 @@ import { Directory } from '~domains/index.ts'
 import { Image, ImagesResponse } from '~domains/images.ts'
 import handleResponse from '@/utils/handleResponse.ts'
 
+import { ImagesCreateRequestBody } from '~server/api/images/create.ts'
+import { ImagesEditRequestBody } from '~server/api/images/edit.ts'
+
 interface ImageFile {
   name: string
   raw: File
-  size: number
   uid: number
 }
 
@@ -40,14 +42,14 @@ export const buildImagesStore = () => {
     beforeName: string
     name: string
     extension: string
-    raw?: string
+    data?: string
   }>({
     flag: false,
     action: undefined,
     beforeName: '',
     name: '',
     extension: '',
-    raw: undefined
+    data: undefined
   })
   const resourceCreating = computed<boolean>(() => resourceForm.action === 'create')
   const resourceEditing = computed<boolean>(() => resourceForm.action === 'edit')
@@ -58,13 +60,13 @@ export const buildImagesStore = () => {
     resourceForm.beforeName = ''
     resourceForm.name = ''
     resourceForm.extension = ''
-    resourceForm.raw = undefined
+    resourceForm.data = undefined
   }
   const openResourceEditModal = (resource: Image) => {
     resourceForm.flag = true
     resourceForm.action = 'edit'
     resourceForm.beforeName = resource.name
-    resourceForm.raw = resource.raw || undefined
+    resourceForm.data = resource.data || undefined
     const splited: string[] = resource.name.split('.')
     resourceForm.extension = '.' + splited.pop()
     resourceForm.name = splited.join('.')
@@ -72,7 +74,7 @@ export const buildImagesStore = () => {
 
   const resourceFormValid = computed<boolean>(() => {
     if (!resourceForm.name) return false
-    if (!resourceForm.raw) return false
+    if (!resourceForm.data) return false
     return true
   })
   const uploadImage = async (file: ImageFile) => {
@@ -85,7 +87,7 @@ export const buildImagesStore = () => {
       return (e: any) => {
         const binaryData = e.target.result
         const base64String = window.btoa(binaryData)
-        resourceForm.raw = base64String
+        resourceForm.data = base64String
       }
     })()
     fileReader.readAsBinaryString(file.raw)
@@ -93,19 +95,23 @@ export const buildImagesStore = () => {
 
   const createResource = async () => {
     if (!resourceFormValid.value) return
-    const params = {
-      filePath: state.currentDirectory + resourceForm.name + resourceForm.extension,
-      raw: resourceForm.raw
+    if (!resourceForm.data) return
+    const params: ImagesCreateRequestBody = {
+      path: state.currentDirectory,
+      name: resourceForm.name + resourceForm.extension,
+      data: resourceForm.data
     }
     const res = await axios.post('/api/images', params)
     handleResponse(res, '作成完了！', fetchResources, resourceForm)
   }
   const editResource = async () => {
     if (!resourceFormValid.value) return
-    const params = {
-      beforeFilePath: state.currentDirectory + resourceForm.beforeName,
-      filePath: state.currentDirectory + resourceForm.name + resourceForm.extension,
-      raw: resourceForm.raw
+    if (!resourceForm.data) return
+    const params: ImagesEditRequestBody = {
+      path: state.currentDirectory,
+      beforeName: resourceForm.beforeName,
+      name: resourceForm.name + resourceForm.extension,
+      data: resourceForm.data
     }
     const res = await axios.patch('/api/images', params)
     handleResponse(res, '更新完了！', fetchResources, resourceForm)

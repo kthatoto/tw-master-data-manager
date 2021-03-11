@@ -18,7 +18,7 @@
     .resources__item(v-for="o in resources" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
       .focus(v-if="selectingName === o.name")
       ConsoleImage(
-        :raw="o.raw" @dblclick="showResource(o.name)" @clickRight="confirmDelete(o.name)"
+        :data="o.data" @dblclick="showResource(o.name)" @clickRight="confirmDelete(o.name)"
         width="80px" height="80px" lineHeight="80px"
       )
       span(@dblclick="openResourceEditModal(o)") {{ o.name }}
@@ -53,12 +53,12 @@
 import { defineComponent, PropType, onMounted } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import { StoreKey } from '@/stores/common_store.ts'
+import { ResourceKey } from '~server/index.ts'
 
 export default defineComponent({
   props: {
     resourceKey: {
-      type: String as PropType<StoreKey>,
+      type: String as PropType<ResourceKey>,
       required: true
     },
     editable: {

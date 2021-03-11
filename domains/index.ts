@@ -1,15 +1,12 @@
 export interface Directory {
-  fullPath: string
+  path: string
   name: string
-  isFile: false
 }
 
 export interface BasicObject {
-  fullPath: string
+  path: string
   name: string
-  isFile: true
-  size: number
-  raw: string | null
+  data?: string
 }
 
 export const valueCurrencies = ['gold']

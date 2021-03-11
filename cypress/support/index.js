@@ -20,15 +20,18 @@ import './commands'
 // require('./commands')
 
 beforeEach(() => {
-  cy.exec('rm -rf testdata')
-  cy.exec('mkdir testdata')
-  cy.exec('mkdir testdata/images')
-
   cy.server({
     onAnyRequest: (route, proxy) => {
       proxy.xhr.setRequestHeader('cypress', 'true');
     }
   })
 
+  cy.request({
+    method: 'DELETE',
+    url: 'http://localhost:3000/api/cypress/clean',
+    headers: {
+      cypress: true
+    }
+  })
   cy.visit('http://localhost:3000/')
 })
