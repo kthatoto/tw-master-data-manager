@@ -58,5 +58,16 @@ context('Images Directories Edit', () => {
       cy.contains(directoryName).should('be.visible')
       cy.contains(directoryName2).should('be.visible')
     })
+
+    it('fails to edit a directory because name is duplicate to an image', () => {
+      const directoryName = 'fields'
+      cy.createDirectory(directoryName)
+      const sampleImage = 'field1.png'
+      cy.createImage(sampleImage, 'sample')
+
+      cy.editDirectory(directoryName, 'sample.png', 'は既に存在してます')
+      cy.shouldVisibleImage('.resources__item img', sampleImage)
+      cy.contains(directoryName).should('be.visible')
+    })
   })
 })
