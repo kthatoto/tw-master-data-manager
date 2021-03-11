@@ -59,12 +59,15 @@ Cypress.Commands.add('deleteImage', (target, expectedMessage) => {
   }
 })
 
-Cypress.Commands.add('createDirectory', (directoryName) => {
+Cypress.Commands.add('createDirectory', (directoryName, expectedMessage) => {
   cy.contains('フォルダ作成').click()
   cy.wait(100)
   cy.get('.dialog.-directoryCreate input.el-input__inner').type(directoryName)
   cy.contains('.dialog.-directoryCreate button.el-button', '作成').click()
   cy.wait(100)
+  if (expectedMessage) {
+    cy.contains(expectedMessage).should('be.visible')
+  }
 })
 
 Cypress.Commands.add('shouldVisibleImage', (target, imageFixtureName) => {
