@@ -34,11 +34,11 @@
     )
       template(slot="title")
         h2(v-if="directoryCreating") フォルダ作成
-        h2(v-else-if="directoryEditing") フォルダ名変更
+        h2(v-else-if="directoryEditing") フォルダ名更新
       el-input(v-model="directoryForm.name" ref="directoryName")
       .buttons
         el-button(v-if="directoryCreating" type="primary" @click="createDirectory(resourceKey)" :disabled="!directoryFormValid") 作成
-        el-button(v-else-if="directoryEditing" type="primary" @click="editDirectory(resourceKey)" :disabled="!directoryFormValid") 変更
+        el-button(v-else-if="directoryEditing" type="primary" @click="editDirectory(resourceKey)" :disabled="!directoryFormValid") 更新
 
     el-dialog.dialog.-objectDelete(:visible.sync="deleteForm.flag")
       h2(slot="title") 「{{ deleteForm.name }}」削除していい？
