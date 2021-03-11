@@ -43,8 +43,8 @@ Cypress.Commands.add('editImage', (beforeImageName, imageFixtureName, imageName,
   cy.get('.dialog.-imageEdit input[type="file"]').attachFile(imageFixtureName)
   cy.get('.dialog.-imageEdit input.el-input__inner').clear().type(imageName)
   cy.contains('.dialog.-imageEdit button.el-button', '更新').click()
+  cy.wait(100)
   if (expectedMessage) {
-    cy.wait(100)
     cy.contains(expectedMessage).should('be.visible')
   }
 })
