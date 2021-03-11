@@ -81,6 +81,16 @@ Cypress.Commands.add('editDirectory', (beforeDirectoryName, directoryName, expec
   }
 })
 
+Cypress.Commands.add('deleteDirectory', (directoryName, expectedMessage) => {
+  cy.contains('.resources__item', directoryName).parent().get('svg').rightclick()
+  cy.wait(100)
+  cy.contains('.dialog.-objectDelete button.el-button', '削除').click()
+  cy.wait(100)
+  if (expectedMessage) {
+    cy.contains(expectedMessage).should('be.visible')
+  }
+})
+
 Cypress.Commands.add('shouldVisibleImage', (target, imageFixtureName) => {
   cy.fixture(imageFixtureName).then((imageSource) => {
     cy.get(target).invoke('attr', 'src').should('include', imageSource)
