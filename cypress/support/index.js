@@ -26,6 +26,12 @@ beforeEach(() => {
     }
   })
 
-  cy.request('DELETE', 'http://localhost:3000/api/cypress/clean')
+  cy.request({
+    method: 'DELETE',
+    url: 'http://localhost:3000/api/cypress/clean',
+    headers: {
+      cypress: true
+    }
+  })
   cy.visit('http://localhost:3000/')
 })
