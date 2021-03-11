@@ -86,3 +86,7 @@ Cypress.Commands.add('shouldVisibleImage', (target, imageFixtureName) => {
     cy.get(target).invoke('attr', 'src').should('include', imageSource)
   })
 })
+
+Cypress.Commands.add('backToHome', () => {
+  cy.get('.resources__header .nav .home-icon').click()
+})
