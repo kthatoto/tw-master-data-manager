@@ -66,7 +66,7 @@ export const buildCommonStore = (stores: AppStores) => {
       name: directoryForm.name
     }
     const res = await axios.patch('/api/directories', params)
-    handleResponse(res, '変更完了！', store.fetchResources, directoryForm)
+    handleResponse(res, '更新完了！', store.fetchResources, directoryForm)
   }
 
   const deleteForm = reactive<{
