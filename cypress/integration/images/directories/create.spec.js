@@ -19,4 +19,23 @@ context('Images Directories Create', () => {
       cy.get('.resources__item').should('have.length', 1)
     })
   })
+
+  context('Failure', () => {
+    it('fails to create a directory because name is duplicate to another directory', () => {
+      const directoryName = 'fields'
+      cy.createDirectory(directoryName)
+      cy.createDirectory(directoryName, 'は既に存在してます')
+      cy.get('.resources__item').should('have.length', 1)
+    })
+
+    it('fails to create a directory because name is duplicate to an image', () => {
+      const sampleImage = 'field1.png'
+      cy.createImage(sampleImage, 'sample')
+
+      const directoryName = 'sample.png'
+      cy.createDirectory(directoryName, 'は既に存在してます')
+      cy.get('.resources__item').should('have.length', 1)
+      cy.get('.resources__item img').should('have.length', 1)
+    })
+  })
 })

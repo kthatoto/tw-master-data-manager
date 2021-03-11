@@ -70,6 +70,17 @@ Cypress.Commands.add('createDirectory', (directoryName, expectedMessage) => {
   }
 })
 
+Cypress.Commands.add('editDirectory', (beforeDirectoryName, directoryName, expectedMessage) => {
+  cy.contains(beforeDirectoryName).dblclick()
+  cy.wait(100)
+  cy.get('.dialog.-directoryEdit input.el-input__inner').clear().type(directoryName)
+  cy.contains('.dialog.-directoryEdit button.el-button', '更新').click()
+  cy.wait(100)
+  if (expectedMessage) {
+    cy.contains(expectedMessage).should('be.visible')
+  }
+})
+
 Cypress.Commands.add('shouldVisibleImage', (target, imageFixtureName) => {
   cy.fixture(imageFixtureName).then((imageSource) => {
     cy.get(target).invoke('attr', 'src').should('include', imageSource)
