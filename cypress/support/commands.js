@@ -49,6 +49,16 @@ Cypress.Commands.add('editImage', (beforeImageName, imageFixtureName, imageName,
   }
 })
 
+Cypress.Commands.add('deleteImage', (target, expectedMessage) => {
+  cy.get(target).rightclick()
+  cy.wait(100)
+  cy.contains('.dialog.-objectDelete button.el-button', '削除').click()
+  cy.wait(100)
+  if (expectedMessage) {
+    cy.contains(expectedMessage).should('be.visible')
+  }
+})
+
 Cypress.Commands.add('createDirectory', (directoryName) => {
   cy.contains('フォルダ作成').click()
   cy.wait(100)
