@@ -9,14 +9,16 @@ interface ResourcesResponseInterface<Resource> {
   directories: Directory[]
 }
 
-export default <Resource, ResourcesResponse extends ResourcesResponseInterface<Resource>>(resourceKey: ResourceKey) => {
-  const state = reactive<{
+interface State<Resource> {
     currentDirectory: string
     resources: Resource[]
     directories: Directory[]
     showingResourceIndex: number | undefined
     selectingName: string | undefined
-  }>({
+}
+
+export default <Resource, ResourcesResponse extends ResourcesResponseInterface<Resource>>(resourceKey: ResourceKey) => {
+  const state = reactive<State<Resource>>({
     currentDirectory: '/',
     resources: [],
     directories: [],
@@ -27,7 +29,9 @@ export default <Resource, ResourcesResponse extends ResourcesResponseInterface<R
   const fetchResources = async () => {
     const res: AxiosResponse<ResourcesResponse> = await axios.get(`/api/${resourceKey}?directory=${state.currentDirectory}`)
     const data: ResourcesResponse = res.data
+    // @ts-ignore
     state.resources = data.resources
+    // @ts-ignore
     state.directories = data.directories
   }
 
