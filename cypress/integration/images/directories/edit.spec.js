@@ -15,7 +15,7 @@ context('Images Directories Edit', () => {
 
       cy.editDirectory(directoryName, afterDirectoryName, '更新完了！')
 
-      cy.prepareImageResources([
+      cy.imageResourcesShouldBe([
         { type: 'directory', name: afterDirectoryName }
       ])
       cy.get('.resources__item').should('have.length', 1)
@@ -27,6 +27,7 @@ context('Images Directories Edit', () => {
         { type: 'directory', directories: [directoryName], name: subDirectoryName }
       ])
 
+      cy.goDirectory(directoryName)
       cy.editDirectory(subDirectoryName, afterDirectoryName, '更新完了！')
 
       cy.imageResourcesShouldBe([

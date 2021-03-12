@@ -19,6 +19,7 @@ context('Images Directories Delete', () => {
         { type: 'directory', directories: [directoryName], name: subDirectoryName }
       ])
 
+      cy.goDirectory(directoryName)
       cy.deleteDirectory(subDirectoryName, '削除完了！')
 
       cy.imageResourcesShouldBe([
