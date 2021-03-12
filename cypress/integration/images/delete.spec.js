@@ -23,7 +23,7 @@ context('Images Delete', () => {
       cy.goDirectory(directoryName)
       cy.deleteImage(imageName, '削除完了！')
 
-      cy.prepareImageResources([
+      cy.imageResourcesShouldBe([
         { type: 'directory', name: directoryName }
       ])
       cy.goDirectory(directoryName)
