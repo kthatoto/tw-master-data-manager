@@ -15,7 +15,7 @@ context('Images Directories Delete', () => {
 
     it('deletes a empty directory under a directory', () => {
       cy.prepareImageResources([
-        { type: 'directory', name: directoryName }
+        { type: 'directory', name: directoryName },
         { type: 'directory', directories: [directoryName], name: subDirectoryName }
       ])
 
@@ -32,7 +32,7 @@ context('Images Directories Delete', () => {
   context('Failure', () => {
     it('fails to delete a directory because it contains some items', () => {
       cy.prepareImageResources([
-        { type: 'directory', name: directoryName }
+        { type: 'directory', name: directoryName },
         { type: 'directory', directories: [directoryName], name: subDirectoryName }
       ])
 
