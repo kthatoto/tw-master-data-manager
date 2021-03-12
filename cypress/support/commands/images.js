@@ -23,7 +23,7 @@ Cypress.Commands.add('editImage', (beforeImageName, imageFixtureName, imageName,
 })
 
 Cypress.Commands.add('deleteImage', (imageName, expectedMessage) => {
-  cy.contains('.resources__item', imageName).get('img').rightclick()
+  cy.contains('.resources__item', imageName).get('img').rightclick({ multiple: true })
   cy.wait(100)
   cy.contains('.dialog.-objectDelete button.el-button', '削除').click()
   cy.wait(100)
@@ -58,6 +58,7 @@ Cypress.Commands.add('prepareImageResources', (objects) => {
       cy.createDirectory(obj.name)
     }
   })
+  cy.backToHome()
 })
 
 // objects: {
