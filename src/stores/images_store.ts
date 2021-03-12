@@ -1,9 +1,9 @@
 import { reactive, computed, toRefs } from '@vue/composition-api'
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 
-import { Directory } from '~domains/index.ts'
 import { Image, ImagesResponse } from '~domains/images.ts'
 import handleResponse from '@/utils/handleResponse.ts'
+import resourceService from '@/services/resourceService.ts'
 
 import { ImagesCreateRequestBody } from '~server/api/images/create.ts'
 import { ImagesEditRequestBody } from '~server/api/images/edit.ts'
@@ -15,26 +15,7 @@ interface ImageFile {
 }
 
 export const buildImagesStore = () => {
-  const state = reactive<{
-    currentDirectory: string
-    resources: Image[]
-    directories: Directory[]
-    showingResourceIndex: number | undefined
-    selectingName: string | undefined
-  }>({
-    currentDirectory: '/',
-    resources: [],
-    directories: [],
-    showingResourceIndex: undefined,
-    selectingName: undefined
-  })
-
-  const fetchResources = async () => {
-    const res: AxiosResponse<ImagesResponse> = await axios.get(`/api/images?directory=${state.currentDirectory}`)
-    const data: ImagesResponse = res.data
-    state.resources = data.resources
-    state.directories = data.directories
-  }
+  const { state, fetchResources } = resourceService<Image, ImagesResponse>('images')
 
   const resourceForm = reactive<{
     flag: boolean
