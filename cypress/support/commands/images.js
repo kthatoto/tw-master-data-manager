@@ -22,8 +22,8 @@ Cypress.Commands.add('editImage', (beforeImageName, imageFixtureName, imageName,
   }
 })
 
-Cypress.Commands.add('deleteImage', (target, expectedMessage) => {
-  cy.get(target).rightclick()
+Cypress.Commands.add('deleteImage', (imageName, expectedMessage) => {
+  cy.contains('.resources__item', imageName).get('img').rightclick()
   cy.wait(100)
   cy.contains('.dialog.-objectDelete button.el-button', '削除').click()
   cy.wait(100)
@@ -32,8 +32,50 @@ Cypress.Commands.add('deleteImage', (target, expectedMessage) => {
   }
 })
 
-Cypress.Commands.add('shouldVisibleImage', (target, imageFixtureName) => {
+Cypress.Commands.add('imageShouldBeVisible', (imageName, imageFixtureName) => {
   cy.fixture(imageFixtureName).then((imageSource) => {
-    cy.get(target).invoke('attr', 'src').should('include', imageSource)
+    cy.contains('.resources__item', imageName)
+      .get('img')
+      .invoke('attr', 'src')
+      .should('include', imageSource)
+  })
+})
+
+// objects: {
+//   type: 'file' | 'directory'
+//   directories?: string[]
+//   name: string
+//   imageFixtureName?: string
+// }[]
+Cypress.Commands.add('prepareImageResources', (objects) => {
+  objects.forEach(obj => {
+    cy.backToHome()
+    if (obj.directories) cy.goDirectories(obj.directories)
+    if (obj.type === 'file') {
+      cy.createImage(obj.imageFixtureName, obj.name)
+    }
+    if (obj.type === 'directory') {
+      cy.createDirectory(obj.name)
+    }
+  })
+})
+
+// objects: {
+//   type: 'file' | 'directory'
+//   directories?: string[]
+//   name: string
+//   imageFixtureName?: string
+// }[]
+Cypress.Commands.add('imageResourcesShouldBe', (objects) => {
+  objects.forEach(obj => {
+    cy.backToHome()
+    if (obj.directories) cy.goDirectories(obj.directories)
+    if (obj.type === 'file') {
+      cy.contains('.resources__item', obj.name).get('img').should('be.visible')
+      cy.imageShouldBeVisible(obj.name, obj.imageFixtureName)
+    }
+    if (obj.type === 'directory') {
+      cy.contains('.resources__item', obj.name).get('svg').should('be.visible')
+    }
   })
 })

@@ -1,46 +1,53 @@
+const imageFixtureName = 'field1.png'
+const imageName = 'sample'
+const directoryName = 'fields'
+
+const afterImageFixtureName = 'field2.png'
+const afterImageName = 'testtest'
+
 context('Images Edit', () => {
   context('Success', () => {
     it('edits an image', () => {
-      const sampleImage = 'field1.png'
-      cy.createImage(sampleImage, 'sample')
+      cy.prepareImageResources([
+        { type: 'file', name: imageName, imageFixtureName }
+      ])
 
-      const editImage = 'field2.png'
-      cy.editImage('sample.png', editImage, 'sample2', '更新完了！')
+      cy.editImage(imageName, afterImageFixtureName, afterImageName, '更新完了！')
 
-      cy.contains('sample2.png').should('be.visible')
-      cy.get('.resources__item').should('have.length', 1)
-      cy.shouldVisibleImage('.resources__item img', editImage)
+      cy.imageResourcesShouldBe([
+        { type: 'file', name: afterImageName, imageFixtureName: afterImageFixtureName }
+      ])
     })
 
     it('edits an image under a directory', () => {
-      const directoryName = 'fields'
-      cy.createDirectory(directoryName)
-      cy.get('.resources__item svg').dblclick()
+      cy.prepareImageResources([
+        { type: 'directory', name: directoryName },
+        { type: 'file', directories: [directoryName], name: imageName, imageFixtureName }
+      ])
 
-      const sampleImage = 'field1.png'
-      cy.createImage(sampleImage, 'sample')
+      cy.goDirectory(directoryName)
+      cy.editImage(imageName, afterImageFixtureName, afterImageName, '更新完了！')
 
-      const editImage = 'field2.png'
-      cy.editImage('sample.png', editImage, 'sample2', '更新完了！')
-
-      cy.contains('.nav .breadcrumb', directoryName).should('be.visible')
-      cy.contains('sample2.png').should('be.visible')
-      cy.shouldVisibleImage('.resources__item img', editImage)
+      cy.imageResourcesShouldBe([
+        { type: 'directory', name: directoryName },
+        { type: 'file', directories: [directoryName], name: afterImageName, imageFixtureName: afterImageFixtureName }
+      ])
     })
   })
 
   context('Failure', () => {
     it('fails to edit an image because name is duplicate to another image', () => {
-      const sampleImage = 'field1.png'
-      cy.createImage(sampleImage, 'sample')
-      cy.createImage(sampleImage, 'sample2')
+      cy.prepareImageResources([
+        { type: 'file', name: imageName, imageFixtureName },
+        { type: 'file', name: afterImageName, imageFixtureName }
+      ])
 
-      const editImage = 'field2.png'
-      cy.editImage('sample.png', editImage, 'sample2', 'は既に存在してます')
+      cy.editImage(imageName, afterImageFixtureName, afterImageName, 'は既に存在してます')
 
-      cy.get('.resources__item').should('have.length', 2)
-      cy.contains('sample.png').should('be.visible')
-      cy.contains('sample2.png').should('be.visible')
+      cy.imageResourcesShouldBe([
+        { type: 'file', name: imageName, imageFixtureName },
+        { type: 'file', name: afterImageName, imageFixtureName }
+      ])
     })
   })
 })
