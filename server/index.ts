@@ -4,6 +4,8 @@ import mongoose from 'mongoose'
 
 import apiHandle from './api/index'
 
+import { IImage } from './models/image'
+
 const app: Application = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -38,7 +40,5 @@ export default {
   path: '/api/',
   handler: app
 }
-
-import { IImage } from './models/image'
 export type ResourceModel = IImage
 export type ResourceKey = 'images'

@@ -1,7 +1,7 @@
 import { Application, Request, Response } from 'express'
 
 import { ResourceKey, ResourceModel } from '~server/index'
-import { ResponseMessage, DefaultResponseBody } from '~server/api/index'
+import { DefaultResponseBody } from '~server/api/index'
 import Image from '../models/image'
 
 export interface MoveDirectoryRequestBody {

@@ -2,9 +2,9 @@ import { Directory, BasicObject, Value } from '~domains/index.ts'
 
 export type ItemCategory = 'supplies' | 'materials' | 'equipments'
 export const itemCategoryLabels = {
-  'supplies': '消耗品',
-  'materials': '素材',
-  'equipments': '装備品'
+  supplies: '消耗品',
+  materials: '素材',
+  equipments: '装備品'
 }
 export type ItemSubCategory =
   'potions.healhp' |
@@ -29,7 +29,7 @@ export const itemSubCategoryLabels = {
   'buff.accuracy': 'Accuracy一時上昇',
   'buff.luck': 'Luck一時上昇',
   'buff.exp': '獲得経験値UP',
-  'materials': '素材'
+  materials: '素材'
 }
 
 export type ItemEffectKey = 'amount' | 'amountType' | 'durationSecond'
@@ -44,12 +44,12 @@ export const itemsSubCategoryRequiredEffectKeys: { [key in ItemSubCategory]: Ite
   'buff.accuracy': ['amount', 'amountType', 'durationSecond'],
   'buff.luck': ['amount', 'amountType', 'durationSecond'],
   'buff.exp': ['amount', 'amountType', 'durationSecond'],
-  'materials': []
+  materials: []
 }
 
 export const itemEffectAmountTypeLabels = {
-  'absolute': '絶対値',
-  'percentage': '割合'
+  absolute: '絶対値',
+  percentage: '割合'
 }
 export const itemEffectAmountTypes = ['absolute', 'percentage']
 export type ItemEffectAmountType = 'absolute' | 'percentage'

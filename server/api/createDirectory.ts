@@ -1,7 +1,7 @@
 import { Application, Request, Response } from 'express'
 
-import { ResourceKey, ResourceModel } from '~server/index'
-import { ResponseMessage, DefaultResponseBody } from '~server/api/index'
+import { ResourceKey } from '~server/index'
+import { DefaultResponseBody } from '~server/api/index'
 import Image from '../models/image'
 
 export interface CreateDirectoryRequestBody {
@@ -10,7 +10,7 @@ export interface CreateDirectoryRequestBody {
   name: string
 }
 
-export default (app: any, method: 'post', path: string) => {
+export default (app: Application, method: 'post', path: string) => {
   app[method]('/directories', async (req: Request<any, any, CreateDirectoryRequestBody>, res: Response<DefaultResponseBody>) => {
     const { resourceKey, path, name } = req.body
 

@@ -22,7 +22,7 @@ import './commands'
 beforeEach(() => {
   cy.server({
     onAnyRequest: (route, proxy) => {
-      proxy.xhr.setRequestHeader('cypress', 'true');
+      proxy.xhr.setRequestHeader('cypress', 'true')
     }
   })
 
