@@ -1,41 +1,59 @@
+const imageFixtureName = 'field1.png'
+const imageName = 'sample'
+const imageFullName = 'sample.png'
+const directoryName = 'fields'
+const subDirectoryName = 'floors'
+
 context('Images Directories Create', () => {
   context('Success', () => {
     it('creates a directory', () => {
-      const directoryName = 'fields'
       cy.createDirectory(directoryName, '作成完了！')
-      cy.contains(directoryName).should('be.visible')
-      cy.get('.resources__item').should('have.length', 1)
+
+      cy.imageResourcesShouldBe([
+        { type: 'directory', name: directoryName }
+      ])
     })
 
     it('creates a directory under a directory', () => {
-      const directoryName = 'fields'
-      cy.createDirectory(directoryName)
-      cy.get('.resources__item svg').dblclick()
+      cy.prepareImageResources([
+        { type: 'directory', name: directoryName }
+      ])
 
-      const directoryName2 = 'subfields'
-      cy.createDirectory(directoryName2, '作成完了！')
-      cy.contains('.nav .breadcrumb', directoryName).should('be.visible')
-      cy.contains(directoryName2).should('be.visible')
-      cy.get('.resources__item').should('have.length', 1)
+      cy.goDirectory(directoryName)
+      cy.createDirectory(subDirectoryName, '作成完了！')
+
+      cy.imageResourcesShouldBe([
+        { type: 'directory', name: directoryName },
+        { type: 'directory', directories: [directoryName], name: subDirectoryName }
+      ])
     })
   })
 
   context('Failure', () => {
     it('fails to create a directory because name is duplicate to another directory', () => {
-      const directoryName = 'fields'
-      cy.createDirectory(directoryName)
+      cy.prepareImageResources([
+        { type: 'directory', name: directoryName }
+      ])
+
       cy.createDirectory(directoryName, 'は既に存在してます')
+
+      cy.imageResourcesShouldBe([
+        { type: 'directory', name: directoryName }
+      ])
       cy.get('.resources__item').should('have.length', 1)
     })
 
     it('fails to create a directory because name is duplicate to an image', () => {
-      const sampleImage = 'field1.png'
-      cy.createImage(sampleImage, 'sample')
+      cy.prepareImageResources([
+        { type: 'file', name: imageName, imageFixtureName }
+      ])
 
-      const directoryName = 'sample.png'
-      cy.createDirectory(directoryName, 'は既に存在してます')
+      cy.createDirectory(imageFullName, 'は既に存在してます')
+
+      cy.imageResourcesShouldBe([
+        { type: 'file', name: imageName, imageFixtureName }
+      ])
       cy.get('.resources__item').should('have.length', 1)
-      cy.get('.resources__item img').should('have.length', 1)
     })
   })
 })

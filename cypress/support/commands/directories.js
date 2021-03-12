@@ -21,7 +21,7 @@ Cypress.Commands.add('editDirectory', (beforeDirectoryName, directoryName, expec
 })
 
 Cypress.Commands.add('deleteDirectory', (directoryName, expectedMessage) => {
-  cy.contains('.resources__item', directoryName).get('svg').rightclick({ multiple: true })
+  cy.contains('.resources__item', directoryName).find('svg').rightclick({ multiple: true })
   cy.wait(100)
   cy.contains('.dialog.-objectDelete button.el-button', '削除').click()
   cy.wait(100)

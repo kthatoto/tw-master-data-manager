@@ -35,7 +35,7 @@ Cypress.Commands.add('deleteImage', (imageName, expectedMessage) => {
 Cypress.Commands.add('imageShouldBeVisible', (imageName, imageFixtureName) => {
   cy.fixture(imageFixtureName).then((imageSource) => {
     cy.contains('.resources__item', imageName)
-      .get('img')
+      .find('img')
       .invoke('attr', 'src')
       .should('include', imageSource)
   })
@@ -72,11 +72,11 @@ Cypress.Commands.add('imageResourcesShouldBe', (objects) => {
     cy.backToHome()
     if (obj.directories) cy.goDirectories(obj.directories)
     if (obj.type === 'file') {
-      cy.contains('.resources__item', obj.name).get('img').should('be.visible')
+      cy.contains('.resources__item', obj.name).find('img').should('be.visible')
       cy.imageShouldBeVisible(obj.name, obj.imageFixtureName)
     }
     if (obj.type === 'directory') {
-      cy.contains('.resources__item', obj.name).get('svg').should('be.visible')
+      cy.contains('.resources__item', obj.name).find('svg').should('be.visible')
     }
   })
 })
