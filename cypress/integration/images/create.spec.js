@@ -1,32 +1,43 @@
+const imageFixtureName = 'field1.png'
+const imageName = 'sample'
+const directoryName = 'fields'
+
 context('Images Create', () => {
   context('Success', () => {
     it('creates an image', () => {
-      const sampleImage = 'field1.png'
-      cy.createImage(sampleImage, 'sample', '作成完了！')
-      cy.contains('sample.png').should('be.visible')
-      cy.shouldVisibleImage('.resources__item img', sampleImage)
+      cy.createImage(imageFixtureName, imageName, '作成完了！')
+
+      cy.imageResourcesShouldBe([
+        { type: 'file', name: imageName, imageFixtureName }
+      ])
     })
 
     it('creates an image under a directory', () => {
-      const directoryName = 'fields'
-      cy.createDirectory(directoryName)
-      cy.get('.resources__item svg').dblclick()
+      cy.prepareImageResources([
+        { type: 'directory', name: directoryName }
+      ])
 
-      const sampleImage = 'field1.png'
-      cy.createImage(sampleImage, 'sample', '作成完了！')
+      cy.goDirectory(directoryName)
+      cy.createImage(imageFixtureName, imageName, '作成完了！')
 
-      cy.contains('.nav .breadcrumb', directoryName).should('be.visible')
-      cy.contains('sample.png').should('be.visible')
-      cy.shouldVisibleImage('.resources__item img', sampleImage)
+      cy.imageResourcesShouldBe([
+        { type: 'directory', name: directoryName },
+        { type: 'file', directories: [directoryName], name: imageName, imageFixtureName }
+      ])
     })
   })
 
   context('Failure', () => {
     it('fails to create an image because name is duplicate to another image', () => {
-      const sampleImage = 'field1.png'
-      cy.createImage(sampleImage, 'sample', '作成完了！')
-      cy.createImage(sampleImage, 'sample', 'は既に存在してます')
-      cy.get('.resources__item').should('have.length', 1)
+      cy.prepareImageResources([
+        { type: 'file', name: imageName, imageFixtureName }
+      ])
+
+      cy.createImage(imageFixtureName, imageName, 'は既に存在してます')
+
+      cy.imageResourcesShouldBe([
+        { type: 'file', name: imageName, imageFixtureName }
+      ])
     })
   })
 })
