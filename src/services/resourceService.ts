@@ -1,8 +1,12 @@
-import { reactive } from '@vue/composition-api'
+import { reactive, computed } from '@vue/composition-api'
 import axios, { AxiosResponse } from 'axios'
 
 import { Directory } from '~domains/index.ts'
 import { ResourceKey } from '~server/index.ts'
+
+interface ResourceInterface {
+  name: string
+}
 
 interface ResourcesResponseInterface<Resource> {
   resources: Resource[]
@@ -17,7 +21,14 @@ interface State<Resource> {
     selectingName: string | undefined
 }
 
-export default <Resource, ResourcesResponse extends ResourcesResponseInterface<Resource>>(resourceKey: ResourceKey) => {
+interface ResourceForm {
+  action?: 'create' | 'edit'
+}
+
+export default <Resource extends ResourceInterface, ResourcesResponse extends ResourcesResponseInterface<Resource>>(
+  resourceKey: ResourceKey,
+  resourceForm: ResourceForm
+) => {
   const state = reactive<State<Resource>>({
     currentDirectory: '/',
     resources: [],
@@ -35,8 +46,30 @@ export default <Resource, ResourcesResponse extends ResourcesResponseInterface<R
     state.directories = data.directories
   }
 
+  const resourceCreating = computed<boolean>(() => resourceForm.action === 'create')
+  const resourceEditing = computed<boolean>(() => resourceForm.action === 'edit')
+
+  const showResource = (name: string) => {
+    const index = state.resources.findIndex((r: Resource) => r.name === name)
+    if (index < 0) return
+    state.showingResourceIndex = index
+  }
+  const showingResource = computed<Resource | undefined>(() => {
+    if (state.showingResourceIndex === undefined) return
+    return state.resources[state.showingResourceIndex]
+  })
+
+  const breadcrumbs = computed<string[]>(() => {
+    return state.currentDirectory.split('/').filter((v: any) => v)
+  })
+
   return {
     state,
-    fetchResources
+    fetchResources,
+    resourceCreating,
+    resourceEditing,
+    showResource,
+    showingResource,
+    breadcrumbs
   }
 }
