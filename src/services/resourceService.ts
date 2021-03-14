@@ -1,4 +1,4 @@
-import { reactive, computed } from '@vue/composition-api'
+import { reactive, computed, UnwrapRef } from '@vue/composition-api'
 import axios, { AxiosResponse } from 'axios'
 
 import { Directory } from '~domains/index.ts'
@@ -35,14 +35,12 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     directories: [],
     showingResourceIndex: undefined,
     selectingName: undefined
-  })
+  }) as State<Resource>
 
   const fetchResources = async () => {
     const res: AxiosResponse<ResourcesResponse> = await axios.get(`/api/${resourceKey}?directory=${state.currentDirectory}`)
     const data: ResourcesResponse = res.data
-    // @ts-ignore
     state.resources = data.resources
-    // @ts-ignore
     state.directories = data.directories
   }
 
@@ -64,7 +62,7 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
   })
 
   return {
-    state,
+    state: state as UnwrapRef<State<Resource>>,
     fetchResources,
     resourceCreating,
     resourceEditing,
