@@ -15,8 +15,6 @@ interface ImageFile {
 }
 
 export const buildImagesStore = () => {
-  const { state, fetchResources } = resourceService<Image, ImagesResponse>('images')
-
   const resourceForm = reactive<{
     flag: boolean
     action?: 'create' | 'edit'
@@ -32,8 +30,16 @@ export const buildImagesStore = () => {
     extension: '',
     data: undefined
   })
-  const resourceCreating = computed<boolean>(() => resourceForm.action === 'create')
-  const resourceEditing = computed<boolean>(() => resourceForm.action === 'edit')
+
+  const {
+    state,
+    fetchResources,
+    resourceCreating,
+    resourceEditing,
+    showResource,
+    showingResource,
+    breadcrumbs
+  } = resourceService<Image, ImagesResponse>('images', resourceForm)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true
@@ -98,39 +104,23 @@ export const buildImagesStore = () => {
     handleResponse(res, '更新完了！', fetchResources, resourceForm)
   }
 
-  const showResource = (name: string) => {
-    const index = state.resources.findIndex((r: Image) => r.name === name)
-    if (index < 0) return
-    state.showingResourceIndex = index
-  }
-  const showingResource = computed<Image | undefined>(() => {
-    if (state.showingResourceIndex === undefined) return
-    return state.resources[state.showingResourceIndex]
-  })
-
-  const breadcrumbs = computed<string[]>(() => {
-    return state.currentDirectory.split('/').filter((v: any) => v)
-  })
-
   return {
     ...toRefs(state),
     fetchResources,
-    resourceForm,
     resourceCreating,
     resourceEditing,
+    showResource,
+    showingResource,
+    breadcrumbs,
+
+    resourceForm,
 
     openResourceCreateModal,
     openResourceEditModal,
-
     resourceFormValid,
     uploadImage,
     createResource,
-    editResource,
-
-    showResource,
-    showingResource,
-
-    breadcrumbs
+    editResource
   }
 }
 
