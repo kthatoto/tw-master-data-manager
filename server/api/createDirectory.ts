@@ -3,6 +3,7 @@ import { Application, Request, Response } from 'express'
 import { ResourceKey } from '~server/index'
 import { DefaultResponseBody } from '~server/api/index'
 import Image from '../models/image'
+import Tile from '../models/tile'
 
 export interface CreateDirectoryRequestBody {
   resourceKey: ResourceKey
@@ -15,7 +16,8 @@ export default (app: Application, method: 'post', path: string) => {
     const { resourceKey, path, name } = req.body
 
     const Model = {
-      images: Image
+      images: Image,
+      tiles: Tile
     }[resourceKey]
 
     const already: boolean = await Model.exists({ path, name })

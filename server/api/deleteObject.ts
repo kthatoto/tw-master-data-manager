@@ -3,6 +3,7 @@ import { Application, Request, Response } from 'express'
 import { ResourceKey, ResourceModel } from '~server/index'
 import { DefaultResponseBody } from '~server/api/index'
 import Image from '../models/image'
+import Tile from '../models/image'
 
 export default (app: Application, method: 'delete', path: string) => {
   app[method](path, async (req: Request, res: Response<DefaultResponseBody>) => {
@@ -11,7 +12,8 @@ export default (app: Application, method: 'delete', path: string) => {
     const name = req.query.name as string
 
     const Model = {
-      images: Image
+      images: Image,
+      tiles: Tile,
     }[resourceKey]
     const doc: ResourceModel | null = await Model.findOne({ path, name })
     if (!doc) {

@@ -3,6 +3,7 @@ import { Application, Request, Response } from 'express'
 import { ResourceKey, ResourceModel } from '~server/index'
 import { DefaultResponseBody } from '~server/api/index'
 import Image from '../models/image'
+import Tile from '../models/tile'
 
 export interface MoveDirectoryRequestBody {
   resourceKey: ResourceKey
@@ -16,7 +17,8 @@ export default (app: Application, method: 'patch', path: string) => {
     const { resourceKey, path, beforeName, name } = req.body
 
     const Model = {
-      images: Image
+      images: Image,
+      tiles: Tile
     }[resourceKey]
     const already: boolean = await Model.exists({ path, name })
     if (already) {
