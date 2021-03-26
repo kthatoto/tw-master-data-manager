@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import apiHandle from './api/index'
 
 import { IImage } from './models/image'
+import { ITile } from './models/tile'
 
 const app: Application = express()
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -40,5 +41,5 @@ export default {
   path: '/api/',
   handler: app
 }
-export type ResourceModel = IImage
-export type ResourceKey = 'images'
+export type ResourceModel = IImage | ITile
+export type ResourceKey = 'images' | 'tiles'
