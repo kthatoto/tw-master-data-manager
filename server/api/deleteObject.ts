@@ -1,6 +1,6 @@
 import { Application, Request, Response } from 'express'
 
-import { ResourceKey, ResourceModel } from '~server/index'
+import { ResourceKey, ResourceModel, ResourceDocumentModel } from '~server/index'
 import { DefaultResponseBody } from '~server/api/index'
 import Image from '../models/image'
 import Tile from '../models/image'
@@ -11,7 +11,7 @@ export default (app: Application, method: 'delete', path: string) => {
     const path = req.query.path as string
     const name = req.query.name as string
 
-    const Model = {
+    const Model: ResourceDocumentModel = {
       images: Image,
       tiles: Tile,
     }[resourceKey]

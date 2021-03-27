@@ -10,8 +10,8 @@ export interface IImage extends Document {
 const ImageSchema: Schema = new Schema({
   name: { type: String, required: true },
   path: { type: String, required: true },
-  objectType: { type: String, required: true }
-  data: { type: String },
+  objectType: { type: String, required: true },
+  data: { type: String }
 })
 
 export default mongoose.model<IImage>('Image', ImageSchema)

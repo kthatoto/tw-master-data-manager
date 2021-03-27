@@ -1,6 +1,6 @@
 import { Application, Request, Response } from 'express'
 
-import { ResourceKey } from '~server/index'
+import { ResourceKey, ResourceDocumentModel } from '~server/index'
 import { DefaultResponseBody } from '~server/api/index'
 import Image from '../models/image'
 import Tile from '../models/tile'
@@ -15,7 +15,7 @@ export default (app: Application, method: 'post', path: string) => {
   app[method]('/directories', async (req: Request<any, any, CreateDirectoryRequestBody>, res: Response<DefaultResponseBody>) => {
     const { resourceKey, path, name } = req.body
 
-    const Model = {
+    const Model: ResourceDocumentModel = {
       images: Image,
       tiles: Tile
     }[resourceKey]

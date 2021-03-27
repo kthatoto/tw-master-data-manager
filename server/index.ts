@@ -4,8 +4,8 @@ import mongoose from 'mongoose'
 
 import apiHandle from './api/index'
 
-import { IImage } from './models/image'
-import { ITile } from './models/tile'
+import Image, { IImage } from './models/image'
+import Tile, { ITile } from './models/tile'
 
 const app: Application = express()
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -43,3 +43,5 @@ export default {
 }
 export type ResourceModel = IImage | ITile
 export type ResourceKey = 'images' | 'tiles'
+// @ts-ignore
+export type ResourceDocumentModel = Image | Tile
