@@ -18,6 +18,7 @@ export const buildImagesStore = () => {
   const resourceForm = reactive<{
     flag: boolean
     action?: 'create' | 'edit'
+    id: string
     beforeName: string
     name: string
     extension: string
@@ -25,6 +26,7 @@ export const buildImagesStore = () => {
   }>({
     flag: false,
     action: undefined,
+    id: string
     beforeName: '',
     name: '',
     extension: '',
@@ -44,6 +46,7 @@ export const buildImagesStore = () => {
   const openResourceCreateModal = () => {
     resourceForm.flag = true
     resourceForm.action = 'create'
+    resourceForm.id = ''
     resourceForm.beforeName = ''
     resourceForm.name = ''
     resourceForm.extension = ''
@@ -52,6 +55,7 @@ export const buildImagesStore = () => {
   const openResourceEditModal = (resource: Image) => {
     resourceForm.flag = true
     resourceForm.action = 'edit'
+    resourceForm.id = resource.id
     resourceForm.beforeName = resource.name
     resourceForm.data = resource.data || undefined
     const splited: string[] = resource.name.split('.')
@@ -96,6 +100,7 @@ export const buildImagesStore = () => {
     if (!resourceForm.data) return
     const params: ImagesEditRequestBody = {
       path: state.currentDirectory,
+      id: resourceForm.id,
       beforeName: resourceForm.beforeName,
       name: resourceForm.name + resourceForm.extension,
       data: resourceForm.data

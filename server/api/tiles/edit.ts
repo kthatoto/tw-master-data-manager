@@ -6,6 +6,7 @@ import Tile from '../../models/tile'
 
 export interface TilesEditRequestBody {
   path: string
+  id: string
   beforeName: string
   name: string
   collision: boolean
@@ -14,7 +15,7 @@ export interface TilesEditRequestBody {
 
 export default (app: Application, method: 'patch', path: string) => {
   app[method](path, async (req: Request<any, any, TilesEditRequestBody>, res: Response<DefaultResponseBody>) => {
-    const { path, beforeName, name, collision, imageId } = req.body
+    const { path, id, beforeName, name, collision, imageId } = req.body
 
     const target: boolean = await Tile.exists({ path, name: beforeName, objectType: 'file' })
     if (!target) {
@@ -26,10 +27,7 @@ export default (app: Application, method: 'patch', path: string) => {
       res.send({ message: `「${path}${name}」は既に存在してます` })
       return
     }
-    await Tile.findOneAndUpdate(
-      { path, name: beforeName },
-      { $set: { name, collision, imageId } }
-    )
+    await Tile.findByIdAndUpdate(id, { $set: { name, collision, imageId } })
     res.send(null)
   })
 }

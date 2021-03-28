@@ -1,6 +1,5 @@
 import { reactive, computed, toRefs } from '@vue/composition-api'
 import axios from 'axios'
-import { Types } from 'mongoose'
 
 import { Tile, TilesResponse } from '~domains/tiles.ts'
 import handleResponse from '@/utils/handleResponse.ts'
@@ -13,13 +12,15 @@ export const buildTilesStore = () => {
   const resourceForm = reactive<{
     flag: boolean
     action?: 'create' | 'edit'
+    id: string
     beforeName: string
     name: string
     collision: boolean
-    imageId?: Types.ObjectId
+    imageId?: string
   }>({
     flag: false,
     action: undefined,
+    id: '',
     beforeName: '',
     name: '',
     collision: false,
@@ -39,6 +40,7 @@ export const buildTilesStore = () => {
   const openResourceCreateModal = () => {
     resourceForm.flag = true
     resourceForm.action = 'create'
+    resourceForm.id = ''
     resourceForm.beforeName = ''
     resourceForm.name = ''
     resourceForm.collision = false
@@ -47,6 +49,7 @@ export const buildTilesStore = () => {
   const openResourceEditModal = (resource: Tile) => {
     resourceForm.flag = true
     resourceForm.action = 'edit'
+    resourceForm.id = resource.id
     resourceForm.beforeName = resource.name
     resourceForm.name = resource.name
     resourceForm.collision = resource.collision || false
@@ -76,6 +79,7 @@ export const buildTilesStore = () => {
     if (resourceForm.collision === undefined) return
     const params: TilesEditRequestBody = {
       path: state.currentDirectory,
+      id: resourceForm.id,
       beforeName: resourceForm.beforeName,
       name: resourceForm.name,
       collision: resourceForm.collision,
