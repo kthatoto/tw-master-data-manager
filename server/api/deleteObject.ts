@@ -12,11 +12,13 @@ export default (app: Application, method: 'delete', path: string) => {
     const path = req.query.path as string
     const name = req.query.name as string
 
+    console.log('delete', id, path, name)
+
     const Model: ResourceDocumentModel = {
       images: Image,
       tiles: Tile,
     }[resourceKey]
-    const doc: ResourceModel | null = await Model.findOne({ id })
+    const doc: ResourceModel | null = await Model.findById(id)
     if (!doc) {
       res.send({ message: `「${path}${name}」はありません` })
       return

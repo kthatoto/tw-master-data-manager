@@ -26,10 +26,7 @@ export default (app: Application, method: 'patch', path: string) => {
       res.send({ message: `「${path}${name}/」は既に存在してます` })
       return
     }
-    const result: ResourceModel | null = await Model.findOneAndUpdate(
-      { id },
-      { $set: { name } }
-    )
+    const result: ResourceModel | null = await Model.findByIdAndUpdate(id, { $set: { name } })
     if (!result) {
       res.send({ message: `「${path}${beforeName}」が見つかりません` })
       return
@@ -39,10 +36,7 @@ export default (app: Application, method: 'patch', path: string) => {
     const children: ResourceModel[] = await Model.find({ path: { $regex: `^${oldPath}` } })
     children.forEach(async (child: ResourceModel) => {
       const newChildPath: string = child.path.replace(oldPath, newPath)
-      await Model.findOneAndUpdate(
-        { path: child.path, name: child.name },
-        { path: newChildPath }
-      )
+      await Model.findByIdAndUpdate(child.id, { path: newChildPath })
     })
     res.send(null)
   })
