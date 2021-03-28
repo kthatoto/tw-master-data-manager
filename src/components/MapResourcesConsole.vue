@@ -1,23 +1,29 @@
 <template lang="pug">
 .console
-  el-tabs(type="border-card")
-    el-tab-pane(label="Images" :lazy="true")
-      Images.pane(:editable="true")
-    el-tab-pane(label="Tiles" :lazy="true")
-      Tiles.pane(:editable="true")
-    el-tab-pane(label="Objekts" :lazy="true")
-    el-tab-pane(label="NPCs" :lazy="true")
-    el-tab-pane(label="Enemies" :lazy="true")
+  el-tabs(type="border-card" v-model="tab")
+    el-tab-pane(label="Images" name="images" :lazy="true")
+      template(v-if="tab === 'images'")
+        Images.pane(:editable="true")
+    el-tab-pane(label="Tiles" name="tiles" :lazy="true")
+      template(v-if="tab === 'tiles'")
+        Tiles.pane(:editable="true")
+    el-tab-pane(label="Objekts" name="objekts" :lazy="true")
+    el-tab-pane(label="NPCs" name="npcs" :lazy="true")
+    el-tab-pane(label="Enemies" name="enemies" :lazy="true")
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, ref } from '@vue/composition-api'
 
 import Images from '@/components/MapResourcesConsole/Images.vue'
 import Tiles from '@/components/MapResourcesConsole/Tiles.vue'
 
 export default defineComponent({
-  components: { Images, Tiles }
+  components: { Images, Tiles },
+  setup () {
+    const tab = ref<string>('images')
+    return { tab }
+  }
 })
 </script>
 
