@@ -12,12 +12,14 @@ export default (app: Application, method: 'get', path: string) => {
     images.forEach((image: IImage) => {
       if (image.objectType === 'file') {
         response.resources.push({
+          id: image.id,
           path: image.path,
           name: image.name,
           data: image.data
         })
       } else if (image.objectType === 'directory') {
         response.directories.push({
+          id: image.id,
           path: image.path,
           name: image.name
         })

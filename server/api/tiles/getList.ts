@@ -12,6 +12,7 @@ export default (app: Application, method: 'get', path: string) => {
     tiles.forEach((tile: ITile) => {
       if (tile.objectType === 'file') {
         response.resources.push({
+          id: tile.id,
           path: tile.path,
           name: tile.name,
           collision: tile.collision,
@@ -19,6 +20,7 @@ export default (app: Application, method: 'get', path: string) => {
         })
       } else if (tile.objectType === 'directory') {
         response.directories.push({
+          id: tile.id,
           path: tile.path,
           name: tile.name
         })
