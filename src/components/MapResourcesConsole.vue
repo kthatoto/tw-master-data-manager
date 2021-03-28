@@ -2,10 +2,10 @@
 .console
   el-tabs(type="border-card" v-model="tab")
     el-tab-pane(label="Images" name="images" :lazy="true")
-      template(v-if="tab === 'images'")
+      template(v-show="tab === 'images'")
         Images.pane(:editable="true")
     el-tab-pane(label="Tiles" name="tiles" :lazy="true")
-      template(v-if="tab === 'tiles'")
+      template(v-show="tab === 'tiles'")
         Tiles.pane(:editable="true")
     el-tab-pane(label="Objekts" name="objekts" :lazy="true")
     el-tab-pane(label="NPCs" name="npcs" :lazy="true")
