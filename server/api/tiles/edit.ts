@@ -1,5 +1,4 @@
 import { Application, Request, Response } from 'express'
-import { Types } from 'mongoose'
 
 import { DefaultResponseBody } from '~server/api/index'
 import Tile from '../../models/tile'
@@ -10,7 +9,7 @@ export interface TilesEditRequestBody {
   beforeName: string
   name: string
   collision: boolean
-  imageId: Types.ObjectId
+  imageId: string
 }
 
 export default (app: Application, method: 'patch', path: string) => {

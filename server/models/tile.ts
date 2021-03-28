@@ -1,11 +1,11 @@
-import mongoose, { Schema, Document, Types } from 'mongoose'
+import mongoose, { Schema, Document } from 'mongoose'
 
 export interface ITile extends Document {
   name: string
   path: string
   objectType: 'file' | 'directory'
   collision?: boolean
-  imageId?: Types.ObjectId
+  imageId?: string
 }
 
 const TileSchema: Schema = new Schema({

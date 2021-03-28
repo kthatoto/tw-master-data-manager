@@ -26,7 +26,7 @@ export const buildImagesStore = () => {
   }>({
     flag: false,
     action: undefined,
-    id: string
+    id: '',
     beforeName: '',
     name: '',
     extension: '',

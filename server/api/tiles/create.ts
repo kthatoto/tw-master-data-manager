@@ -1,5 +1,4 @@
 import { Application, Request, Response } from 'express'
-import { Types } from 'mongoose'
 
 import { DefaultResponseBody } from '~server/api/index'
 import Tile from '../../models/tile'
@@ -8,7 +7,7 @@ export interface TilesCreateRequestBody {
   path: string
   name: string
   collision: boolean
-  imageId: Types.ObjectId
+  imageId: string
 }
 
 export default (app: Application, method: 'post', path: string) => {
