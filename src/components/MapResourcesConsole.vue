@@ -1,13 +1,13 @@
 <template lang="pug">
 .console
   el-tabs(type="border-card")
-    el-tab-pane(label="Images")
+    el-tab-pane(label="Images" :lazy="true")
       Images.pane(:editable="true")
-    el-tab-pane(label="Tiles")
+    el-tab-pane(label="Tiles" :lazy="true")
       Tiles.pane(:editable="true")
-    el-tab-pane(label="Objekts")
-    el-tab-pane(label="NPCs")
-    el-tab-pane(label="Enemies")
+    el-tab-pane(label="Objekts" :lazy="true")
+    el-tab-pane(label="NPCs" :lazy="true")
+    el-tab-pane(label="Enemies" :lazy="true")
 </template>
 
 <script lang="ts">
