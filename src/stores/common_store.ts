@@ -12,6 +12,7 @@ import { MoveDirectoryRequestBody } from '~server/api/moveDirectory.ts'
 export const buildCommonStore = (stores: AppStores) => {
   const getStoreByKey = (key: ResourceKey) => {
     if (key === 'images') return stores.imagesStore
+    if (key === 'tiles') return stores.tilesStore
     throw new Error(`Not handled key '${key}'`)
   }
 
