@@ -3,7 +3,7 @@ import { Application, Request, Response } from 'express'
 import { ResourceKey, ResourceModel, ResourceDocumentModel } from '~server/index'
 import { DefaultResponseBody } from '~server/api/index'
 import Image from '../models/image'
-import Tile from '../models/image'
+import Tile from '../models/tile'
 
 export default (app: Application, method: 'delete', path: string) => {
   app[method](path, async (req: Request, res: Response<DefaultResponseBody>) => {
