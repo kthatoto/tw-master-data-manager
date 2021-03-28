@@ -8,13 +8,14 @@ import Tile from '../models/tile'
 export interface MoveDirectoryRequestBody {
   resourceKey: ResourceKey
   path: string
+  id: string
   beforeName: string
   name: string
 }
 
 export default (app: Application, method: 'patch', path: string) => {
   app[method](path, async (req: Request<any, any, MoveDirectoryRequestBody>, res: Response<DefaultResponseBody>) => {
-    const { resourceKey, path, beforeName, name } = req.body
+    const { resourceKey, path, id, beforeName, name } = req.body
 
     const Model: ResourceDocumentModel = {
       images: Image,
@@ -26,7 +27,7 @@ export default (app: Application, method: 'patch', path: string) => {
       return
     }
     const result: ResourceModel | null = await Model.findOneAndUpdate(
-      { path, name: beforeName },
+      { id },
       { $set: { name } }
     )
     if (!result) {

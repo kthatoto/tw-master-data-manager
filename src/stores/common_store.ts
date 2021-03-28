@@ -2,7 +2,7 @@ import { reactive, computed } from '@vue/composition-api'
 import axios from 'axios'
 
 import { AppStores } from '@/stores/appStores.ts'
-import { Directory } from '~domains/index.ts'
+import { BasicObject, Directory } from '~domains/index.ts'
 import handleResponse from '@/utils/handleResponse.ts'
 
 import { ResourceKey } from '~server/index.ts'
@@ -19,11 +19,13 @@ export const buildCommonStore = (stores: AppStores) => {
   const directoryForm = reactive<{
     flag: boolean
     action?: 'create' | 'edit'
+    id: string
     beforeName: string
     name: string
   }>({
     flag: false,
     action: undefined,
+    id: '',
     beforeName: '',
     name: ''
   })
@@ -31,11 +33,13 @@ export const buildCommonStore = (stores: AppStores) => {
     directoryForm.flag = true
     directoryForm.action = 'create'
     directoryForm.name = ''
+    directoryForm.id = ''
     setTimeout(() => refs.directoryName.focus(), 50)
   }
   const openDirectoryEditModal = (refs: any, directory: Directory) => {
     directoryForm.flag = true
     directoryForm.action = 'edit'
+    directoryForm.id = directory.id
     directoryForm.beforeName = directory.name
     directoryForm.name = directory.name
     setTimeout(() => refs.directoryName.focus(), 50)
@@ -62,6 +66,7 @@ export const buildCommonStore = (stores: AppStores) => {
     const store = getStoreByKey(key)
     const params: MoveDirectoryRequestBody = {
       resourceKey: key,
+      id: directoryForm.id,
       path: store.currentDirectory.value,
       beforeName: directoryForm.beforeName,
       name: directoryForm.name
@@ -72,25 +77,30 @@ export const buildCommonStore = (stores: AppStores) => {
 
   const deleteForm = reactive<{
     flag: boolean
+    id: string
     name: string
   }>({
     flag: false,
+    id: '',
     name: ''
   })
-  const confirmDelete = (name: string) => {
+  const confirmDelete = (resource: BasicObject) => {
     deleteForm.flag = true
-    deleteForm.name = name
+    deleteForm.id = resource.id
+    deleteForm.name = resource.name
   }
   const deleteObject = async (key: ResourceKey) => {
     const store = getStoreByKey(key)
+    const id = deleteForm.id
     const path = store.currentDirectory.value
     const name = deleteForm.name
-    const res = await axios.delete(`/api/objects?resourceKey=${key}&path=${path}&name=${name}`)
+    const res = await axios.delete(`/api/objects?resourceKey=${key}&id=${id}&path=${path}&name=${name}`)
     const result: boolean = handleResponse(res, '削除完了！', store.fetchResources, deleteForm)
     if (result) {
       store.showingResourceIndex.value = undefined
     }
     deleteForm.name = ''
+    deleteForm.id = ''
   }
 
   const backToHome = (key: ResourceKey) => {

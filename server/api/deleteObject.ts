@@ -8,6 +8,7 @@ import Tile from '../models/tile'
 export default (app: Application, method: 'delete', path: string) => {
   app[method](path, async (req: Request, res: Response<DefaultResponseBody>) => {
     const resourceKey: ResourceKey = req.query.resourceKey as ResourceKey
+    const id = req.query.id as string
     const path = req.query.path as string
     const name = req.query.name as string
 
@@ -15,7 +16,7 @@ export default (app: Application, method: 'delete', path: string) => {
       images: Image,
       tiles: Tile,
     }[resourceKey]
-    const doc: ResourceModel | null = await Model.findOne({ path, name })
+    const doc: ResourceModel | null = await Model.findOne({ id })
     if (!doc) {
       res.send({ message: `「${path}${name}」はありません` })
       return
