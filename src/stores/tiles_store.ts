@@ -18,6 +18,7 @@ export const buildTilesStore = () => {
     collision: boolean
     imageId?: string
     image?: {
+      path?: string
       data?: string
       name?: string
     }

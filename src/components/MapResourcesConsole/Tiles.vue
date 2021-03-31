@@ -13,6 +13,8 @@
           el-button(type="primary" @click="imageSelecting = true") Image選択
           el-dialog(:visible.sync="imageSelecting" append-to-body)
             ImageSelector(@select="selectImage")
+        img.preview.row(v-if="resourceForm.image && resourceForm.image.data" :src="'data:image;base64,' + resourceForm.image.data")
+        p(v-if="resourceForm.image") {{ resourceForm.image.path }} {{ resourceForm.image.name }}
 
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
@@ -59,7 +61,7 @@ export default defineComponent({
 
     const selectImage = (image: Image) => {
       tilesStore.resourceForm.imageId = image.id
-      tilesStore.resourceForm.image = { data: image.data, name: image.name }
+      tilesStore.resourceForm.image = image
       state.imageSelecting = false
     }
 

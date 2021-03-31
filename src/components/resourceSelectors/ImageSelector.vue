@@ -2,8 +2,8 @@
 .image-selector
   h3(slot="title") Image選択
   Images(:editable="false")
-  template(slot="footer")
-    el-button(type="primary" @click="selectImage")
+  div(slot="footer")
+    el-button(type="primary" @click="selectImage") 選択
 </template>
 
 <script lang="ts">
