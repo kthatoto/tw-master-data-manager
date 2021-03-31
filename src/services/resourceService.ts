@@ -5,7 +5,7 @@ import { Directory } from '~domains/index.ts'
 import { ResourceKey } from '~server/index.ts'
 
 interface ResourceInterface {
-  name: string
+  id: string
 }
 
 interface ResourcesResponseInterface<Resource> {
@@ -14,11 +14,11 @@ interface ResourcesResponseInterface<Resource> {
 }
 
 interface State<Resource> {
-    currentDirectory: string
-    resources: Resource[]
-    directories: Directory[]
-    showingResourceIndex: number | undefined
-    selectingName: string | undefined
+  currentDirectory: string
+  resources: Resource[]
+  directories: Directory[]
+  showingResourceIndex?: number
+  selectingId?: string
 }
 
 interface ResourceForm {
@@ -34,7 +34,7 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     resources: [],
     directories: [],
     showingResourceIndex: undefined,
-    selectingName: undefined
+    selectingResourceId: undefined
   }) as State<Resource>
 
   const fetchResources = async () => {
@@ -47,8 +47,12 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
   const resourceCreating = computed<boolean>(() => resourceForm.action === 'create')
   const resourceEditing = computed<boolean>(() => resourceForm.action === 'edit')
 
-  const showResource = (name: string) => {
-    const index = state.resources.findIndex((r: Resource) => r.name === name)
+  const selectResource = (id: string) => {
+    state.selectingResourceId = id
+  }
+
+  const showResource = (id: string) => {
+    const index = state.resources.findIndex((r: Resource) => r.id === id)
     if (index < 0) return
     state.showingResourceIndex = index
   }
@@ -66,6 +70,7 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     fetchResources,
     resourceCreating,
     resourceEditing,
+    selectResource,
     showResource,
     showingResource,
     breadcrumbs

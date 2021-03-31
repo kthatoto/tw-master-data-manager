@@ -1,6 +1,9 @@
 <template lang="pug">
 .image-selector
+  h3(slot="title") Image選択
   Images(:editable="false")
+  template(slot="footer")
+    el-button(type="primary" @click="selectImage")
 </template>
 
 <script lang="ts">
@@ -13,6 +16,11 @@ export default defineComponent({
   components: { Images },
   setup () {
     // const imagesStore = appStores.imagesStore
+
+    const selectImage = () => {
+    }
+
+    return { selectImage }
   }
 })
 </script>
