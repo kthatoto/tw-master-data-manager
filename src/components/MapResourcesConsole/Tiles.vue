@@ -9,10 +9,8 @@
       el-dialog.dialog.-tileCreate(v-if="resourceCreating" :visible.sync="resourceForm.flag")
         h2(slot="title") Tile作成
         h3 Tile
-        img.preview.row(v-if="resourceForm.data" :src="'data:image;base64,' + resourceForm.data")
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
-          template(slot="append") {{ resourceForm.extension }}
         .buttons
           el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") 作成
 
@@ -20,17 +18,8 @@
       el-dialog.dialog.-tileEdit(v-if="resourceEditing" :visible.sync="resourceForm.flag")
         h2(slot="title") Tile変更
         h3 Tile
-        el-upload.row(
-          action=""
-          :auto-upload="false"
-          :on-change="uploadTile"
-          :show-file-list="false"
-        )
-          el-button(icon="el-icon-plus" type="primary") Tile選択
-        img.preview.row(v-if="resourceForm.data" :src="'data:tile;base64,' + resourceForm.data")
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
-          template(slot="append") {{ resourceForm.extension }}
         .buttons
           el-button(type="primary" @click="editResource" :disabled="!resourceFormValid") 更新
 </template>
