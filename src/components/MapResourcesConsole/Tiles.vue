@@ -9,6 +9,11 @@
       el-dialog.dialog.-tileCreate(v-if="resourceCreating" :visible.sync="resourceForm.flag")
         h2(slot="title") Tile作成
         h3 Tile
+        .row
+          el-button(type="primary" @click="imageSelecting = true") Image選択
+          el-dialog(:visible.sync="imageSelecting" append-to-body)
+            ImageSelector(@select="selectImage")
+
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
         .buttons
@@ -25,14 +30,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, reactive, toRefs } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
 import TileDetail from '@/components/MapResourcesConsole/TileDetail.vue'
+import ImageSelector from '@/components/resourceSelectors/ImageSelector.vue'
+import Image from '~domains/images.ts'
 
 export default defineComponent({
-  components: { Resources, TileDetail },
+  components: { Resources, TileDetail, ImageSelector },
   props: {
     editable: {
       type: Boolean,
@@ -41,12 +48,25 @@ export default defineComponent({
     }
   },
   setup (_, context) {
+    const state = reactive<{
+      imageSelecting: boolean
+    }>({
+      imageSelecting: false
+    })
+
     const commonStore = appStores.commonStore
     const tilesStore = appStores.tilesStore
 
+    const selectImage = (image: Image) => {
+      tilesStore.resourceForm.imageId = image.id
+      tilesStore.resourceForm.image = { data: image.data, name: image.name }
+    }
+
     return {
+      ...toRefs(state),
       ...commonStore,
-      ...tilesStore
+      ...tilesStore,
+      selectImage
     }
   }
 })

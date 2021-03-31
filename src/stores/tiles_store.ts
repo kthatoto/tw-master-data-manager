@@ -17,6 +17,10 @@ export const buildTilesStore = () => {
     name: string
     collision: boolean
     imageId?: string
+    image?: {
+      data?: string
+      name?: string
+    }
   }>({
     flag: false,
     action: undefined,
@@ -24,7 +28,8 @@ export const buildTilesStore = () => {
     beforeName: '',
     name: '',
     collision: false,
-    imageId: undefined
+    imageId: undefined,
+    image: undefined
   })
 
   const {
