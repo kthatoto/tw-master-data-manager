@@ -18,7 +18,7 @@ interface State<Resource> {
   resources: Resource[]
   directories: Directory[]
   showingResourceIndex?: number
-  selectingId?: string
+  selectingResourceId?: string
 }
 
 interface ResourceForm {
