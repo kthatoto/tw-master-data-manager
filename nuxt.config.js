@@ -35,7 +35,8 @@ export default {
     '@nuxtjs/axios',
     ['nuxt-stylus-resources-loader', [
       resolve(__dirname, 'src/styles/console-mixin.styl'),
-      resolve(__dirname, 'src/styles/console-detail-mixin.styl')
+      resolve(__dirname, 'src/styles/console-detail-mixin.styl'),
+      resolve(__dirname, 'src/styles/resource-form-mixin.styl')
     ]]
   ],
   axios: {},
