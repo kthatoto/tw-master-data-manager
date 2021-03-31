@@ -97,7 +97,7 @@ export const buildCommonStore = (stores: AppStores) => {
     const res = await axios.delete(`/api/objects?resourceKey=${key}&id=${id}&path=${path}&name=${name}`)
     const result: boolean = handleResponse(res, '削除完了！', store.fetchResources, deleteForm)
     if (result) {
-      if (store.showingResourceIndex) store.showingResourceIndex.value = undefined
+      if (store.showingResourceId) store.showingResourceId.value = undefined
     }
     deleteForm.name = ''
     deleteForm.id = ''
@@ -106,7 +106,7 @@ export const buildCommonStore = (stores: AppStores) => {
   const backToHome = (key: ResourceKey) => {
     const store = getStoreByKey(key)
     store.currentDirectory.value = '/'
-    if (store.showingResourceIndex) store.showingResourceIndex.value = undefined
+    if (store.showingResourceId) store.showingResourceId.value = undefined
     store.fetchResources()
   }
   const backDirectory = (key: ResourceKey, i: number) => {
@@ -115,7 +115,7 @@ export const buildCommonStore = (stores: AppStores) => {
       if (j <= i) newDirectory += `${breadcrumb}/`
       return newDirectory
     }, '/')
-    if (store.showingResourceIndex) store.showingResourceIndex.value = undefined
+    if (store.showingResourceId) store.showingResourceId.value = undefined
     store.fetchResources()
   }
   const appendDirectory = (key: ResourceKey, dir: string) => {

@@ -39,6 +39,7 @@ export const buildImagesStore = () => {
     resourceCreating,
     resourceEditing,
     selectResource,
+    selectingResource,
     showResource,
     showingResource,
     breadcrumbs
@@ -116,6 +117,7 @@ export const buildImagesStore = () => {
     resourceCreating,
     resourceEditing,
     selectResource,
+    selectingResource,
     showResource,
     showingResource,
     breadcrumbs,

@@ -17,7 +17,7 @@ interface State<Resource> {
   currentDirectory: string
   resources: Resource[]
   directories: Directory[]
-  showingResourceIndex?: number
+  showingResourceId?: string
   selectingResourceId?: string
 }
 
@@ -33,7 +33,7 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     currentDirectory: '/',
     resources: [],
     directories: [],
-    showingResourceIndex: undefined,
+    showingResourceId: undefined,
     selectingResourceId: undefined
   }) as State<Resource>
 
@@ -50,16 +50,17 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
   const selectResource = (id: string) => {
     state.selectingResourceId = id
   }
+  const selectingResource = computed<Resource | Directory | undefined>(() =>
+    state.resources.find((r: Resource) => r.id === state.selectingResourceId) ||
+      state.directories.find((d: Directory) => d.id === state.selectingResourceId)
+  )
 
   const showResource = (id: string) => {
-    const index = state.resources.findIndex((r: Resource) => r.id === id)
-    if (index < 0) return
-    state.showingResourceIndex = index
+    state.showingResourceId = id
   }
-  const showingResource = computed<Resource | undefined>(() => {
-    if (state.showingResourceIndex === undefined) return
-    return state.resources[state.showingResourceIndex]
-  })
+  const showingResource = computed<Resource | undefined>(() =>
+    state.resources.find((r: Resource) => r.id === state.showingResourceId)
+  )
 
   const breadcrumbs = computed<string[]>(() => {
     return state.currentDirectory.split('/').filter((v: any) => v)
@@ -71,6 +72,7 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     resourceCreating,
     resourceEditing,
     selectResource,
+    selectingResource,
     showResource,
     showingResource,
     breadcrumbs

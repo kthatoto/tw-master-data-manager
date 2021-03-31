@@ -38,6 +38,7 @@ export const buildTilesStore = () => {
     resourceCreating,
     resourceEditing,
     selectResource,
+    selectingResource,
     showResource,
     showingResource,
     breadcrumbs
@@ -101,6 +102,7 @@ export const buildTilesStore = () => {
     resourceCreating,
     resourceEditing,
     selectResource,
+    selectingResource,
     showResource,
     showingResource,
     breadcrumbs,
