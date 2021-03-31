@@ -22,7 +22,7 @@ export default defineComponent({
     }
 
     const selectable = computed<boolean>(() =>
-      imagesStore.selectingResource.value
+      !!imagesStore.selectingResource.value
     )
 
     return {
