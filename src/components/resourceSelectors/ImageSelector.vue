@@ -14,11 +14,11 @@ import Images from '@/components/MapResourcesConsole/Images.vue'
 
 export default defineComponent({
   components: { Images },
-  setup () {
+  setup (_, context) {
     const imagesStore = appStores.imagesStore
 
     const selectImage = () => {
-      imagesStore
+      context.emit('select', imagesStore.selectingResource.value)
     }
 
     return { selectImage }

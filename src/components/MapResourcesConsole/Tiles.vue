@@ -36,7 +36,7 @@ import { appStores } from '@/stores/appStores.ts'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
 import TileDetail from '@/components/MapResourcesConsole/TileDetail.vue'
 import ImageSelector from '@/components/resourceSelectors/ImageSelector.vue'
-import Image from '~domains/images.ts'
+import { Image } from '~domains/images.ts'
 
 export default defineComponent({
   components: { Resources, TileDetail, ImageSelector },
@@ -60,6 +60,7 @@ export default defineComponent({
     const selectImage = (image: Image) => {
       tilesStore.resourceForm.imageId = image.id
       tilesStore.resourceForm.image = { data: image.data, name: image.name }
+      state.imageSelecting = false
     }
 
     return {
