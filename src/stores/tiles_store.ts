@@ -63,6 +63,7 @@ export const buildTilesStore = () => {
     resourceForm.name = resource.name
     resourceForm.collision = resource.collision || false
     resourceForm.imageId = resource.imageId
+    resourceForm.image = resource.image
   }
   const resourceFormValid = computed<boolean>(() => {
     if (!resourceForm.name) return false

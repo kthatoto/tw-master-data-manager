@@ -13,7 +13,7 @@
           el-button(type="primary" @click="imageSelecting = true") Image選択
           ImageSelector(@select="selectImage" @close="imageSelecting = false" :visible="imageSelecting")
         img.preview.row(v-if="resourceForm.image && resourceForm.image.data" :src="'data:image;base64,' + resourceForm.image.data")
-        p(v-if="resourceForm.image") {{ resourceForm.image.path }} {{ resourceForm.image.name }}
+        p(v-if="resourceForm.image") {{ resourceForm.image.path }}{{ resourceForm.image.name }}
 
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
@@ -24,6 +24,12 @@
       el-dialog.dialog.-tileEdit(v-if="resourceEditing" :visible.sync="resourceForm.flag")
         h2(slot="title") Tile変更
         h3 Tile
+        .row
+          el-button(type="primary" @click="imageSelecting = true") Image選択
+          ImageSelector(@select="selectImage" @close="imageSelecting = false" :visible="imageSelecting")
+        img.preview.row(v-if="resourceForm.image && resourceForm.image.data" :src="'data:image;base64,' + resourceForm.image.data")
+        p(v-if="resourceForm.image") {{ resourceForm.image.path }}{{ resourceForm.image.name }}
+
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
         .buttons
