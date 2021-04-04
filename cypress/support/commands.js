@@ -1,5 +1,6 @@
 import 'cypress-file-upload'
 import './commands/images'
+import './commands/tiles'
 import './commands/directories'
 
 Cypress.Commands.add('backToHome', () => {
