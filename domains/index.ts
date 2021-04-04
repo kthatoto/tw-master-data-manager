@@ -2,6 +2,7 @@ export interface BasicObject {
   id: string
   path: string
   name: string
+  data?: string
 }
 
 export interface Directory extends BasicObject {}
