@@ -18,7 +18,7 @@
     .resources__item(v-for="o in resources" :key="o.name" @click="selectResource(o.id)" :class="{selected: selectingResourceId === o.id}")
       .focus(v-if="selectingResourceId === o.id")
       ConsoleImage(
-        :data="o.data" @dblclick="showResource(o.id)" @clickRight="editable && confirmDelete(o)"
+        :data="o.data || o.image.data" @dblclick="showResource(o.id)" @clickRight="editable && confirmDelete(o)"
         width="80px" height="80px" lineHeight="80px"
       )
       span(@dblclick="openResourceEditModal(o)") {{ o.name }}

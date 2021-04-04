@@ -19,7 +19,11 @@ export default (app: Application, method: 'get', path: string) => {
           name: tile.name,
           collision: tile.collision,
           imageId: tile.imageId,
-          data: image ? image.data : undefined
+          image: !image ? undefined : {
+            path: image.path,
+            name: image.name,
+            data: image.data
+          }
         })
       } else if (tile.objectType === 'directory') {
         response.directories.push({

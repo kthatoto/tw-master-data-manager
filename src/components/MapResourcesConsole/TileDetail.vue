@@ -1,6 +1,6 @@
 <template lang="pug">
 .detail
-  img(:src="'data:image;base64,' + showingResource.data")
+  img(:src="'data:image;base64,' + showingResource.image.data")
   h3 {{ showingResource.name }}
   .buttons(v-if="editable")
     el-button(type="primary" @click="openResourceEditModal(showingResource)") 変更
