@@ -22,7 +22,7 @@ export default (app: Application, method: 'get', path: string) => {
           image: !image ? undefined : {
             path: image.path,
             name: image.name,
-            data: image.data
+            data: image.data || ""
           }
         })
       } else if (tile.objectType === 'directory') {
