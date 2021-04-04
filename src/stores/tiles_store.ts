@@ -53,6 +53,7 @@ export const buildTilesStore = () => {
     resourceForm.name = ''
     resourceForm.collision = false
     resourceForm.imageId = undefined
+    resourceForm.image = undefined
   }
   const openResourceEditModal = (resource: Tile) => {
     resourceForm.flag = true
