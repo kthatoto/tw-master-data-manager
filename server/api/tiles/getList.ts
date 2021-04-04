@@ -10,9 +10,9 @@ export default (app: Application, method: 'get', path: string) => {
     const directoryPath: string = req.query.directory as string
 
     const tiles: ITile[] = await Tile.find({ path: directoryPath })
-    tiles.forEach(async (tile: ITile) => {
+    for await (let tile of tiles) {
       if (tile.objectType === 'file') {
-        const image: IImage | null = await Image.findOne({ id: tile.imageId })
+        const image: IImage | null = await Image.findById(tile.imageId)
         response.resources.push({
           id: tile.id,
           path: tile.path,
@@ -28,7 +28,7 @@ export default (app: Application, method: 'get', path: string) => {
           name: tile.name
         })
       }
-    })
+    }
     res.send(response)
   })
 }
