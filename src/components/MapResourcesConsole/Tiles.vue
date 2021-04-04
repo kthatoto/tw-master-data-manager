@@ -11,8 +11,7 @@
         h3 Tile
         .row
           el-button(type="primary" @click="imageSelecting = true") Image選択
-          el-dialog(:visible.sync="imageSelecting" append-to-body)
-            ImageSelector(@select="selectImage")
+          ImageSelector(@select="selectImage" @close="imageSelecting = false" :visible="imageSelecting")
         img.preview.row(v-if="resourceForm.image && resourceForm.image.data" :src="'data:image;base64,' + resourceForm.image.data")
         p(v-if="resourceForm.image") {{ resourceForm.image.path }} {{ resourceForm.image.name }}
 
