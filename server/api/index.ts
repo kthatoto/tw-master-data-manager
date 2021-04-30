@@ -5,11 +5,13 @@ import moveDirectory from './moveDirectory'
 import deleteObject from './deleteObject'
 
 import imagesHandle from './images/index'
+import tilesHandle from './tiles/index'
 
 import cypressClean from './cypress/clean'
 
 export default (app: Application) => {
   imagesHandle(app)
+  tilesHandle(app)
   createDirectory(app, 'post', '/directories')
   moveDirectory(app, 'patch', '/directories')
   deleteObject(app, 'delete', '/objects')

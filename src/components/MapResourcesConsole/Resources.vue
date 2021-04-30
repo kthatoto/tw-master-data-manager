@@ -11,14 +11,14 @@
         span(@click="backDirectory(resourceKey, i)") {{ breadcrumb }}
 
   .resources__content.content(v-if="!showingResource")
-    .resources__item(v-for="o in directories" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
-      .focus(v-if="selectingName === o.name")
-      Icon.icon(name="folder" @dblclick.name="appendDirectory(resourceKey, o.name)" @click.right.prevent.native="confirmDelete(o.name)")
-      span(@dblclick="openDirectoryEditModal($refs, o)") {{ o.name }}
-    .resources__item(v-for="o in resources" :key="o.name" @click="selectingName = o.name" :class="{selected: selectingName === o.name}")
-      .focus(v-if="selectingName === o.name")
+    .resources__item(v-for="o in directories" :key="o.name" :class="{selected: selectingResourceId === o.id}")
+      .focus(v-if="selectingResourceId === o.id")
+      Icon.icon(name="folder" @dblclick.name="appendDirectory(resourceKey, o.name)" @click.right.prevent.native="editable && confirmDelete(o)")
+      span(@dblclick="editable && openDirectoryEditModal($refs, o)") {{ o.name }}
+    .resources__item(v-for="o in resources" :key="o.name" @click="selectResource(o.id)" :class="{selected: selectingResourceId === o.id}")
+      .focus(v-if="selectingResourceId === o.id")
       ConsoleImage(
-        :data="o.data" @dblclick="showResource(o.name)" @clickRight="confirmDelete(o.name)"
+        :data="o.data || o.image.data" @dblclick="showResource(o.id)" @clickRight="editable && confirmDelete(o)"
         width="80px" height="80px" lineHeight="80px"
       )
       span(@dblclick="openResourceEditModal(o)") {{ o.name }}

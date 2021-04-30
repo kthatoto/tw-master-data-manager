@@ -5,7 +5,7 @@ import { Directory } from '~domains/index.ts'
 import { ResourceKey } from '~server/index.ts'
 
 interface ResourceInterface {
-  name: string
+  id: string
 }
 
 interface ResourcesResponseInterface<Resource> {
@@ -14,11 +14,11 @@ interface ResourcesResponseInterface<Resource> {
 }
 
 interface State<Resource> {
-    currentDirectory: string
-    resources: Resource[]
-    directories: Directory[]
-    showingResourceIndex: number | undefined
-    selectingName: string | undefined
+  currentDirectory: string
+  resources: Resource[]
+  directories: Directory[]
+  showingResourceId?: string
+  selectingResourceId?: string
 }
 
 interface ResourceForm {
@@ -33,8 +33,8 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     currentDirectory: '/',
     resources: [],
     directories: [],
-    showingResourceIndex: undefined,
-    selectingName: undefined
+    showingResourceId: undefined,
+    selectingResourceId: undefined
   }) as State<Resource>
 
   const fetchResources = async () => {
@@ -47,15 +47,20 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
   const resourceCreating = computed<boolean>(() => resourceForm.action === 'create')
   const resourceEditing = computed<boolean>(() => resourceForm.action === 'edit')
 
-  const showResource = (name: string) => {
-    const index = state.resources.findIndex((r: Resource) => r.name === name)
-    if (index < 0) return
-    state.showingResourceIndex = index
+  const selectResource = (id: string) => {
+    state.selectingResourceId = id
   }
-  const showingResource = computed<Resource | undefined>(() => {
-    if (state.showingResourceIndex === undefined) return
-    return state.resources[state.showingResourceIndex]
-  })
+  const selectingResource = computed<Resource | Directory | undefined>(() =>
+    state.resources.find((r: Resource) => r.id === state.selectingResourceId) ||
+      state.directories.find((d: Directory) => d.id === state.selectingResourceId)
+  )
+
+  const showResource = (id: string) => {
+    state.showingResourceId = id
+  }
+  const showingResource = computed<Resource | undefined>(() =>
+    state.resources.find((r: Resource) => r.id === state.showingResourceId)
+  )
 
   const breadcrumbs = computed<string[]>(() => {
     return state.currentDirectory.split('/').filter((v: any) => v)
@@ -66,6 +71,8 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     fetchResources,
     resourceCreating,
     resourceEditing,
+    selectResource,
+    selectingResource,
     showResource,
     showingResource,
     breadcrumbs

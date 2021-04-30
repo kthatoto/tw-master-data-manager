@@ -1,13 +1,10 @@
-export interface Directory {
+export interface BasicObject {
+  id: string
   path: string
   name: string
 }
 
-export interface BasicObject {
-  path: string
-  name: string
-  data?: string
-}
+export interface Directory extends BasicObject {}
 
 export const valueCurrencies = ['gold']
 export type Currency = 'gold'

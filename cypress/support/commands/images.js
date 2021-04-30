@@ -1,4 +1,5 @@
 Cypress.Commands.add('createImage', (imageFixtureName, imageName, expectedMessage) => {
+  cy.get('.el-tabs__header').contains('Images').click()
   cy.contains('images作成').click()
   cy.wait(100)
   cy.get('.dialog.-imageCreate input[type="file"]').attachFile(imageFixtureName)
@@ -11,6 +12,7 @@ Cypress.Commands.add('createImage', (imageFixtureName, imageName, expectedMessag
 })
 
 Cypress.Commands.add('editImage', (beforeImageName, imageFixtureName, imageName, expectedMessage) => {
+  cy.get('.el-tabs__header').contains('Images').click()
   cy.contains(beforeImageName).dblclick()
   cy.wait(100)
   cy.get('.dialog.-imageEdit input[type="file"]').attachFile(imageFixtureName)
@@ -23,6 +25,7 @@ Cypress.Commands.add('editImage', (beforeImageName, imageFixtureName, imageName,
 })
 
 Cypress.Commands.add('deleteImage', (imageName, expectedMessage) => {
+  cy.get('.el-tabs__header').contains('Images').click()
   cy.contains('.resources__item', imageName).find('img').rightclick({ multiple: true })
   cy.wait(100)
   cy.contains('.dialog.-objectDelete button.el-button', '削除').click()
@@ -33,6 +36,7 @@ Cypress.Commands.add('deleteImage', (imageName, expectedMessage) => {
 })
 
 Cypress.Commands.add('imageShouldBeVisible', (imageName, imageFixtureName) => {
+  cy.get('.el-tabs__header').contains('Images').click()
   cy.fixture(imageFixtureName).then((imageSource) => {
     cy.contains('.resources__item', imageName)
       .find('img')
@@ -48,6 +52,7 @@ Cypress.Commands.add('imageShouldBeVisible', (imageName, imageFixtureName) => {
 //   imageFixtureName?: string
 // }[]
 Cypress.Commands.add('prepareImageResources', (objects) => {
+  cy.get('.el-tabs__header').contains('Images').click()
   objects.forEach(obj => {
     cy.backToHome()
     if (obj.directories) cy.goDirectories(obj.directories)
@@ -68,6 +73,7 @@ Cypress.Commands.add('prepareImageResources', (objects) => {
 //   imageFixtureName?: string
 // }[]
 Cypress.Commands.add('imageResourcesShouldBe', (objects) => {
+  cy.get('.el-tabs__header').contains('Images').click()
   objects.forEach(obj => {
     cy.backToHome()
     if (obj.directories) cy.goDirectories(obj.directories)

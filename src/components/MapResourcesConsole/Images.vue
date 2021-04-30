@@ -71,19 +71,5 @@ export default defineComponent({
 </script>
 
 <style lang="stylus" scoped>
-.images
-  .dialog
-    .row
-      margin-bottom: 10px
-    .preview
-      margin-bottom: 10px
-      width: 200px
-      height: 200px
-      object-fit: contain
-      image-rendering: pixelated
-      border: 1px solid gray
-    .buttons
-      text-align: right
-      .el-button
-        width: 120px
+resource-form(images)
 </style>

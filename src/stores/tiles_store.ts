@@ -1,36 +1,36 @@
 import { reactive, computed, toRefs } from '@vue/composition-api'
 import axios from 'axios'
 
-import { Image, ImagesResponse } from '~domains/images.ts'
+import { Tile, TilesResponse } from '~domains/tiles.ts'
 import handleResponse from '@/utils/handleResponse.ts'
 import resourceService from '@/services/resourceService.ts'
 
-import { ImagesCreateRequestBody } from '~server/api/images/create.ts'
-import { ImagesEditRequestBody } from '~server/api/images/edit.ts'
+import { TilesCreateRequestBody } from '~server/api/tiles/create.ts'
+import { TilesEditRequestBody } from '~server/api/tiles/edit.ts'
 
-interface ImageFile {
-  name: string
-  raw: File
-  uid: number
-}
-
-export const buildImagesStore = () => {
+export const buildTilesStore = () => {
   const resourceForm = reactive<{
     flag: boolean
     action?: 'create' | 'edit'
     id: string
     beforeName: string
     name: string
-    extension: string
-    data?: string
+    collision: boolean
+    imageId?: string
+    image?: {
+      path?: string
+      data?: string
+      name?: string
+    }
   }>({
     flag: false,
     action: undefined,
     id: '',
     beforeName: '',
     name: '',
-    extension: '',
-    data: undefined
+    collision: false,
+    imageId: undefined,
+    image: undefined
   })
 
   const {
@@ -43,7 +43,7 @@ export const buildImagesStore = () => {
     showResource,
     showingResource,
     breadcrumbs
-  } = resourceService<Image, ImagesResponse>('images', resourceForm)
+  } = resourceService<Tile, TilesResponse>('tiles', resourceForm)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true
@@ -51,63 +51,51 @@ export const buildImagesStore = () => {
     resourceForm.id = ''
     resourceForm.beforeName = ''
     resourceForm.name = ''
-    resourceForm.extension = ''
-    resourceForm.data = undefined
+    resourceForm.collision = false
+    resourceForm.imageId = undefined
+    resourceForm.image = undefined
   }
-  const openResourceEditModal = (resource: Image) => {
+  const openResourceEditModal = (resource: Tile) => {
     resourceForm.flag = true
     resourceForm.action = 'edit'
     resourceForm.id = resource.id
     resourceForm.beforeName = resource.name
-    resourceForm.data = resource.data || undefined
-    const splited: string[] = resource.name.split('.')
-    resourceForm.extension = '.' + splited.pop()
-    resourceForm.name = splited.join('.')
+    resourceForm.name = resource.name
+    resourceForm.collision = resource.collision || false
+    resourceForm.imageId = resource.imageId
+    resourceForm.image = resource.image
   }
-
   const resourceFormValid = computed<boolean>(() => {
     if (!resourceForm.name) return false
-    if (!resourceForm.data) return false
+    if (!resourceForm.imageId) return false
     return true
   })
-  const uploadImage = async (file: ImageFile) => {
-    const splited: string[] = file.name.split('.')
-    resourceForm.extension = '.' + splited.pop()
-    resourceForm.name = splited.join('.')
-
-    const fileReader = new FileReader()
-    fileReader.onload = (() => {
-      return (e: any) => {
-        const binaryData = e.target.result
-        const base64String = window.btoa(binaryData)
-        resourceForm.data = base64String
-      }
-    })()
-    fileReader.readAsBinaryString(file.raw)
-  }
-
   const createResource = async () => {
     if (!resourceFormValid.value) return
-    if (!resourceForm.data) return
-    const params: ImagesCreateRequestBody = {
+    if (!resourceForm.imageId) return
+    if (resourceForm.collision === undefined) return
+    const params: TilesCreateRequestBody = {
       path: state.currentDirectory,
-      name: resourceForm.name + resourceForm.extension,
-      data: resourceForm.data
+      name: resourceForm.name,
+      collision: resourceForm.collision,
+      imageId: resourceForm.imageId
     }
-    const res = await axios.post('/api/images', params)
+    const res = await axios.post('/api/tiles', params)
     handleResponse(res, '作成完了！', fetchResources, resourceForm)
   }
   const editResource = async () => {
     if (!resourceFormValid.value) return
-    if (!resourceForm.data) return
-    const params: ImagesEditRequestBody = {
+    if (!resourceForm.imageId) return
+    if (resourceForm.collision === undefined) return
+    const params: TilesEditRequestBody = {
       path: state.currentDirectory,
       id: resourceForm.id,
       beforeName: resourceForm.beforeName,
-      name: resourceForm.name + resourceForm.extension,
-      data: resourceForm.data
+      name: resourceForm.name,
+      collision: resourceForm.collision,
+      imageId: resourceForm.imageId
     }
-    const res = await axios.patch('/api/images', params)
+    const res = await axios.patch('/api/tiles', params)
     handleResponse(res, '更新完了！', fetchResources, resourceForm)
   }
 
@@ -127,10 +115,9 @@ export const buildImagesStore = () => {
     openResourceCreateModal,
     openResourceEditModal,
     resourceFormValid,
-    uploadImage,
     createResource,
     editResource
   }
 }
 
-export type ImagesStore = ReturnType<typeof buildImagesStore>
+export type TilesStore = ReturnType<typeof buildTilesStore>
