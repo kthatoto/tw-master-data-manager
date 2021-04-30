@@ -8,7 +8,7 @@ Cypress.Commands.add('backToHome', () => {
 })
 
 Cypress.Commands.add('goDirectory', (directory) => {
-  cy.contains('.resources__item', directory).get('svg').dblclick()
+  cy.contains('.resources__item', directory).find('svg').dblclick()
 })
 
 Cypress.Commands.add('goDirectories', (directories) => {
