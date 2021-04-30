@@ -34,17 +34,20 @@ context('Tiles Create', () => {
     })
   })
 
-  // context('Failure', () => {
-  //   it('fails to create an image because name is duplicate to another image', () => {
-  //     cy.prepareImageResources([
-  //       { type: 'file', name: imageName, imageFixtureName }
-  //     ])
-  //
-  //     cy.createImage(imageFixtureName, imageName, 'は既に存在してます')
-  //
-  //     cy.imageResourcesShouldBe([
-  //       { type: 'file', name: imageName, imageFixtureName }
-  //     ])
-  //   })
-  // })
+  context('Failure', () => {
+    it('fails to create a tile because name is duplicate to another tile', () => {
+      cy.prepareImageResources([
+        { type: 'file', name: imageName, imageFixtureName }
+      ])
+      cy.prepareTileResources([
+        { type: 'file', name: tileName, imageName }
+      ])
+
+      cy.createTile(imageName, tileName, 'は既に存在してます')
+
+      cy.tileResourcesShouldBe([
+        { type: 'file', name: tileName, imageFixtureName }
+      ])
+    })
+  })
 })
