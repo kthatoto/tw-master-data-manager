@@ -11,7 +11,7 @@ context('Images Delete', () => {
 
       cy.deleteImage(imageName, '削除完了！')
 
-      cy.get('.resources__item').should('have.length', 0)
+      cy.get('.images .resources__item').should('have.length', 0)
     })
 
     it('deletes an image under a directory', () => {
@@ -27,7 +27,7 @@ context('Images Delete', () => {
         { type: 'directory', name: directoryName }
       ])
       cy.goDirectory(directoryName)
-      cy.get('.resources__item').should('have.length', 0)
+      cy.get('.images .resources__item').should('have.length', 0)
     })
   })
 })

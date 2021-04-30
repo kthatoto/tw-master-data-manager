@@ -10,7 +10,7 @@ context('Images Directories Delete', () => {
 
       cy.deleteDirectory(directoryName, '削除完了！')
 
-      cy.get('.resources__item').should('have.length', 0)
+      cy.get('.images .resources__item').should('have.length', 0)
     })
 
     it('deletes a empty directory under a directory', () => {
@@ -26,7 +26,7 @@ context('Images Directories Delete', () => {
         { type: 'directory', name: directoryName }
       ])
       cy.goDirectory(directoryName)
-      cy.get('.resources__item').should('have.length', 0)
+      cy.get('.images .resources__item').should('have.length', 0)
     })
   })
 

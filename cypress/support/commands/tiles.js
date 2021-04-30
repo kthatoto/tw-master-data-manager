@@ -15,6 +15,17 @@ Cypress.Commands.add('createTile', (imageName, tileName, expectedMessage) => {
   }
 })
 
+Cypress.Commands.add('deleteTile', (tileName, expectedMessage) => {
+  cy.get('.el-tabs__header').contains('Tiles').click()
+  cy.contains('.resources__item', tileName).find('img').rightclick({ multiple: true })
+  cy.wait(100)
+  cy.contains('.dialog.-objectDelete button.el-button', '削除').click()
+  cy.wait(100)
+  if (expectedMessage) {
+    cy.contains(expectedMessage).should('be.visible')
+  }
+})
+
 Cypress.Commands.add('tileShouldBeVisible', (tileName, imageFixtureName) => {
   cy.get('.el-tabs__header').contains('Tiles').click()
   cy.fixture(imageFixtureName).then((imageSource) => {
