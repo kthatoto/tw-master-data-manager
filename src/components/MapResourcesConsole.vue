@@ -11,8 +11,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api'
+import { defineComponent, ref, provide } from '@vue/composition-api'
 
+import { appStores } from '@/stores/appStores.ts'
 import Images from '@/components/MapResourcesConsole/Images.vue'
 import Tiles from '@/components/MapResourcesConsole/Tiles.vue'
 
@@ -20,6 +21,7 @@ export default defineComponent({
   components: { Images, Tiles },
   setup () {
     const tab = ref<string>('images')
+    provide('commonStore', appStores.commonStore)
     return { tab }
   }
 })
