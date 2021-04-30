@@ -4,11 +4,28 @@ Cypress.Commands.add('createTile', (imageName, tileName, expectedMessage) => {
   cy.wait(100)
   cy.contains('.dialog.-tileCreate button', 'Image選択').click()
   cy.wait(100)
-  cy.contains('.image-selector', imageName).find('img').click()
+  cy.get('.image-selector').contains('.resources__item', imageName).find('img').click()
   cy.contains('.el-dialog .el-dialog__footer button', '選択').click()
   cy.wait(100)
   cy.get('.dialog.-tileCreate input.el-input__inner').clear().type(tileName)
   cy.contains('.dialog.-tileCreate button.el-button', '作成').click()
+  cy.wait(100)
+  if (expectedMessage) {
+    cy.contains(expectedMessage).should('be.visible')
+  }
+})
+
+Cypress.Commands.add('editTile', (beforeTileName, tileName, imageName, expectedMessage) => {
+  cy.get('.el-tabs__header').contains('Tiles').click()
+  cy.contains(beforeTileName).dblclick()
+  cy.wait(100)
+  cy.contains('.dialog.-tileEdit button', 'Image選択').click()
+  cy.wait(100)
+  cy.get('.image-selector').contains('.resources__item', imageName).find('img').click()
+  cy.contains('.el-dialog .el-dialog__footer button', '選択').click()
+  cy.wait(100)
+  cy.get('.dialog.-tileEdit input.el-input__inner').clear().type(tileName)
+  cy.contains('.dialog.-tileEdit button.el-button', '更新').click()
   cy.wait(100)
   if (expectedMessage) {
     cy.contains(expectedMessage).should('be.visible')
