@@ -16,22 +16,22 @@ context('Tiles Create', () => {
       ])
     })
 
-    // it('creates an image under a directory', () => {
-    //   cy.prepareImageResources([
-    //     { type: 'file', name: imageName, imageFixtureName }
-    //   ])
-    //   cy.prepareTileResources([
-    //     { type: 'directory', name: directoryName }
-    //   ])
-    //
-    //   cy.goDirectory(directoryName)
-    //   cy.createImage(imageName, tileName, '作成完了！')
-    //
-    //   cy.tileResourcesShouldBe([
-    //     { type: 'directory', name: directoryName },
-    //     { type: 'file', directories: [directoryName], name: tileName, imageFixtureName }
-    //   ])
-    // })
+    it('creates a tile under a directory', () => {
+      cy.prepareImageResources([
+        { type: 'file', name: imageName, imageFixtureName }
+      ])
+      cy.prepareTileResources([
+        { type: 'directory', name: directoryName }
+      ])
+
+      cy.goDirectory(directoryName)
+      cy.createImage(imageName, tileName, '作成完了！')
+
+      cy.tileResourcesShouldBe([
+        { type: 'directory', name: directoryName },
+        { type: 'file', directories: [directoryName], name: tileName, imageFixtureName }
+      ])
+    })
   })
 
   // context('Failure', () => {

@@ -7,7 +7,7 @@ Cypress.Commands.add('createTile', (imageName, tileName, expectedMessage) => {
   cy.contains('.image-selector', imageName).find('img').click()
   cy.contains('.el-dialog .el-dialog__footer button', '選択').click()
   cy.wait(100)
-  cy.get('.dialog.-tileCreate input.el-input__inner').clear().type(imageName)
+  cy.get('.dialog.-tileCreate input.el-input__inner').clear().type(tileName)
   cy.contains('.dialog.-tileCreate button.el-button', '作成').click()
   cy.wait(100)
   if (expectedMessage) {

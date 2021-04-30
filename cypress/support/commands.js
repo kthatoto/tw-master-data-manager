@@ -4,7 +4,7 @@ import './commands/tiles'
 import './commands/directories'
 
 Cypress.Commands.add('backToHome', () => {
-  cy.get('.resources__header .nav .home-icon').click()
+  cy.get('.resources__header .nav .home-icon').first().click()
 })
 
 Cypress.Commands.add('goDirectory', (directory) => {
