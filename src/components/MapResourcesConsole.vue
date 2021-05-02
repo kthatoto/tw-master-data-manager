@@ -2,9 +2,9 @@
 .console
   el-tabs(type="border-card" v-model="tab")
     el-tab-pane(label="Images" name="images" :lazy="true")
-      Images.pane(v-if="tab === 'images'" :editable="true")
+      Images.pane(:editable="true")
     el-tab-pane(label="Tiles" name="tiles" :lazy="true")
-      Tiles.pane(v-if="tab === 'tiles'" :editable="true")
+      Tiles.pane(:editable="true")
     el-tab-pane(label="Objekts" name="objekts" :lazy="true")
     el-tab-pane(label="NPCs" name="npcs" :lazy="true")
     el-tab-pane(label="Enemies" name="enemies" :lazy="true")

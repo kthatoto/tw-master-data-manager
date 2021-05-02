@@ -13,7 +13,7 @@
   .resources__content.content(v-if="!showingResource")
     .resources__item(v-for="o in directories" :key="o.name" :class="{selected: selectingResourceId === o.id}")
       .focus(v-if="selectingResourceId === o.id")
-      Icon.icon(name="folder" @dblclick.name="appendDirectory(resourceKey, o.name)" @click.right.prevent.native="editable && confirmDelete(o)")
+      Icon.icon(name="folder" @dblclick.native="appendDirectory(resourceKey, o.name)" @click.right.prevent.native="editable && confirmDelete(o)")
       span(@dblclick="editable && openDirectoryEditModal($refs, o)") {{ o.name }}
     .resources__item(v-for="o in resources" :key="o.name" @click="selectResource(o.id)" :class="{selected: selectingResourceId === o.id}")
       .focus(v-if="selectingResourceId === o.id")
