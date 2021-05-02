@@ -60,7 +60,7 @@ Cypress.Commands.add('prepareImageResources', (objects) => {
       cy.createImage(obj.imageFixtureName, obj.name)
     }
     if (obj.type === 'directory') {
-      cy.createDirectory(obj.name)
+      cy.createDirectory('images', obj.name)
     }
   })
   cy.backToHome('images')

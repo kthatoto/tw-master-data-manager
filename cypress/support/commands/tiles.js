@@ -68,7 +68,7 @@ Cypress.Commands.add('prepareTileResources', (objects) => {
       cy.createTile(obj.imageName, obj.name)
     }
     if (obj.type === 'directory') {
-      cy.createDirectory(obj.name)
+      cy.createDirectory('tiles', obj.name)
     }
   })
   cy.backToHome('tiles')

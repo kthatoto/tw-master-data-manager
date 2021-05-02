@@ -13,7 +13,7 @@ context('Images Directories Edit', () => {
         { type: 'directory', name: directoryName }
       ])
 
-      cy.editDirectory(directoryName, afterDirectoryName, '更新完了！')
+      cy.editDirectory('images', directoryName, afterDirectoryName, '更新完了！')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: afterDirectoryName }
@@ -28,7 +28,7 @@ context('Images Directories Edit', () => {
       ])
 
       cy.goDirectory('images', directoryName)
-      cy.editDirectory(subDirectoryName, afterDirectoryName, '更新完了！')
+      cy.editDirectory('images', subDirectoryName, afterDirectoryName, '更新完了！')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: directoryName },
@@ -43,7 +43,7 @@ context('Images Directories Edit', () => {
         { type: 'file', directories: [directoryName], name: imageName, imageFixtureName }
       ])
 
-      cy.editDirectory(directoryName, afterDirectoryName, '更新完了！')
+      cy.editDirectory('images', directoryName, afterDirectoryName, '更新完了！')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: afterDirectoryName },
@@ -60,7 +60,7 @@ context('Images Directories Edit', () => {
         { type: 'directory', name: subDirectoryName }
       ])
 
-      cy.editDirectory(subDirectoryName, directoryName, 'は既に存在してます')
+      cy.editDirectory('images', subDirectoryName, directoryName, 'は既に存在してます')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: directoryName },
@@ -74,7 +74,7 @@ context('Images Directories Edit', () => {
         { type: 'file', name: imageName, imageFixtureName }
       ])
 
-      cy.editDirectory(directoryName, imageFullName, 'は既に存在してます')
+      cy.editDirectory('images', directoryName, imageFullName, 'は既に存在してます')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: directoryName },

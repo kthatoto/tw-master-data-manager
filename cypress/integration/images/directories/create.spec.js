@@ -7,7 +7,7 @@ const subDirectoryName = 'floors'
 context('Images Directories Create', () => {
   context('Success', () => {
     it('creates a directory', () => {
-      cy.createDirectory(directoryName, '作成完了！')
+      cy.createDirectory('images', directoryName, '作成完了！')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: directoryName }
@@ -20,7 +20,7 @@ context('Images Directories Create', () => {
       ])
 
       cy.goDirectory('images', directoryName)
-      cy.createDirectory(subDirectoryName, '作成完了！')
+      cy.createDirectory('images', subDirectoryName, '作成完了！')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: directoryName },
@@ -35,7 +35,7 @@ context('Images Directories Create', () => {
         { type: 'directory', name: directoryName }
       ])
 
-      cy.createDirectory(directoryName, 'は既に存在してます')
+      cy.createDirectory('images', directoryName, 'は既に存在してます')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: directoryName }
@@ -48,7 +48,7 @@ context('Images Directories Create', () => {
         { type: 'file', name: imageName, imageFixtureName }
       ])
 
-      cy.createDirectory(imageFullName, 'は既に存在してます')
+      cy.createDirectory('images', imageFullName, 'は既に存在してます')
 
       cy.imageResourcesShouldBe([
         { type: 'file', name: imageName, imageFixtureName }

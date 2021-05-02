@@ -8,7 +8,7 @@ context('Images Directories Delete', () => {
         { type: 'directory', name: directoryName }
       ])
 
-      cy.deleteDirectory(directoryName, '削除完了！')
+      cy.deleteDirectory('images', directoryName, '削除完了！')
 
       cy.get('.images .resources__item').should('have.length', 0)
     })
@@ -20,7 +20,7 @@ context('Images Directories Delete', () => {
       ])
 
       cy.goDirectory('images', directoryName)
-      cy.deleteDirectory(subDirectoryName, '削除完了！')
+      cy.deleteDirectory('images', subDirectoryName, '削除完了！')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: directoryName }
@@ -37,7 +37,7 @@ context('Images Directories Delete', () => {
         { type: 'directory', directories: [directoryName], name: subDirectoryName }
       ])
 
-      cy.deleteDirectory(directoryName, 'の中は空じゃないので消せません')
+      cy.deleteDirectory('images', directoryName, 'の中は空じゃないので消せません')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: directoryName },
