@@ -20,11 +20,6 @@ export default (app: Application, method: 'patch', path: string) => {
       res.send({ message: `「${path}${beforeName}」は存在しません` })
       return
     }
-    const already: boolean = await Image.exists({ path, name, objectType: 'file' })
-    if (already) {
-      res.send({ message: `「${path}${name}」は既に存在してます` })
-      return
-    }
     await Image.findByIdAndUpdate(id, { $set: { name, data } })
     res.send(null)
   })
