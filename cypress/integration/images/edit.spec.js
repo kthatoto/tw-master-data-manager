@@ -25,28 +25,12 @@ context('Images Edit', () => {
         { type: 'file', directories: [directoryName], name: imageName, imageFixtureName }
       ])
 
-      cy.goDirectory(directoryName)
+      cy.goDirectory('images', directoryName)
       cy.editImage(imageName, afterImageFixtureName, afterImageName, '更新完了！')
 
       cy.imageResourcesShouldBe([
         { type: 'directory', name: directoryName },
         { type: 'file', directories: [directoryName], name: afterImageName, imageFixtureName: afterImageFixtureName }
-      ])
-    })
-  })
-
-  context('Failure', () => {
-    it('fails to edit an image because name is duplicate to another image', () => {
-      cy.prepareImageResources([
-        { type: 'file', name: imageName, imageFixtureName },
-        { type: 'file', name: afterImageName, imageFixtureName }
-      ])
-
-      cy.editImage(imageName, afterImageFixtureName, afterImageName, 'は既に存在してます')
-
-      cy.imageResourcesShouldBe([
-        { type: 'file', name: imageName, imageFixtureName },
-        { type: 'file', name: afterImageName, imageFixtureName }
       ])
     })
   })

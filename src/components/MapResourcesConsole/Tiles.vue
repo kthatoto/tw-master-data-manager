@@ -17,6 +17,9 @@
 
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
+
+        el-checkbox(v-model="resourceForm.collision") 衝突
+
         .buttons
           el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") 作成
 
@@ -32,6 +35,9 @@
 
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
+
+        el-checkbox(v-model="resourceForm.collision") 衝突
+
         .buttons
           el-button(type="primary" @click="editResource" :disabled="!resourceFormValid") 更新
 </template>

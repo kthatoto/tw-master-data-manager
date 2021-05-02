@@ -54,16 +54,16 @@ Cypress.Commands.add('imageShouldBeVisible', (imageName, imageFixtureName) => {
 Cypress.Commands.add('prepareImageResources', (objects) => {
   cy.get('.el-tabs__header').contains('Images').click()
   objects.forEach(obj => {
-    cy.backToHome()
-    if (obj.directories) cy.goDirectories(obj.directories)
+    cy.backToHome('images')
+    if (obj.directories) cy.goDirectories('images', obj.directories)
     if (obj.type === 'file') {
       cy.createImage(obj.imageFixtureName, obj.name)
     }
     if (obj.type === 'directory') {
-      cy.createDirectory(obj.name)
+      cy.createDirectory('images', obj.name)
     }
   })
-  cy.backToHome()
+  cy.backToHome('images')
 })
 
 // objects: {
@@ -75,8 +75,8 @@ Cypress.Commands.add('prepareImageResources', (objects) => {
 Cypress.Commands.add('imageResourcesShouldBe', (objects) => {
   cy.get('.el-tabs__header').contains('Images').click()
   objects.forEach(obj => {
-    cy.backToHome()
-    if (obj.directories) cy.goDirectories(obj.directories)
+    cy.backToHome('images')
+    if (obj.directories) cy.goDirectories('images', obj.directories)
     if (obj.type === 'file') {
       cy.contains('.resources__item', obj.name).find('img').should('be.visible')
       cy.imageShouldBeVisible(obj.name, obj.imageFixtureName)

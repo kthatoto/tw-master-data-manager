@@ -35,32 +35,12 @@ context('Tiles Edit', () => {
         { type: 'file', directories: [directoryName], name: tileName, imageName }
       ])
 
-      cy.goDirectory(directoryName)
+      cy.goDirectory('tiles', directoryName)
       cy.editTile(tileName, afterTileName, afterImageName, '更新完了！')
 
       cy.tileResourcesShouldBe([
         { type: 'directory', name: directoryName },
         { type: 'file', directories: [directoryName], name: afterTileName, imageFixtureName: afterImageFixtureName }
-      ])
-    })
-  })
-
-  context('Failure', () => {
-    it('fails to edit a tile because name is duplicate to another tile', () => {
-      cy.prepareImageResources([
-        { type: 'file', name: imageName, imageFixtureName },
-        { type: 'file', name: afterImageName, imageFixtureName: afterImageFixtureName }
-      ])
-      cy.prepareTileResources([
-        { type: 'file', name: tileName, imageName },
-        { type: 'file', name: afterTileName, imageName: afterImageName },
-      ])
-
-      cy.editTile(tileName, afterTileName, afterImageName, 'は既に存在してます')
-
-      cy.tileResourcesShouldBe([
-        { type: 'file', name: tileName, imageFixtureName },
-        { type: 'file', name: afterTileName, imageFixtureName: afterImageFixtureName }
       ])
     })
   })

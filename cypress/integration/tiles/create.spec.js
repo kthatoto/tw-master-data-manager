@@ -24,7 +24,7 @@ context('Tiles Create', () => {
         { type: 'directory', name: directoryName }
       ])
 
-      cy.goDirectory(directoryName)
+      cy.goDirectory('tiles', directoryName)
       cy.createTile(imageName, tileName, '作成完了！')
 
       cy.tileResourcesShouldBe([

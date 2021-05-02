@@ -34,9 +34,9 @@ Cypress.Commands.add('editTile', (beforeTileName, tileName, imageName, expectedM
 
 Cypress.Commands.add('deleteTile', (tileName, expectedMessage) => {
   cy.get('.el-tabs__header').contains('Tiles').click()
-  cy.contains('.resources__item', tileName).find('img').rightclick({ multiple: true })
+  cy.get('.tiles').contains('.resources__item', tileName).find('img').rightclick({ multiple: true })
   cy.wait(100)
-  cy.contains('.dialog.-objectDelete button.el-button', '削除').click()
+  cy.get('.tiles').contains('.dialog.-objectDelete button.el-button', '削除').click()
   cy.wait(100)
   if (expectedMessage) {
     cy.contains(expectedMessage).should('be.visible')
@@ -46,7 +46,8 @@ Cypress.Commands.add('deleteTile', (tileName, expectedMessage) => {
 Cypress.Commands.add('tileShouldBeVisible', (tileName, imageFixtureName) => {
   cy.get('.el-tabs__header').contains('Tiles').click()
   cy.fixture(imageFixtureName).then((imageSource) => {
-    cy.contains('.resources__item', tileName)
+    cy.get('.tiles')
+      .contains('.resources__item', tileName)
       .find('img')
       .invoke('attr', 'src')
       .should('include', imageSource)
@@ -62,16 +63,16 @@ Cypress.Commands.add('tileShouldBeVisible', (tileName, imageFixtureName) => {
 Cypress.Commands.add('prepareTileResources', (objects) => {
   cy.get('.el-tabs__header').contains('Tiles').click()
   objects.forEach(obj => {
-    cy.backToHome()
-    if (obj.directories) cy.goDirectories(obj.directories)
+    cy.backToHome('tiles')
+    if (obj.directories) cy.goDirectories('tiles', obj.directories)
     if (obj.type === 'file') {
       cy.createTile(obj.imageName, obj.name)
     }
     if (obj.type === 'directory') {
-      cy.createDirectory(obj.name)
+      cy.createDirectory('tiles', obj.name)
     }
   })
-  cy.backToHome()
+  cy.backToHome('tiles')
 })
 
 // objects: {
@@ -83,14 +84,14 @@ Cypress.Commands.add('prepareTileResources', (objects) => {
 Cypress.Commands.add('tileResourcesShouldBe', (objects) => {
   cy.get('.el-tabs__header').contains('Tiles').click()
   objects.forEach(obj => {
-    cy.backToHome()
-    if (obj.directories) cy.goDirectories(obj.directories)
+    cy.backToHome('tiles')
+    if (obj.directories) cy.goDirectories('tiles', obj.directories)
     if (obj.type === 'file') {
-      cy.contains('.resources__item', obj.name).find('img').should('be.visible')
+      cy.get('.tiles').contains('.resources__item', obj.name).find('img').should('be.visible')
       cy.tileShouldBeVisible(obj.name, obj.imageFixtureName)
     }
     if (obj.type === 'directory') {
-      cy.contains('.resources__item', obj.name).find('svg').should('be.visible')
+      cy.get('.tiles').contains('.resources__item', obj.name).find('svg').should('be.visible')
     }
   })
 })
