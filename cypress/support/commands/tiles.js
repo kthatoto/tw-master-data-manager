@@ -5,7 +5,7 @@ Cypress.Commands.add('createTile', (imageName, tileName, expectedMessage) => {
   cy.contains('.dialog.-tileCreate button', 'Image選択').click()
   cy.wait(100)
   cy.get('.image-selector').contains('.resources__item', imageName).find('img').click()
-  cy.contains('.el-dialog .el-dialog__footer button', '選択').click()
+  cy.get('.tiles').contains('.el-dialog .el-dialog__footer button', '選択').click()
   cy.wait(100)
   cy.get('.dialog.-tileCreate input.el-input__inner').clear().type(tileName)
   cy.contains('.dialog.-tileCreate button.el-button', '作成').click()
@@ -22,7 +22,7 @@ Cypress.Commands.add('editTile', (beforeTileName, tileName, imageName, expectedM
   cy.contains('.dialog.-tileEdit button', 'Image選択').click()
   cy.wait(100)
   cy.get('.image-selector').contains('.resources__item', imageName).find('img').click()
-  cy.contains('.el-dialog .el-dialog__footer button', '選択').click()
+  cy.get('.tiles').contains('.el-dialog .el-dialog__footer button', '選択').click()
   cy.wait(100)
   cy.get('.dialog.-tileEdit input.el-input__inner').clear().type(tileName)
   cy.contains('.dialog.-tileEdit button.el-button', '更新').click()
@@ -34,9 +34,9 @@ Cypress.Commands.add('editTile', (beforeTileName, tileName, imageName, expectedM
 
 Cypress.Commands.add('deleteTile', (tileName, expectedMessage) => {
   cy.get('.el-tabs__header').contains('Tiles').click()
-  cy.contains('.resources__item', tileName).find('img').rightclick({ multiple: true })
+  cy.get('.tiles').contains('.resources__item', tileName).find('img').rightclick({ multiple: true })
   cy.wait(100)
-  cy.contains('.dialog.-objectDelete button.el-button', '削除').click()
+  cy.get('.tiles').contains('.dialog.-objectDelete button.el-button', '削除').click()
   cy.wait(100)
   if (expectedMessage) {
     cy.contains(expectedMessage).should('be.visible')
@@ -46,7 +46,8 @@ Cypress.Commands.add('deleteTile', (tileName, expectedMessage) => {
 Cypress.Commands.add('tileShouldBeVisible', (tileName, imageFixtureName) => {
   cy.get('.el-tabs__header').contains('Tiles').click()
   cy.fixture(imageFixtureName).then((imageSource) => {
-    cy.contains('.resources__item', tileName)
+    cy.get('.tiles')
+      .contains('.resources__item', tileName)
       .find('img')
       .invoke('attr', 'src')
       .should('include', imageSource)
@@ -86,11 +87,11 @@ Cypress.Commands.add('tileResourcesShouldBe', (objects) => {
     cy.backToHome('tiles')
     if (obj.directories) cy.goDirectories('tiles', obj.directories)
     if (obj.type === 'file') {
-      cy.contains('.resources__item', obj.name).find('img').should('be.visible')
+      cy.get('.tiles').contains('.resources__item', obj.name).find('img').should('be.visible')
       cy.tileShouldBeVisible(obj.name, obj.imageFixtureName)
     }
     if (obj.type === 'directory') {
-      cy.contains('.resources__item', obj.name).find('svg').should('be.visible')
+      cy.get('.tiles').contains('.resources__item', obj.name).find('svg').should('be.visible')
     }
   })
 })
