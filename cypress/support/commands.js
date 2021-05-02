@@ -4,11 +4,11 @@ import './commands/tiles'
 import './commands/directories'
 
 Cypress.Commands.add('backToHome', (type) => {
-  cy.get(`.${type}`).get('.resources__header .nav .home-icon').first().click()
+  cy.get(`.${type} .resources__header .nav .home-icon`).first().click()
 })
 
 Cypress.Commands.add('goDirectory', (type, directory) => {
-  cy.get(`.${type}`).contains('.resources__item', directory).find('svg').dblclick()
+  cy.contains(`.${type} .resources__item`, directory).find('svg').dblclick()
 })
 
 Cypress.Commands.add('goDirectories', (type, directories) => {
