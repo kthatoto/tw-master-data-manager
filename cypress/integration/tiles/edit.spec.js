@@ -35,7 +35,7 @@ context('Tiles Edit', () => {
         { type: 'file', directories: [directoryName], name: tileName, imageName }
       ])
 
-      cy.goDirectory(directoryName)
+      cy.goDirectory('tiles', directoryName)
       cy.editTile(tileName, afterTileName, afterImageName, '更新完了！')
 
       cy.tileResourcesShouldBe([

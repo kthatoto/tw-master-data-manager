@@ -27,13 +27,13 @@ context('Tiles Delete', () => {
         { type: 'file', directories: [directoryName], name: tileName, imageName }
       ])
 
-      cy.goDirectory(directoryName)
+      cy.goDirectory('tiles', directoryName)
       cy.deleteTile(tileName, '削除完了！')
 
       cy.tileResourcesShouldBe([
         { type: 'directory', name: directoryName }
       ])
-      cy.goDirectory(directoryName)
+      cy.goDirectory('tiles', directoryName)
       cy.get('.tiles .resources__item').should('have.length', 0)
     })
   })
