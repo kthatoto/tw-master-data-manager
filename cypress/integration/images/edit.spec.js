@@ -25,7 +25,7 @@ context('Images Edit', () => {
         { type: 'file', directories: [directoryName], name: imageName, imageFixtureName }
       ])
 
-      cy.goDirectory(directoryName)
+      cy.goDirectory('images', directoryName)
       cy.editImage(imageName, afterImageFixtureName, afterImageName, '更新完了！')
 
       cy.imageResourcesShouldBe([

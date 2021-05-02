@@ -62,8 +62,8 @@ Cypress.Commands.add('tileShouldBeVisible', (tileName, imageFixtureName) => {
 Cypress.Commands.add('prepareTileResources', (objects) => {
   cy.get('.el-tabs__header').contains('Tiles').click()
   objects.forEach(obj => {
-    cy.backToHome()
-    if (obj.directories) cy.goDirectories(obj.directories)
+    cy.backToHome('tiles')
+    if (obj.directories) cy.goDirectories('tiles', obj.directories)
     if (obj.type === 'file') {
       cy.createTile(obj.imageName, obj.name)
     }
@@ -71,7 +71,7 @@ Cypress.Commands.add('prepareTileResources', (objects) => {
       cy.createDirectory(obj.name)
     }
   })
-  cy.backToHome()
+  cy.backToHome('tiles')
 })
 
 // objects: {
@@ -83,8 +83,8 @@ Cypress.Commands.add('prepareTileResources', (objects) => {
 Cypress.Commands.add('tileResourcesShouldBe', (objects) => {
   cy.get('.el-tabs__header').contains('Tiles').click()
   objects.forEach(obj => {
-    cy.backToHome()
-    if (obj.directories) cy.goDirectories(obj.directories)
+    cy.backToHome('tiles')
+    if (obj.directories) cy.goDirectories('tiles', obj.directories)
     if (obj.type === 'file') {
       cy.contains('.resources__item', obj.name).find('img').should('be.visible')
       cy.tileShouldBeVisible(obj.name, obj.imageFixtureName)

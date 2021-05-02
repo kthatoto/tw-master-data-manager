@@ -19,7 +19,7 @@ context('Images Directories Create', () => {
         { type: 'directory', name: directoryName }
       ])
 
-      cy.goDirectory(directoryName)
+      cy.goDirectory('images', directoryName)
       cy.createDirectory(subDirectoryName, '作成完了！')
 
       cy.imageResourcesShouldBe([

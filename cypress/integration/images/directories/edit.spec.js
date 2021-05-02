@@ -27,7 +27,7 @@ context('Images Directories Edit', () => {
         { type: 'directory', directories: [directoryName], name: subDirectoryName }
       ])
 
-      cy.goDirectory(directoryName)
+      cy.goDirectory('images', directoryName)
       cy.editDirectory(subDirectoryName, afterDirectoryName, '更新完了！')
 
       cy.imageResourcesShouldBe([
