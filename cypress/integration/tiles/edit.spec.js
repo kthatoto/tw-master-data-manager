@@ -44,24 +44,4 @@ context('Tiles Edit', () => {
       ])
     })
   })
-
-  context('Failure', () => {
-    it('fails to edit a tile because name is duplicate to another tile', () => {
-      cy.prepareImageResources([
-        { type: 'file', name: imageName, imageFixtureName },
-        { type: 'file', name: afterImageName, imageFixtureName: afterImageFixtureName }
-      ])
-      cy.prepareTileResources([
-        { type: 'file', name: tileName, imageName },
-        { type: 'file', name: afterTileName, imageName: afterImageName },
-      ])
-
-      cy.editTile(tileName, afterTileName, afterImageName, 'は既に存在してます')
-
-      cy.tileResourcesShouldBe([
-        { type: 'file', name: tileName, imageFixtureName },
-        { type: 'file', name: afterTileName, imageFixtureName: afterImageFixtureName }
-      ])
-    })
-  })
 })
