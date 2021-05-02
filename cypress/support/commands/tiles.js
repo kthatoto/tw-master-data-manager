@@ -22,7 +22,7 @@ Cypress.Commands.add('editTile', (beforeTileName, tileName, imageName, expectedM
   cy.contains('.dialog.-tileEdit button', 'Image選択').click()
   cy.wait(100)
   cy.get('.image-selector').contains('.resources__item', imageName).find('img').click()
-  cy.get('.tiles').contains('.el-dialog .el-dialog__footer button', '選択').click()
+  cy.contains('.el-dialog .el-dialog__footer button', '選択').click()
   cy.wait(100)
   cy.get('.dialog.-tileEdit input.el-input__inner').clear().type(tileName)
   cy.contains('.dialog.-tileEdit button.el-button', '更新').click()
