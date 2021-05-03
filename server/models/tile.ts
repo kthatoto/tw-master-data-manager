@@ -9,7 +9,6 @@ export interface ITile extends Document {
 
 const TileSchema: Schema = new Schema({
   name: { type: String, required: true },
-  path: { type: String, required: true },
   collision: { type: Boolean, required: true },
   imageId: { type: String: required: true },
   directoryId: { type: String }

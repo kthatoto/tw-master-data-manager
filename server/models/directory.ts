@@ -7,7 +7,6 @@ export interface IDirectory extends Document {
 
 const DirectorySchema: Schema = new Schema({
   name: { type: String, required: true },
-  path: { type: String, required: true },
   directoryId: { type: String }
 })
 
