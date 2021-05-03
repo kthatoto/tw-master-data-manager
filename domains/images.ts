@@ -1,7 +1,7 @@
 import { Directory, BasicObject } from '~domains/index.ts'
 
 export interface Image extends BasicObject {
-  data?: string
+  data: string
 }
 
 export interface ImagesResponse {
