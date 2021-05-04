@@ -20,7 +20,7 @@ export default (app: Application, method: 'patch', path: string) => {
       res.send({ message: `「${name}」は既に存在してます` })
       return
     }
-    const result: IDirectory | null = await DirectoryModel.findByIdAndUpdate(id, { $set: { name, directoryId } })
+    const result: DirectoryDocument | null = await DirectoryModel.findByIdAndUpdate(id, { $set: { name, directoryId } })
     if (!result) {
       res.send({ message: `ディレクトリ(id:${id})が見つかりません` })
       return
