@@ -4,7 +4,7 @@ export interface Tile extends BasicObject {
   collision: boolean
   imageId: string
   image: {
-    path: string
+    id: string
     name: string
     data: string
   }
