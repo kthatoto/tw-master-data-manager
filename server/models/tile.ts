@@ -14,4 +14,4 @@ const TileSchema: Schema = new Schema({
   directoryId: { type: String }
 })
 
-export default mongoose.model<ITile>('Tile', TileSchema)
+export default mongoose.model<TileDocument>('Tile', TileSchema)

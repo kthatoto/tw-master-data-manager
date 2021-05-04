@@ -14,4 +14,4 @@ const DirectorySchema: Schema = new Schema({
   directoryId: { type: String }
 })
 
-export default mongoose.model<IDirectory>('Directory', DirectorySchema)
+export default mongoose.model<DirectoryDocument>('Directory', DirectorySchema)

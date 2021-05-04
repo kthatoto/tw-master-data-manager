@@ -12,4 +12,4 @@ const ImageSchema: Schema = new Schema({
   directoryId: { type: String }
 })
 
-export default mongoose.model<IImage>('Image', ImageSchema)
+export default mongoose.model<ImageDocument>('Image', ImageSchema)
