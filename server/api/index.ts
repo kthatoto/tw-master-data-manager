@@ -2,7 +2,8 @@ import { Application } from 'express'
 
 import createDirectory from './createDirectory'
 import moveDirectory from './moveDirectory'
-import deleteObject from './deleteObject'
+import deleteDirectory from './deleteDirectory'
+import deleteResource from './deleteResource'
 
 import imagesHandle from './images/index'
 import tilesHandle from './tiles/index'
@@ -14,7 +15,8 @@ export default (app: Application) => {
   tilesHandle(app)
   createDirectory(app, 'post', '/directories')
   moveDirectory(app, 'patch', '/directories')
-  deleteObject(app, 'delete', '/objects')
+  deleteDirectory(app, 'delete', '/directories/:id')
+  deleteResource(app, 'delete', '/resources/:id')
   cypressClean(app, 'delete', '/cypress/clean')
 }
 
