@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
-export interface IImage extends Document {
+export interface ImageDocument extends Document {
   name: string
   data: string
   directoryId?: string

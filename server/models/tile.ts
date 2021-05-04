@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
-export interface ITile extends Document {
+export interface TileDocument extends Document {
   name: string
   collision: boolean
   imageId: string
