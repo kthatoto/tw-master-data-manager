@@ -1,43 +1,30 @@
 import { Application, Request, Response } from 'express'
 
-import { ResourceKey, ResourceModel, ResourceDocumentModel } from '~server/index'
+import { ResourceType } from '~server/index'
 import { DefaultResponseBody } from '~server/api/index'
-import Image from '../models/image'
-import Tile from '../models/tile'
+import DirectoryModel, { DirectoryDocument } from '~server/models/directory'
 
 export interface MoveDirectoryRequestBody {
-  resourceKey: ResourceKey
-  path: string
   id: string
-  beforeName: string
+  resourceType: ResourceType
   name: string
+  directoryId?: string
 }
 
 export default (app: Application, method: 'patch', path: string) => {
   app[method](path, async (req: Request<any, any, MoveDirectoryRequestBody>, res: Response<DefaultResponseBody>) => {
-    const { resourceKey, path, id, beforeName, name } = req.body
+    const { id, resourceType, name, directoryId } = req.body
 
-    const Model: ResourceDocumentModel = {
-      images: Image,
-      tiles: Tile
-    }[resourceKey]
-    const already: boolean = await Model.exists({ path, name })
+    const already: boolean = await DirectoryModel.exists({ name, resourceType, directoryId })
     if (already) {
-      res.send({ message: `「${path}${name}/」は既に存在してます` })
+      res.send({ message: `「${name}」は既に存在してます` })
       return
     }
-    const result: ResourceModel | null = await Model.findByIdAndUpdate(id, { $set: { name } })
+    const result: IDirectory | null = await DirectoryModel.findByIdAndUpdate(id, { $set: { name, directoryId } })
     if (!result) {
-      res.send({ message: `「${path}${beforeName}」が見つかりません` })
+      res.send({ message: `ディレクトリ(id:${id})が見つかりません` })
       return
     }
-    const oldPath: string = `${path}${beforeName}/`
-    const newPath: string = `${path}${name}/`
-    const children: ResourceModel[] = await Model.find({ path: { $regex: `^${oldPath}` } })
-    children.forEach(async (child: ResourceModel) => {
-      const newChildPath: string = child.path.replace(oldPath, newPath)
-      await Model.findByIdAndUpdate(child.id, { path: newChildPath })
-    })
     res.send(null)
   })
 }
