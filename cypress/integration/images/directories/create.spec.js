@@ -42,18 +42,5 @@ context('Images Directories Create', () => {
       ])
       cy.get('.resources__item').should('have.length', 1)
     })
-
-    it('fails to create a directory because name is duplicate to an image', () => {
-      cy.prepareImageResources([
-        { type: 'file', name: imageName, imageFixtureName }
-      ])
-
-      cy.createDirectory('images', imageFullName, 'は既に存在してます')
-
-      cy.imageResourcesShouldBe([
-        { type: 'file', name: imageName, imageFixtureName }
-      ])
-      cy.get('.resources__item').should('have.length', 1)
-    })
   })
 })

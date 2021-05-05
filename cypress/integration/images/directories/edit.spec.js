@@ -67,19 +67,5 @@ context('Images Directories Edit', () => {
         { type: 'directory', name: subDirectoryName }
       ])
     })
-
-    it('fails to edit a directory because name is duplicate to an image', () => {
-      cy.prepareImageResources([
-        { type: 'directory', name: directoryName },
-        { type: 'file', name: imageName, imageFixtureName }
-      ])
-
-      cy.editDirectory('images', directoryName, imageFullName, 'は既に存在してます')
-
-      cy.imageResourcesShouldBe([
-        { type: 'directory', name: directoryName },
-        { type: 'file', name: imageName, imageFixtureName }
-      ])
-    })
   })
 })
