@@ -1,8 +1,8 @@
 import { Application, Request, Response } from 'express'
 
-import { getModel, ResourceModel, ResourceDocument } from '~server/index'
+import { getModel, ResourceModel, ResourceDocument } from '../index'
 import { DefaultResponseBody } from '~server/api/index'
-import DirectoryModel, { DirectoryDocument } from '~server/models/directory'
+import DirectoryModel, { DirectoryDocument } from '../models/directory'
 
 export default (app: Application, method: 'delete', path: string) => {
   app[method](path, async (req: Request, res: Response<DefaultResponseBody>) => {

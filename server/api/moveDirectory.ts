@@ -2,7 +2,7 @@ import { Application, Request, Response } from 'express'
 
 import { ResourceType } from '~server/index'
 import { DefaultResponseBody } from '~server/api/index'
-import DirectoryModel, { DirectoryDocument } from '~server/models/directory'
+import DirectoryModel, { DirectoryDocument } from '../models/directory'
 
 export interface MoveDirectoryRequestBody {
   resourceType: ResourceType
