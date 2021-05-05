@@ -5,42 +5,39 @@ import { AppStores } from '@/stores/appStores.ts'
 import { BasicObject, Directory } from '~domains/index.ts'
 import handleResponse from '@/utils/handleResponse.ts'
 
-import { ResourceKey } from '~server/index.ts'
+import { ResourceType } from '~server/index.ts'
 import { CreateDirectoryRequestBody } from '~server/api/createDirectory.ts'
 import { MoveDirectoryRequestBody } from '~server/api/moveDirectory.ts'
 
 export const buildCommonStore = (stores: AppStores) => {
-  const getStoreByKey = (key: ResourceKey) => {
-    if (key === 'images') return stores.imagesStore
-    if (key === 'tiles') return stores.tilesStore
-    throw new Error(`Not handled key '${key}'`)
+  const getStoreByResourceType = (resourceType: ResourceType) => {
+    if (resourceType === 'images') return stores.imagesStore
+    if (resourceType === 'tiles') return stores.tilesStore
+    throw new Error(`Not handled resourceType '${resourceType}'`)
   }
 
   const directoryForm = reactive<{
     flag: boolean
     action?: 'create' | 'edit'
-    id: string
-    beforeName: string
-    name: string
+    id?: string
+    name?: string
   }>({
     flag: false,
     action: undefined,
-    id: '',
-    beforeName: '',
-    name: ''
+    id: undefined,
+    name: undefined
   })
   const openDirectoryCreateModal = (refs: any) => {
     directoryForm.flag = true
     directoryForm.action = 'create'
     directoryForm.name = ''
-    directoryForm.id = ''
+    directoryForm.id = undefined
     setTimeout(() => refs.directoryName.focus(), 50)
   }
   const openDirectoryEditModal = (refs: any, directory: Directory) => {
     directoryForm.flag = true
     directoryForm.action = 'edit'
     directoryForm.id = directory.id
-    directoryForm.beforeName = directory.name
     directoryForm.name = directory.name
     setTimeout(() => refs.directoryName.focus(), 50)
   }
@@ -50,26 +47,28 @@ export const buildCommonStore = (stores: AppStores) => {
     if (!directoryForm.name) return false
     return true
   })
-  const createDirectory = async (key: ResourceKey) => {
+  const createDirectory = async (resourceType: ResourceType) => {
     if (!directoryFormValid.value) return
-    const store = getStoreByKey(key)
+    if (!directoryForm.name) return
+    const store = getStoreByResourceType(resourceType)
     const params: CreateDirectoryRequestBody = {
-      resourceKey: key,
-      path: store.currentDirectory.value,
-      name: directoryForm.name
+      resourceType,
+      name: directoryForm.name,
+      directoryId: store.currentDirectoryId?.value
     }
     const res = await axios.post('/api/directories', params)
     handleResponse(res, '作成完了！', store.fetchResources, directoryForm)
   }
-  const editDirectory = async (key: ResourceKey) => {
+  const editDirectory = async (resourceType: ResourceType) => {
     if (!directoryFormValid.value) return
-    const store = getStoreByKey(key)
+    if (!directoryForm.name) return
+    if (!directoryForm.id) return
+    const store = getStoreByResourceType(resourceType)
     const params: MoveDirectoryRequestBody = {
-      resourceKey: key,
+      resourceType,
       id: directoryForm.id,
-      path: store.currentDirectory.value,
-      beforeName: directoryForm.beforeName,
-      name: directoryForm.name
+      name: directoryForm.name,
+      directoryId: store.currentDirectoryId?.value
     }
     const res = await axios.patch('/api/directories', params)
     handleResponse(res, '更新完了！', store.fetchResources, directoryForm)
@@ -77,55 +76,60 @@ export const buildCommonStore = (stores: AppStores) => {
 
   const deleteForm = reactive<{
     flag: boolean
-    id: string
-    name: string
+    id?: string
+    name?: string
   }>({
     flag: false,
-    id: '',
-    name: ''
+    id: undefined,
+    name: undefined
   })
   const confirmDelete = (resource: BasicObject) => {
     deleteForm.flag = true
     deleteForm.id = resource.id
     deleteForm.name = resource.name
   }
-  const deleteObject = async (key: ResourceKey) => {
-    const store = getStoreByKey(key)
+  const deleteObject = async (resourceType: ResourceType) => {
+    const store = getStoreByResourceType(resourceType)
     const id = deleteForm.id
-    const path = store.currentDirectory.value
-    const name = deleteForm.name
-    const res = await axios.delete(`/api/objects?resourceKey=${key}&id=${id}&path=${path}&name=${name}`)
+    const res = await axios.delete(`/api/directories/${id}`)
     const result: boolean = handleResponse(res, '削除完了！', store.fetchResources, deleteForm)
     if (result) {
       if (store.showingResourceId) store.showingResourceId.value = undefined
     }
-    deleteForm.name = ''
-    deleteForm.id = ''
+    deleteForm.name = undefined
+    deleteForm.id = undefined
   }
 
-  const backToHome = (key: ResourceKey) => {
-    const store = getStoreByKey(key)
-    store.currentDirectory.value = '/'
+  const backToHome = (resourceType: ResourceType) => {
+    const store = getStoreByResourceType(resourceType)
+    if (store.currentDirectoryId) store.currentDirectoryId.value = undefined
+    if (store.showingResourceId) store.showingResourceId.value = undefined
+    store.breadcrumbs.value = []
+    store.fetchResources()
+  }
+  const backDirectory = (resourceType: ResourceType, directoryId: string) => {
+    const store = getStoreByResourceType(resourceType)
+    if (store.currentDirectoryId) store.currentDirectoryId.value = directoryId
+    const directoryIndex = store.breadcrumbs.value.findIndex((breadcrumb: { directoryId: string }) =>
+      breadcrumb.directoryId === directoryId
+    )
+    if (directoryIndex < 0) {
+      backToHome(resourceType)
+      return
+    }
+    store.breadcrumbs.value = store.breadcrumbs.value.slice(0, directoryIndex + 1)
     if (store.showingResourceId) store.showingResourceId.value = undefined
     store.fetchResources()
   }
-  const backDirectory = (key: ResourceKey, i: number) => {
-    const store = getStoreByKey(key)
-    store.currentDirectory.value = store.breadcrumbs.value.reduce((newDirectory: string, breadcrumb: string, j: number) => {
-      if (j <= i) newDirectory += `${breadcrumb}/`
-      return newDirectory
-    }, '/')
-    if (store.showingResourceId) store.showingResourceId.value = undefined
-    store.fetchResources()
-  }
-  const appendDirectory = (key: ResourceKey, dir: string) => {
-    const store = getStoreByKey(key)
-    store.currentDirectory.value = `${store.currentDirectory.value}${dir}/`
+  const appendDirectory = (resourceType: ResourceType, directory: { name: string, directoryId: string }) => {
+    const store = getStoreByResourceType(resourceType)
+    if (store.currentDirectoryId) store.currentDirectoryId.value = directory.directoryId
+    store.breadcrumbs.value.push(directory)
     store.fetchResources()
   }
 
   return {
-    getStoreByKey,
+    getStoreByResourceType,
     directoryForm,
     openDirectoryCreateModal,
     openDirectoryEditModal,
