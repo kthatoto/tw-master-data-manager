@@ -46,8 +46,7 @@ export type ResourceType = 'images' | 'tiles'
 // @ts-ignore
 export type ResourceModel = ImageModel | TileModel
 export const getModel = (resourceType: ResourceType): ResourceModel => {
-  return {
-    images: ImageModel,
-    tiles: TileModel
-  }[resourceType]
+  if (resourceType === 'images') return ImageModel
+  if (resourceType === 'tiles') return TileModel
+  throw new Error(`resourceType:${resourceType} is invalid`)
 }
