@@ -10,7 +10,7 @@ export interface TileDocument extends Document {
 const TileSchema: Schema = new Schema({
   name: { type: String, required: true },
   collision: { type: Boolean, required: true },
-  imageId: { type: String: required: true },
+  imageId: { type: String, required: true },
   directoryId: { type: String }
 })
 

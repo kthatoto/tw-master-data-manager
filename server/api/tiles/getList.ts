@@ -15,7 +15,7 @@ export default (app: Application, method: 'get', path: string) => {
 
     const responseTiles = tiles.map((tile: TileDocument) => {
       const image: ImageDocument | undefined = images.find((i: ImageDocument) => i.id === tile.imageId)
-      if (!image) throw 'ImageNotFound'
+      if (!image) throw new Error('ImageNotFound')
       return {
         id: tile.id,
         name: tile.name,
