@@ -6,7 +6,7 @@ import DirectoryModel, { DirectoryDocument } from '~server/models/directory'
 
 export default (app: Application, method: 'delete', path: string) => {
   app[method](path, async (req: Request, res: Response<DefaultResponseBody>) => {
-    const id = req.query.id as string
+    const id = req.params.id as string
 
     const doc: DirectoryDocument | null = await DirectoryModel.findById(id)
     if (!doc) {

@@ -5,7 +5,7 @@ import { DefaultResponseBody } from '~server/api/index'
 
 export default (app: Application, method: 'delete', path: string) => {
   app[method](path, async (req: Request, res: Response<DefaultResponseBody>) => {
-    const id = req.query.id as string
+    const id = req.params.id as string
     const resourceType = req.query.id as ResourceType
 
     const Model: ResourceModel = getModel(resourceType)
