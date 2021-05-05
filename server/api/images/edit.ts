@@ -16,7 +16,7 @@ export default (app: Application, method: 'patch', path: string) => {
 
     const target: boolean = await ImageModel.exists({ id })
     if (!target) {
-      res.send({ message: `「${name}」は存在しません` })
+      res.send({ message: `image(id:${id})が見つかりませんでした` })
       return
     }
     await ImageModel.findByIdAndUpdate(id, { $set: { name, data, directoryId } })
