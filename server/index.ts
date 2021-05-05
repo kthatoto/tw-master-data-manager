@@ -4,8 +4,8 @@ import mongoose from 'mongoose'
 
 import apiHandle from './api/index'
 
-import Image, { IImage } from './models/image'
-import Tile, { ITile } from './models/tile'
+import ImageModel, { ImageDocument } from './models/image'
+import TileModel, { TileDocument } from './models/tile'
 
 const app: Application = express()
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -41,7 +41,12 @@ export default {
   path: '/api/',
   handler: app
 }
-export type ResourceModel = IImage | ITile
-export type ResourceKey = 'images' | 'tiles'
+export type ResourceDocument = ImageDocument | TileDocument
+export type ResourceType = 'images' | 'tiles'
 // @ts-ignore
-export type ResourceDocumentModel = Image | Tile
+export type ResourceModel = ImageModel | TileModel
+export const getModel = (resourceType: ResourceType): ResourceModel => {
+  if (resourceType === 'images') return ImageModel
+  if (resourceType === 'tiles') return TileModel
+  throw new Error(`resourceType:${resourceType} is invalid`)
+}

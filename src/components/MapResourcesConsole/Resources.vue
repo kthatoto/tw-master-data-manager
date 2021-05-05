@@ -2,23 +2,23 @@
 .resources
   .resources__header
     .buttons(v-if="editable")
-      el-button.button(icon="el-icon-plus" type="primary" @click="openResourceCreateModal") {{ resourceKey }}作成
+      el-button.button(icon="el-icon-plus" type="primary" @click="openResourceCreateModal") {{ resourceType }}作成
       el-button.button(icon="el-icon-plus" type="primary" @click="openDirectoryCreateModal($refs)") フォルダ作成
     .nav
-      icon.home-icon(name="home" @click.native="backToHome(resourceKey)")
-      .breadcrumb(v-for="(breadcrumb, i) in breadcrumbs" :key="i")
+      icon.home-icon(name="home" @click.native="backToHome(resourceType)")
+      .breadcrumb(v-for="breadcrumb in breadcrumbs" :key="breadcrumb.directoryId")
         icon.icon(name="chevron-right")
-        span(@click="backDirectory(resourceKey, i)") {{ breadcrumb }}
+        span(@click="backDirectory(resourceType, breadcrumb.directoryId)") {{ breadcrumb.name }}
 
   .resources__content.content(v-if="!showingResource")
     .resources__item(v-for="o in directories" :key="o.name" :class="{selected: selectingResourceId === o.id}")
       .focus(v-if="selectingResourceId === o.id")
-      Icon.icon(name="folder" @dblclick.native="appendDirectory(resourceKey, o.name)" @click.right.prevent.native="editable && confirmDelete(o)")
+      Icon.icon(name="folder" @dblclick.native="appendDirectory(resourceType, o)" @click.right.prevent.native="editable && confirmDelete(o, 'directories')")
       span(@dblclick="editable && openDirectoryEditModal($refs, o)") {{ o.name }}
-    .resources__item(v-for="o in resources" :key="o.name" @click="selectResource(o.id)" :class="{selected: selectingResourceId === o.id}")
+    .resources__item(v-for="o in resources" :key="o.id" @click="selectResource(o.id)" :class="{selected: selectingResourceId === o.id}")
       .focus(v-if="selectingResourceId === o.id")
       ConsoleImage(
-        :data="o.data || o.image.data" @dblclick="showResource(o.id)" @clickRight="editable && confirmDelete(o)"
+        :data="o.data || o.image.data" @dblclick="showResource(o.id)" @clickRight="editable && confirmDelete(o, 'resources')"
         width="80px" height="80px" lineHeight="80px"
       )
       span(@dblclick="openResourceEditModal(o)") {{ o.name }}
@@ -37,13 +37,13 @@
         h2(v-else-if="directoryEditing") フォルダ名更新
       el-input(v-model="directoryForm.name" ref="directoryName")
       .buttons
-        el-button(v-if="directoryCreating" type="primary" @click="createDirectory(resourceKey)" :disabled="!directoryFormValid") 作成
-        el-button(v-else-if="directoryEditing" type="primary" @click="editDirectory(resourceKey)" :disabled="!directoryFormValid") 更新
+        el-button(v-if="directoryCreating" type="primary" @click="createDirectory(resourceType)" :disabled="!directoryFormValid") 作成
+        el-button(v-else-if="directoryEditing" type="primary" @click="editDirectory(resourceType)" :disabled="!directoryFormValid") 更新
 
     el-dialog.dialog.-objectDelete(:visible.sync="deleteForm.flag")
       h2(slot="title") 「{{ deleteForm.name }}」削除していい？
       .buttons
-        el-button(type="danger" @click="deleteObject(resourceKey)") 削除
+        el-button(type="danger" @click="deleteObject(resourceType)") 削除
 
     slot(name="resourceCreateModal")
     slot(name="resourceEditModal")
@@ -53,12 +53,12 @@
 import { defineComponent, PropType, onMounted } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import { ResourceKey } from '~server/index.ts'
+import { ResourceType } from '~server/index.ts'
 
 export default defineComponent({
   props: {
-    resourceKey: {
-      type: String as PropType<ResourceKey>,
+    resourceType: {
+      type: String as PropType<ResourceType>,
       required: true
     },
     editable: {
@@ -74,7 +74,7 @@ export default defineComponent({
   },
   setup (props, context) {
     const commonStore = appStores.commonStore
-    const store = commonStore.getStoreByKey(props.resourceKey)
+    const store = commonStore.getStoreByResourceType(props.resourceType)
 
     onMounted(() => {
       store.fetchResources()

@@ -2,7 +2,7 @@ import { reactive, computed, UnwrapRef } from '@vue/composition-api'
 import axios, { AxiosResponse } from 'axios'
 
 import { Directory } from '~domains/index.ts'
-import { ResourceKey } from '~server/index.ts'
+import { ResourceType } from '~server/index.ts'
 
 interface ResourceInterface {
   id: string
@@ -14,11 +14,15 @@ interface ResourcesResponseInterface<Resource> {
 }
 
 interface State<Resource> {
-  currentDirectory: string
+  currentDirectoryId?: string
   resources: Resource[]
   directories: Directory[]
   showingResourceId?: string
   selectingResourceId?: string
+  breadcrumbs: {
+    name: string
+    directoryId: string
+  }[]
 }
 
 interface ResourceForm {
@@ -26,19 +30,20 @@ interface ResourceForm {
 }
 
 export default <Resource extends ResourceInterface, ResourcesResponse extends ResourcesResponseInterface<Resource>>(
-  resourceKey: ResourceKey,
+  resourceType: ResourceType,
   resourceForm: ResourceForm
 ) => {
   const state = reactive<State<Resource>>({
-    currentDirectory: '/',
+    currentDirectoryId: undefined,
     resources: [],
     directories: [],
     showingResourceId: undefined,
-    selectingResourceId: undefined
+    selectingResourceId: undefined,
+    breadcrumbs: []
   }) as State<Resource>
 
   const fetchResources = async () => {
-    const res: AxiosResponse<ResourcesResponse> = await axios.get(`/api/${resourceKey}?directory=${state.currentDirectory}`)
+    const res: AxiosResponse<ResourcesResponse> = await axios.get(`/api/${resourceType}?directoryId=${state.currentDirectoryId || ''}`)
     const data: ResourcesResponse = res.data
     state.resources = data.resources
     state.directories = data.directories
@@ -62,10 +67,6 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     state.resources.find((r: Resource) => r.id === state.showingResourceId)
   )
 
-  const breadcrumbs = computed<string[]>(() => {
-    return state.currentDirectory.split('/').filter((v: any) => v)
-  })
-
   return {
     state: state as UnwrapRef<State<Resource>>,
     fetchResources,
@@ -74,7 +75,6 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     selectResource,
     selectingResource,
     showResource,
-    showingResource,
-    breadcrumbs
+    showingResource
   }
 }

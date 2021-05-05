@@ -1,31 +1,25 @@
 import { Application, Request, Response } from 'express'
 
-import { ResourceKey, ResourceDocumentModel } from '~server/index'
+import { ResourceType } from '~server/index'
 import { DefaultResponseBody } from '~server/api/index'
-import Image from '../models/image'
-import Tile from '../models/tile'
+import DirectoryModel from '../models/directory'
 
 export interface CreateDirectoryRequestBody {
-  resourceKey: ResourceKey
-  path: string
+  resourceType: ResourceType
   name: string
+  directoryId?: string
 }
 
 export default (app: Application, method: 'post', path: string) => {
   app[method]('/directories', async (req: Request<any, any, CreateDirectoryRequestBody>, res: Response<DefaultResponseBody>) => {
-    const { resourceKey, path, name } = req.body
+    const { name, resourceType, directoryId } = req.body
 
-    const Model: ResourceDocumentModel = {
-      images: Image,
-      tiles: Tile
-    }[resourceKey]
-
-    const already: boolean = await Model.exists({ path, name })
+    const already: boolean = await DirectoryModel.exists({ name, resourceType, directoryId })
     if (already) {
-      res.send({ message: `「${path}${name}/」は既に存在してます` })
+      res.send({ message: `「${name}」は既に存在してます` })
       return
     }
-    const newDirectory = new Model({ name, path, objectType: 'directory' })
+    const newDirectory = new DirectoryModel({ name, resourceType, directoryId })
     await newDirectory.save()
     res.send(null)
   })

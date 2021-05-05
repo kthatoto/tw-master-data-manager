@@ -1,38 +1,45 @@
 import { Application, Request, Response } from 'express'
 
 import { TilesResponse } from '~domains/tiles.ts'
-import Tile, { ITile } from '../../models/tile'
-import Image, { IImage } from '../../models/image'
+import TileModel, { TileDocument } from '../../models/tile'
+import ImageModel, { ImageDocument } from '../../models/image'
+import DirectoryModel, { DirectoryDocument } from '../../models/directory'
 
 export default (app: Application, method: 'get', path: string) => {
   app[method](path, async (req: Request, res: Response<TilesResponse>) => {
-    const response: TilesResponse = { resources: [], directories: [] }
-    const directoryPath: string = req.query.directory as string
+    const directoryId: string | undefined = (req.query.directoryId || undefined) as string | undefined
 
-    const tiles: ITile[] = await Tile.find({ path: directoryPath })
-    for await (let tile of tiles) {
-      if (tile.objectType === 'file') {
-        const image: IImage | null = await Image.findById(tile.imageId)
-        response.resources.push({
-          id: tile.id,
-          path: tile.path,
-          name: tile.name,
-          collision: tile.collision,
-          imageId: tile.imageId,
-          image: !image ? undefined : {
-            path: image.path,
-            name: image.name,
-            data: image.data || ""
-          }
-        })
-      } else if (tile.objectType === 'directory') {
-        response.directories.push({
-          id: tile.id,
-          path: tile.path,
-          name: tile.name
-        })
+    const tiles: TileDocument[] = await TileModel.find({ directoryId })
+    const imageIds: string[] = tiles.map((tile: TileDocument) => tile.imageId)
+    const images: ImageDocument[] = await ImageModel.find({ _id: { $in: imageIds } })
+
+    const responseTiles = tiles.map((tile: TileDocument) => {
+      const image: ImageDocument | undefined = images.find((i: ImageDocument) => i.id === tile.imageId)
+      if (!image) throw new Error('ImageNotFound')
+      return {
+        id: tile.id,
+        name: tile.name,
+        collision: tile.collision,
+        imageId: tile.imageId,
+        image: {
+          id: image.id,
+          name: image.name,
+          data: image.data
+        }
       }
-    }
-    res.send(response)
+    })
+
+    const directories: DirectoryDocument[] = await DirectoryModel.find({ directoryId })
+    const responseDirectories = directories.map((directory: DirectoryDocument) => {
+      return {
+        id: directory.id,
+        name: directory.name
+      }
+    })
+
+    res.send({
+      resources: responseTiles,
+      directories: responseDirectories
+    })
   })
 }

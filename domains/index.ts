@@ -1,6 +1,5 @@
 export interface BasicObject {
   id: string
-  path: string
   name: string
 }
 
