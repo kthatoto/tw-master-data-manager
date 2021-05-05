@@ -76,28 +76,31 @@ export const buildCommonStore = (stores: AppStores) => {
 
   const deleteForm = reactive<{
     flag: boolean
+    objectType?: 'resources' | 'directories'
     id?: string
     name?: string
   }>({
     flag: false,
+    objectType: undefined,
     id: undefined,
     name: undefined
   })
-  const confirmDelete = (resource: BasicObject) => {
+  const confirmDelete = (resource: BasicObject, objectType: 'resources' | 'directories') => {
     deleteForm.flag = true
+    deleteForm.objectType = objectType
     deleteForm.id = resource.id
     deleteForm.name = resource.name
   }
   const deleteObject = async (resourceType: ResourceType) => {
     const store = getStoreByResourceType(resourceType)
-    const id = deleteForm.id
-    const res = await axios.delete(`/api/directories/${id}`)
+    const res = await axios.delete(`/api/${deleteForm.objectType}/${deleteForm.id}?resourceType=${resourceType}`)
     const result: boolean = handleResponse(res, '削除完了！', store.fetchResources, deleteForm)
     if (result) {
       if (store.showingResourceId) store.showingResourceId.value = undefined
     }
-    deleteForm.name = undefined
+    deleteForm.objectType = undefined
     deleteForm.id = undefined
+    deleteForm.name = undefined
   }
 
   const backToHome = (resourceType: ResourceType) => {
@@ -121,10 +124,10 @@ export const buildCommonStore = (stores: AppStores) => {
     if (store.showingResourceId) store.showingResourceId.value = undefined
     store.fetchResources()
   }
-  const appendDirectory = (resourceType: ResourceType, directory: { name: string, directoryId: string }) => {
+  const appendDirectory = (resourceType: ResourceType, directory: { name: string, id: string }) => {
     const store = getStoreByResourceType(resourceType)
-    if (store.currentDirectoryId) store.currentDirectoryId.value = directory.directoryId
-    store.breadcrumbs.value.push(directory)
+    if (store.currentDirectoryId) store.currentDirectoryId.value = directory.id
+    store.breadcrumbs.value.push({ name: directory.name, directoryId: directory.id })
     store.fetchResources()
   }
 
