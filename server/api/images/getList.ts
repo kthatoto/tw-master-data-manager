@@ -6,7 +6,7 @@ import DirectoryModel, { DirectoryDocument } from '../../models/directory'
 
 export default (app: Application, method: 'get', path: string) => {
   app[method](path, async (req: Request, res: Response<ImagesResponse>) => {
-    const directoryId: string | undefined = req.query.directoryId as string | undefined
+    const directoryId: string | undefined = (req.query.directoryId || undefined) as string | undefined
 
     const images: ImageDocument[] = await ImageModel.find({ directoryId })
     const responseImages = images.map((image: ImageDocument) => {

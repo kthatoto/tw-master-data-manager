@@ -7,7 +7,7 @@ import DirectoryModel, { DirectoryDocument } from '../../models/directory'
 
 export default (app: Application, method: 'get', path: string) => {
   app[method](path, async (req: Request, res: Response<TilesResponse>) => {
-    const directoryId: string | undefined = req.query.directoryId as string | undefined
+    const directoryId: string | undefined = (req.query.directoryId || undefined) as string | undefined
 
     const tiles: TileDocument[] = await TileModel.find({ directoryId })
     const imageIds: string[] = tiles.map((tile: TileDocument) => tile.imageId)

@@ -43,7 +43,7 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
   }) as State<Resource>
 
   const fetchResources = async () => {
-    const res: AxiosResponse<ResourcesResponse> = await axios.get(`/api/${resourceType}?directoryId=${state.currentDirectoryId}`)
+    const res: AxiosResponse<ResourcesResponse> = await axios.get(`/api/${resourceType}?directoryId=${state.currentDirectoryId || ''}`)
     const data: ResourcesResponse = res.data
     state.resources = data.resources
     state.directories = data.directories
