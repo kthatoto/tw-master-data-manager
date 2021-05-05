@@ -5,8 +5,8 @@ import { DefaultResponseBody } from '~server/api/index'
 import DirectoryModel, { DirectoryDocument } from '~server/models/directory'
 
 export interface MoveDirectoryRequestBody {
-  id: string
   resourceType: ResourceType
+  id: string
   name: string
   directoryId?: string
 }
