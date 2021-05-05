@@ -15,7 +15,7 @@ export default (app: Application, method: 'patch', path: string) => {
   app[method](path, async (req: Request<any, any, TilesEditRequestBody>, res: Response<DefaultResponseBody>) => {
     const { id, name, collision, imageId, directoryId } = req.body
 
-    const target: boolean = await TileModel.exists({ name, directoryId })
+    const target: boolean = await TileModel.exists({ _id: id })
     if (!target) {
       res.send({ message: `tile(id:${id})が見つかりませんでした` })
       return

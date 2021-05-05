@@ -14,7 +14,7 @@ export default (app: Application, method: 'patch', path: string) => {
   app[method](path, async (req: Request<any, any, ImagesEditRequestBody>, res: Response<DefaultResponseBody>) => {
     const { id, name, data, directoryId } = req.body
 
-    const target: boolean = await ImageModel.exists({ id })
+    const target: boolean = await ImageModel.exists({ _id: id })
     if (!target) {
       res.send({ message: `image(id:${id})が見つかりませんでした` })
       return
