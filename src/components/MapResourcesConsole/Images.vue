@@ -1,6 +1,6 @@
 <template lang="pug">
 .images
-  Resources(resourceKey="images" :editable="editable" :refs="$refs")
+  Resources(resourceType="images" :editable="editable" :refs="$refs")
 
     template(slot="detail")
       ImageDetail(:refs="$refs" :editable="editable")

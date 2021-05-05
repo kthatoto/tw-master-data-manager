@@ -1,6 +1,6 @@
 <template lang="pug">
 .tiles
-  Resources(resourceKey="tiles" :editable="editable" :refs="$refs")
+  Resources(resourceType="tiles" :editable="editable" :refs="$refs")
 
     template(slot="detail")
       TileDetail(:refs="$refs" :editable="editable")
