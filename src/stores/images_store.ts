@@ -18,18 +18,16 @@ export const buildImagesStore = () => {
   const resourceForm = reactive<{
     flag: boolean
     action?: 'create' | 'edit'
-    id: string
-    beforeName: string
-    name: string
-    extension: string
+    id?: string
+    name?: string
+    extension?: string
     data?: string
   }>({
     flag: false,
     action: undefined,
-    id: '',
-    beforeName: '',
-    name: '',
-    extension: '',
+    id: undefined,
+    name: undefined,
+    extension: undefined,
     data: undefined
   })
 
@@ -41,15 +39,13 @@ export const buildImagesStore = () => {
     selectResource,
     selectingResource,
     showResource,
-    showingResource,
-    breadcrumbs
+    showingResource
   } = resourceService<Image, ImagesResponse>('images', resourceForm)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true
     resourceForm.action = 'create'
-    resourceForm.id = ''
-    resourceForm.beforeName = ''
+    resourceForm.id = undefined
     resourceForm.name = ''
     resourceForm.extension = ''
     resourceForm.data = undefined
@@ -58,7 +54,6 @@ export const buildImagesStore = () => {
     resourceForm.flag = true
     resourceForm.action = 'edit'
     resourceForm.id = resource.id
-    resourceForm.beforeName = resource.name
     resourceForm.data = resource.data || undefined
     const splited: string[] = resource.name.split('.')
     resourceForm.extension = '.' + splited.pop()
@@ -88,24 +83,26 @@ export const buildImagesStore = () => {
 
   const createResource = async () => {
     if (!resourceFormValid.value) return
+    if (!resourceForm.name || !resourceForm.extension) return
     if (!resourceForm.data) return
     const params: ImagesCreateRequestBody = {
-      path: state.currentDirectory,
       name: resourceForm.name + resourceForm.extension,
-      data: resourceForm.data
+      data: resourceForm.data,
+      directoryId: state.currentDirectoryId
     }
     const res = await axios.post('/api/images', params)
     handleResponse(res, '作成完了！', fetchResources, resourceForm)
   }
   const editResource = async () => {
     if (!resourceFormValid.value) return
+    if (!resourceForm.id) return
+    if (!resourceForm.name || !resourceForm.extension) return
     if (!resourceForm.data) return
     const params: ImagesEditRequestBody = {
-      path: state.currentDirectory,
       id: resourceForm.id,
-      beforeName: resourceForm.beforeName,
       name: resourceForm.name + resourceForm.extension,
-      data: resourceForm.data
+      data: resourceForm.data,
+      directoryId: state.currentDirectoryId
     }
     const res = await axios.patch('/api/images', params)
     handleResponse(res, '更新完了！', fetchResources, resourceForm)
@@ -120,7 +117,6 @@ export const buildImagesStore = () => {
     selectingResource,
     showResource,
     showingResource,
-    breadcrumbs,
 
     resourceForm,
 
