@@ -5,21 +5,27 @@ import TileModel from '../../models/tile'
 
 export interface TilesCreateRequestBody {
   name: string
-  collision: boolean
-  imageId: string
+  images: {
+    [x: number]: {
+      [y: number]: {
+        id: string
+        collision: boolean
+      }
+    }
+  }
   directoryId?: string
 }
 
 export default (app: Application, method: 'post', path: string) => {
   app[method](path, async (req: Request<any, any, TilesCreateRequestBody>, res: Response<DefaultResponseBody>) => {
-    const { name, collision, imageId, directoryId } = req.body
+    const { name, images, directoryId } = req.body
 
     const already: boolean = await TileModel.exists({ name, directoryId })
     if (already) {
       res.send({ message: `「${name}」は既に存在してます` })
       return
     }
-    const newTile = new TileModel({ name, collision, imageId, directoryId })
+    const newTile = new TileModel({ name, images, directoryId })
     await newTile.save()
     res.send(null)
   })

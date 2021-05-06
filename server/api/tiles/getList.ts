@@ -10,22 +10,34 @@ export default (app: Application, method: 'get', path: string) => {
     const directoryId: string | undefined = (req.query.directoryId || undefined) as string | undefined
 
     const tiles: TileDocument[] = await TileModel.find({ directoryId })
-    const imageIds: string[] = tiles.map((tile: TileDocument) => tile.imageId)
-    const images: ImageDocument[] = await ImageModel.find({ _id: { $in: imageIds } })
+    const allImageIds: string[] = tiles.reduce((ids: string[], tile: TileDocument) => {
+      tile.images.forEach((image: { id: string }) => {
+        if (!ids.includes(image.id)) ids.push(image.id)
+      })
+      return ids
+    }, [])
+    const allImages: ImageDocument[] = await ImageModel.find({ _id: { $in: allImageIds } })
 
     const responseTiles = tiles.map((tile: TileDocument) => {
-      const image: ImageDocument | undefined = images.find((i: ImageDocument) => i.id === tile.imageId)
-      if (!image) throw new Error('ImageNotFound')
+      const imageIds: string[] = tile.images.map((image: { id: string }) => image.id)
+      const imageData = allImages.filter((image: ImageDocument) => imageIds.includes(image.id))
+        .reduce((acc: { [imageId: string]: { name: string, data: string } }, image: ImageDocument) => {
+          acc[image.id] = { name: image.name, data: image.data }
+          return acc
+        }, {})
+      const images = tile.images.reduce((
+        acc: { [x: number]: { [y: number]: { id: string, collision: boolean } } },
+        image: { x: number, y: number, id: string, collision: boolean }) => {
+          if (!acc[image.x]) acc[image.x] = {}
+          acc[image.x][image.y] = { id: image.id, collision: image.collision }
+          return acc
+        }, {})
+
       return {
         id: tile.id,
         name: tile.name,
-        collision: tile.collision,
-        imageId: tile.imageId,
-        image: {
-          id: image.id,
-          name: image.name,
-          data: image.data
-        }
+        imageData,
+        images
       }
     })
 
