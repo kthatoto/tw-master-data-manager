@@ -5,13 +5,11 @@ export interface Tile extends BasicObject {
     [imageId: string]: { name: string, data: string }
   }
   images: {
-    [x: number]: {
-      [y: number]: {
-        id: string
-        collision: boolean
-      }
-    }
-  }
+    x: number
+    y: number
+    id: string
+    collision: boolean
+  }[]
 }
 
 export interface TilesResponse {

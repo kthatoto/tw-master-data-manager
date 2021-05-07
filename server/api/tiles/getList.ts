@@ -25,19 +25,12 @@ export default (app: Application, method: 'get', path: string) => {
           acc[image.id] = { name: image.name, data: image.data }
           return acc
         }, {})
-      const images = tile.images.reduce((
-        acc: { [x: number]: { [y: number]: { id: string, collision: boolean } } },
-        image: { x: number, y: number, id: string, collision: boolean }) => {
-          if (!acc[image.x]) acc[image.x] = {}
-          acc[image.x][image.y] = { id: image.id, collision: image.collision }
-          return acc
-        }, {})
 
       return {
         id: tile.id,
         name: tile.name,
         imageData,
-        images
+        images: tile.images,
       }
     })
 

@@ -6,13 +6,11 @@ import TileModel from '../../models/tile'
 export interface TilesCreateRequestBody {
   name: string
   images: {
-    [x: number]: {
-      [y: number]: {
-        id: string
-        collision: boolean
-      }
-    }
-  }
+    x: number
+    y: number
+    id: string
+    collision: boolean
+  }[]
   directoryId?: string
 }
 
