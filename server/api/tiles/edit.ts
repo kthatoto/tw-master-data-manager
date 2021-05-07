@@ -26,7 +26,29 @@ export default (app: Application, method: 'patch', path: string) => {
       res.send({ message: `tile(id:${id})が見つかりませんでした` })
       return
     }
-    await TileModel.findByIdAndUpdate(id, { $set: { name, images, directoryId } })
+    const imagesValue = Object.keys(images).reduce(
+      (acc: { x: number, y: number, id: string, collision: boolean }[], x: string) => {
+        const nx = Number(x)
+        Object.keys(images[nx]).forEach((y: string) => {
+          const ny = Number(y)
+          acc.push({
+            x: nx,
+            y: ny,
+            id: images[nx][ny].id,
+            collision: images[nx][ny].collision,
+          })
+        })
+        return acc
+      },
+      []
+    )
+    await TileModel.findByIdAndUpdate(id, {
+      $set: {
+        name,
+        images: imagesValue,
+        directoryId
+      }
+    })
     res.send(null)
   })
 }
