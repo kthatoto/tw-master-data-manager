@@ -6,18 +6,20 @@
       TileDetail(:refs="$refs" :editable="editable")
 
     template(slot="resourceCreateModal")
-      el-dialog.dialog.-tileCreate(v-if="resourceCreating" :visible.sync="resourceForm.flag")
+      el-dialog.dialog.-tileCreate(v-if="resourceCreating" :visible.sync="resourceForm.flag" width="900px")
         h2(slot="title") Tile作成
-        h3 Tile
-        .row
-          el-button(type="primary" @click="imageSelecting = true") Image選択
-          ImageSelector(@select="selectImage" @close="imageSelecting = false" :visible="imageSelecting")
+        .form__columns
+          .left
+            h3 Tile
 
-        h3 名前
-        el-input.row(v-model="resourceForm.name" ref="resourceName")
+            h3 名前
+            el-input.row(v-model="resourceForm.name" ref="resourceName")
 
-        .buttons
-          el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") 作成
+            .buttons
+              el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") 作成
+
+          .right
+            Images(:editable="false")
 
     template(slot="resourceEditModal")
       el-dialog.dialog.-tileEdit(v-if="resourceEditing" :visible.sync="resourceForm.flag")
@@ -80,4 +82,15 @@ export default defineComponent({
 
 <style lang="stylus" scoped>
 resource-form(tiles)
+
+.tiles
+  .form
+    &__columns
+      display: flex
+      justify-content: space-between
+      .left
+        width: 400px
+      .right
+        width: 400px
+        border-left: 1px solid lightgray
 </style>
