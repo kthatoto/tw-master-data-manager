@@ -14,21 +14,18 @@ export const buildTilesStore = () => {
     action?: 'create' | 'edit'
     id?: string
     name?: string
-    collision?: boolean
-    imageId?: string
-    image?: {
+    images?: {
+      x: number
+      y: number
       id: string
-      data: string
-      name: string
-    }
+      collision: boolean
+    }[]
   }>({
     flag: false,
     action: undefined,
     id: undefined,
     name: undefined,
-    collision: undefined,
-    imageId: undefined,
-    image: undefined
+    images: undefined
   })
 
   const {
@@ -47,33 +44,28 @@ export const buildTilesStore = () => {
     resourceForm.action = 'create'
     resourceForm.id = undefined
     resourceForm.name = ''
-    resourceForm.collision = false
-    resourceForm.imageId = undefined
-    resourceForm.image = undefined
+    resourceForm.images = []
   }
   const openResourceEditModal = (resource: Tile) => {
     resourceForm.flag = true
     resourceForm.action = 'edit'
     resourceForm.id = resource.id
     resourceForm.name = resource.name
-    resourceForm.collision = resource.collision || false
-    resourceForm.imageId = resource.imageId
-    resourceForm.image = resource.image
+    resourceForm.images = resource.images
   }
   const resourceFormValid = computed<boolean>(() => {
     if (!resourceForm.name) return false
-    if (!resourceForm.imageId) return false
+    if (!resourceForm.images) return false
+    if (resourceForm.images.length === 0) return false
     return true
   })
   const createResource = async () => {
     if (!resourceFormValid.value) return
     if (!resourceForm.name) return
-    if (!resourceForm.imageId) return
-    if (resourceForm.collision === undefined) return
+    if (!resourceForm.images) return
     const params: TilesCreateRequestBody = {
       name: resourceForm.name,
-      collision: resourceForm.collision,
-      imageId: resourceForm.imageId,
+      images: resourceForm.images,
       directoryId: state.currentDirectoryId
     }
     const res = await axios.post('/api/tiles', params)
@@ -83,13 +75,11 @@ export const buildTilesStore = () => {
     if (!resourceFormValid.value) return
     if (!resourceForm.id) return
     if (!resourceForm.name) return
-    if (!resourceForm.imageId) return
-    if (resourceForm.collision === undefined) return
+    if (!resourceForm.images) return
     const params: TilesEditRequestBody = {
       id: resourceForm.id,
       name: resourceForm.name,
-      collision: resourceForm.collision,
-      imageId: resourceForm.imageId,
+      images: resourceForm.images,
       directoryId: state.currentDirectoryId
     }
     const res = await axios.patch('/api/tiles', params)

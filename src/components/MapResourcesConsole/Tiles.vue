@@ -12,13 +12,9 @@
         .row
           el-button(type="primary" @click="imageSelecting = true") Image選択
           ImageSelector(@select="selectImage" @close="imageSelecting = false" :visible="imageSelecting")
-        img.preview.row(v-if="resourceForm.image && resourceForm.image.data" :src="'data:image;base64,' + resourceForm.image.data")
-        p(v-if="resourceForm.image") {{ resourceForm.image.path }}{{ resourceForm.image.name }}
 
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
-
-        el-checkbox(v-model="resourceForm.collision") 衝突
 
         .buttons
           el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") 作成
@@ -30,13 +26,9 @@
         .row
           el-button(type="primary" @click="imageSelecting = true") Image選択
           ImageSelector(@select="selectImage" @close="imageSelecting = false" :visible="imageSelecting")
-        img.preview.row(v-if="resourceForm.image && resourceForm.image.data" :src="'data:image;base64,' + resourceForm.image.data")
-        p(v-if="resourceForm.image") {{ resourceForm.image.path }}{{ resourceForm.image.name }}
 
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
-
-        el-checkbox(v-model="resourceForm.collision") 衝突
 
         .buttons
           el-button(type="primary" @click="editResource" :disabled="!resourceFormValid") 更新
@@ -71,8 +63,8 @@ export default defineComponent({
     const tilesStore = appStores.tilesStore
 
     const selectImage = (image: Image) => {
-      tilesStore.resourceForm.imageId = image.id
-      tilesStore.resourceForm.image = image
+      // tilesStore.resourceForm.imageId = image.id
+      // tilesStore.resourceForm.image = image
       state.imageSelecting = false
     }
 
