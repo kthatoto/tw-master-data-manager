@@ -1,15 +1,10 @@
-import { Directory, BasicObject } from '~domains/index.ts'
+import { Directory, BasicObject, ImageChip } from '~domains/index.ts'
 
 export interface Tile extends BasicObject {
   imageData: {
     [imageId: string]: { name: string, data: string }
   }
-  images: {
-    x: number
-    y: number
-    id: string
-    collision: boolean
-  }[]
+  images: ImageChip[]
 }
 
 export interface TilesResponse {
