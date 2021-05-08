@@ -86,6 +86,7 @@ export default defineComponent({
     const imageDataFor = (x: number, y: number) => {
       const ic: ImageChip | undefined = inputtedImage(x, y)
       if (!ic) return
+      if (!tilesStore.resourceForm.imageData) return
       const imageData = tilesStore.resourceForm.imageData[ic.id]
       if (!imageData) return
       return imageData.data
