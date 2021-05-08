@@ -9,6 +9,7 @@
   .console(ref="console" :style="{ height: `${consoleWidth}px` }")
     .row(v-for="y in size")
       .cell(v-for="x in size" :style="cellStyle" @click="inputImage(x, y)")
+        ImageChipView(v-if="displayableFor(x, y)" :data="imageDataFor(x, y)")
 </template>
 
 <script lang="ts">
@@ -16,8 +17,10 @@ import { defineComponent, PropType, ref, computed, onMounted } from '@vue/compos
 
 import { appStores } from '@/stores/appStores.ts'
 import { ImageChip } from '~domains/index.ts'
+import ImageChipView from '@/components/molecules/ImageChip.vue'
 
 export default defineComponent({
+  components: { ImageChipView },
   props: {
     images: {
       type: Array as PropType<ImageChip[]>,
@@ -69,13 +72,34 @@ export default defineComponent({
       })
     }
 
+    const tilesStore = appStores.tilesStore
+    const inputtedImage = (x: number, y: number) => {
+      if (!tilesStore.resourceForm.images) return
+      const index = tilesStore.resourceForm.images.findIndex((ic: ImageChip) => ic.x === x && ic.y === y)
+      if (index < 0) return
+      return tilesStore.resourceForm.images[index]
+    }
+
+    const displayableFor = (x: number, y: number) => {
+      return !!inputtedImage(x, y)
+    }
+    const imageDataFor = (x: number, y: number) => {
+      const ic: ImageChip | undefined = inputtedImage(x, y)
+      if (!ic) return
+      const imageData = tilesStore.resourceForm.imageData[ic.id]
+      if (!imageData) return
+      return imageData.data
+    }
+
     return {
       size,
       sizeUp,
       sizeDown,
       consoleWidth,
       cellStyle,
-      inputImage
+      inputImage,
+      displayableFor,
+      imageDataFor
     }
   }
 })
@@ -101,4 +125,7 @@ export default defineComponent({
       &:hover
         opacity: 0.8
         background-color: #eee
+      img
+        width: 100%
+        height: 100%
 </style>
