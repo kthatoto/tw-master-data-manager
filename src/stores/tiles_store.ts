@@ -2,6 +2,7 @@ import { reactive, computed, toRefs } from '@vue/composition-api'
 import axios from 'axios'
 
 import { Tile, TilesResponse } from '~domains/tiles.ts'
+import { ImageChip } from '~domains/index.ts'
 import handleResponse from '@/utils/handleResponse.ts'
 import resourceService from '@/services/resourceService.ts'
 
@@ -14,18 +15,20 @@ export const buildTilesStore = () => {
     action?: 'create' | 'edit'
     id?: string
     name?: string
-    images?: {
-      x: number
-      y: number
-      id: string
-      collision: boolean
-    }[]
+    images?: ImageChip[]
+    imageData?: {
+      [imageId: string]: {
+        name: string
+        data: string
+      }
+    }
   }>({
     flag: false,
     action: undefined,
     id: undefined,
     name: undefined,
-    images: undefined
+    images: undefined,
+    imageData: undefined
   })
 
   const {
@@ -45,6 +48,7 @@ export const buildTilesStore = () => {
     resourceForm.id = undefined
     resourceForm.name = ''
     resourceForm.images = []
+    resourceForm.imageData = {}
   }
   const openResourceEditModal = (resource: Tile) => {
     resourceForm.flag = true
@@ -52,6 +56,7 @@ export const buildTilesStore = () => {
     resourceForm.id = resource.id
     resourceForm.name = resource.name
     resourceForm.images = resource.images
+    resourceForm.imageData = resource.imageData
   }
   const resourceFormValid = computed<boolean>(() => {
     if (!resourceForm.name) return false

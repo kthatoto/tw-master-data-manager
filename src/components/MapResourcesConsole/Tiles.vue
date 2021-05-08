@@ -12,7 +12,7 @@
           .left
             h3 Tile
 
-            ImageSetEditor(:images="resourceForm.images")
+            ImageSetEditor(:images="resourceForm.images" @input="inputImage")
 
             h3 名前
             el-input.row(v-model="resourceForm.name" ref="resourceName")
@@ -36,13 +36,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
 import TileDetail from '@/components/MapResourcesConsole/TileDetail.vue'
 import ImageSetEditor from '@/components/organisms/ImageSetEditor.vue'
-import { Image } from '~domains/images.ts'
+import { ImageChip } from '~domains/index.ts'
 
 export default defineComponent({
   components: { Resources, TileDetail, ImageSetEditor },
@@ -54,26 +54,34 @@ export default defineComponent({
     }
   },
   setup (_, context) {
-    const state = reactive<{
-      imageSelecting: boolean
-    }>({
-      imageSelecting: false
-    })
-
     const commonStore = appStores.commonStore
     const tilesStore = appStores.tilesStore
 
-    const selectImage = (image: Image) => {
-      // tilesStore.resourceForm.imageId = image.id
-      // tilesStore.resourceForm.image = image
-      state.imageSelecting = false
+    const inputImage = (input: { x: number, y: number, id: string, data: string, name: string }) => {
+      const images: ImageChip[] | undefined = tilesStore.resourceForm.images
+      if (!images) return
+      const imageIndex = images.findIndex((ic: ImageChip) => ic.x === input.x && ic.y === input.y)
+      if (imageIndex >= 0) {
+        images.splice(imageIndex, 1, {
+          x: input.x,
+          y: input.y,
+          id: input.id,
+          collision: images[imageIndex].collision
+        })
+      } else {
+        images.push({ x: input.x, y: input.y, id: input.id, collision: false })
+      }
+      tilesStore.resourceForm.images = images
+      const imageData = tilesStore.resourceForm.imageData
+      if (!imageData) return
+      imageData[input.id] = { name: input.name, data: input.data }
+      tilesStore.resourceForm.imageData = imageData
     }
 
     return {
-      ...toRefs(state),
       ...commonStore,
       ...tilesStore,
-      selectImage
+      inputImage
     }
   }
 })

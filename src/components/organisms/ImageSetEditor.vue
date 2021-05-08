@@ -8,12 +8,13 @@
 
   .console(ref="console" :style="{ height: `${consoleWidth}px` }")
     .row(v-for="y in size")
-      .cell(v-for="x in size" :style="cellStyle")
+      .cell(v-for="x in size" :style="cellStyle" @click="inputImage(x, y)")
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, ref, computed, onMounted } from '@vue/composition-api'
 
+import { appStores } from '@/stores/appStores.ts'
 import { ImageChip } from '~domains/index.ts'
 
 export default defineComponent({
@@ -55,12 +56,26 @@ export default defineComponent({
       consoleWidth.value = context.refs.console.clientWidth
     })
 
+    const imagesStore = appStores.imagesStore
+    const inputImage = (x: number, y: number) => {
+      const resource = imagesStore.selectingResource.value
+      if (!resource) return
+      context.emit('input', {
+        x,
+        y,
+        id: resource.id,
+        data: resource.data,
+        name: resource.name
+      })
+    }
+
     return {
       size,
       sizeUp,
       sizeDown,
       consoleWidth,
-      cellStyle
+      cellStyle,
+      inputImage
     }
   }
 })
@@ -76,8 +91,14 @@ export default defineComponent({
 
   .console
     width: 100%
+    display: flex
+    flex-direction: column-reverse
     .row
       display: flex
     .cell
       border: 1px solid lightgray
+      cursor: pointer
+      &:hover
+        opacity: 0.8
+        background-color: #eee
 </style>

@@ -55,9 +55,8 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
   const selectResource = (id: string) => {
     state.selectingResourceId = id
   }
-  const selectingResource = computed<Resource | Directory | undefined>(() =>
-    state.resources.find((r: Resource) => r.id === state.selectingResourceId) ||
-      state.directories.find((d: Directory) => d.id === state.selectingResourceId)
+  const selectingResource = computed<Resource | undefined>(() =>
+    state.resources.find((r: Resource) => r.id === state.selectingResourceId)
   )
 
   const showResource = (id: string) => {
