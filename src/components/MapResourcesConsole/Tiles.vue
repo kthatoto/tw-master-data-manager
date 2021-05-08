@@ -12,6 +12,8 @@
           .left
             h3 Tile
 
+            ImageSetEditor(:images="resourceForm.images")
+
             h3 名前
             el-input.row(v-model="resourceForm.name" ref="resourceName")
 
@@ -25,9 +27,6 @@
       el-dialog.dialog.-tileEdit(v-if="resourceEditing" :visible.sync="resourceForm.flag")
         h2(slot="title") Tile変更
         h3 Tile
-        .row
-          el-button(type="primary" @click="imageSelecting = true") Image選択
-          ImageSelector(@select="selectImage" @close="imageSelecting = false" :visible="imageSelecting")
 
         h3 名前
         el-input.row(v-model="resourceForm.name" ref="resourceName")
@@ -42,11 +41,11 @@ import { defineComponent, reactive, toRefs } from '@vue/composition-api'
 import { appStores } from '@/stores/appStores.ts'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
 import TileDetail from '@/components/MapResourcesConsole/TileDetail.vue'
-import ImageSelector from '@/components/resourceSelectors/ImageSelector.vue'
+import ImageSetEditor from '@/components/organisms/ImageSetEditor.vue'
 import { Image } from '~domains/images.ts'
 
 export default defineComponent({
-  components: { Resources, TileDetail, ImageSelector },
+  components: { Resources, TileDetail, ImageSetEditor },
   props: {
     editable: {
       type: Boolean,
