@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted } from '@vue/composition-api'
+import { defineComponent, computed, ref, onMounted, watch } from '@vue/composition-api'
 
 import { ImageChip } from '~domains/index.ts'
 import ImageChipView from '@/components/molecules/ImageChip.vue'
@@ -68,17 +68,29 @@ export default defineComponent({
     })
 
     const cellStyle = ref({})
+    const calculateCellStyle = () => {
+      if (!imageSetSize.value) return
+      // @ts-ignore
+      const imageSetWidth = context.refs.imageSet.clientWidth
+      const cellWidth = imageSetWidth / imageSetSize.value
+      cellStyle.value = {
+        width: `${cellWidth}px`,
+        height: `${cellWidth}px`
+      }
+    }
     onMounted(() => {
-      if (imageSetDisplayable.value && imageSetSize.value) {
-        // @ts-ignore
-        const imageSetWidth = context.refs.imageSet.clientWidth
-        const cellWidth = imageSetWidth / imageSetSize.value
-        cellStyle.value = {
-          width: `${cellWidth}px`,
-          height: `${cellWidth}px`
-        }
+      if (imageSetDisplayable.value) {
+        calculateCellStyle()
       }
     })
+    watch(
+      () => props.resource,
+      () => {
+        if (imageSetDisplayable.value) {
+          calculateCellStyle()
+        }
+      }
+    )
 
     const displayableFor = (x: number, y: number) => {
       if (!props.resource.images) return
@@ -131,4 +143,8 @@ export default defineComponent({
     flex-direction: column-reverse
     .row
       display: flex
+      img
+        border: none
+        width: 100%
+        height: 100%
 </style>
