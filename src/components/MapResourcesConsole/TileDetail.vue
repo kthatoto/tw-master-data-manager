@@ -1,12 +1,7 @@
 <template lang="pug">
 .detail
-  img(:src="'data:image;base64,' + showingResource.image.data")
+  img(:src="'data:image;base64,' + showingResource.data")
   h3 {{ showingResource.name }}
-
-  .row
-    label 衝突：
-    span(v-if="showingResource.collision") あり
-    span(v-else) なし
 
   .buttons(v-if="editable")
     el-button(type="primary" @click="openResourceEditModal(showingResource)") 変更
