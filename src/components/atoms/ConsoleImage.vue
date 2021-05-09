@@ -1,17 +1,17 @@
 <template lang="pug">
-img(v-if="data" :src="'data:image;base64,' + data" @dblclick="dblclick" @click.right.prevent="clickRight"
+img(v-if="imageData" :src="'data:image;base64,' + imageData" @dblclick="dblclick" @click.right.prevent="clickRight"
   :style="{ width, height }")
 .noimage(v-else @dblclick="dblclick" @click.right.prevent="clickRight"
   :style="{ width, height, lineHeight }") No Image
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, computed } from '@vue/composition-api'
 
 export default defineComponent({
   props: {
-    data: {
-      type: String,
+    resource: {
+      type: Object,
       required: false,
       default: null
     },
@@ -31,7 +31,7 @@ export default defineComponent({
       default: null
     }
   },
-  setup (_, context) {
+  setup (props, context) {
     const dblclick = () => {
       context.emit('dblclick')
     }
@@ -39,8 +39,13 @@ export default defineComponent({
       context.emit('clickRight')
     }
 
+    const imageData = computed(() => {
+      if (!props.resource) return
+      return props.resource.data
+    })
+
     return {
-      dblclick, clickRight
+      dblclick, clickRight, imageData
     }
   }
 })
