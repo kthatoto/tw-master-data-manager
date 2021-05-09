@@ -141,8 +141,12 @@ export default defineComponent({
     flex-direction: column-reverse
     .row
       display: flex
-      img
-        border: none
-        width: 100%
-        height: 100%
+      .cell
+        position: relative
+        img
+          border: none
+          width: 100%
+          height: 100%
+          position: absolute
+          top: 0
 </style>
