@@ -5,6 +5,7 @@
   .image-set(v-else-if="imageSetDisplayable" ref="imageSet" :style="{ width, height }")
     .row(v-for="y in imageSetSize")
       .cell(v-for="x in imageSetSize" :style="cellStyle")
+        ImageChipView(v-if="displayableFor(x, y)" :data="imageDataFor(x, y)")
   .noimage(v-else @dblclick="dblclick" @click.right.prevent="clickRight"
     :style="{ width, height, lineHeight }") No Image
 </template>
@@ -13,8 +14,10 @@
 import { defineComponent, computed, ref, onMounted } from '@vue/composition-api'
 
 import { ImageChip } from '~domains/index.ts'
+import ImageChipView from '@/components/molecules/ImageChip.vue'
 
 export default defineComponent({
+  components: { ImageChipView },
   props: {
     resource: {
       type: Object,
@@ -77,13 +80,29 @@ export default defineComponent({
       }
     })
 
+    const displayableFor = (x: number, y: number) => {
+      if (!props.resource.images) return
+      return !!props.resource.images.find((ic: ImageChip) => ic.x === x && ic.y === y)
+    }
+    const imageDataFor = (x: number, y: number) => {
+      if (!props.resource.images) return
+      if (!props.resource.imageData) return
+      const ic = props.resource.images.find((ic: ImageChip) => ic.x === x && ic.y === y)
+      if (!ic) return
+      const imageData = props.resource.imageData[ic.id]
+      if (!imageData) return
+      return imageData.data
+    }
+
     return {
       dblclick,
       clickRight,
       imageData,
       imageSetDisplayable,
       imageSetSize,
-      cellStyle
+      cellStyle,
+      displayableFor,
+      imageDataFor
     }
   }
 })
