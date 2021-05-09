@@ -75,9 +75,7 @@ export default defineComponent({
     const tilesStore = appStores.tilesStore
     const inputtedImage = (x: number, y: number) => {
       if (!tilesStore.resourceForm.images) return
-      const index = tilesStore.resourceForm.images.findIndex((ic: ImageChip) => ic.x === x && ic.y === y)
-      if (index < 0) return
-      return tilesStore.resourceForm.images[index]
+      return tilesStore.resourceForm.images.find((ic: ImageChip) => ic.x === x && ic.y === y)
     }
 
     const displayableFor = (x: number, y: number) => {
