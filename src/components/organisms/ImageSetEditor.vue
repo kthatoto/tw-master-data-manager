@@ -8,7 +8,7 @@
 
   .console(ref="console" :style="{ height: `${consoleWidth}px` }")
     .row(v-for="y in size")
-      .cell(v-for="x in size" :style="cellStyle" @click="inputImage(x, y)")
+      .cell(v-for="x in size" :style="cellStyle" @click="inputImage(x, y)" @click.right.prevent="removeImage(x, y)")
         ImageChipView(v-if="displayableFor(x, y)" :data="imageDataFor(x, y)")
 </template>
 
@@ -72,6 +72,10 @@ export default defineComponent({
       })
     }
 
+    const removeImage = (x: number, y: number) => {
+      context.emit('remove', { x, y })
+    }
+
     const tilesStore = appStores.tilesStore
     const inputtedImage = (x: number, y: number) => {
       if (!tilesStore.resourceForm.images) return
@@ -97,6 +101,7 @@ export default defineComponent({
       consoleWidth,
       cellStyle,
       inputImage,
+      removeImage,
       displayableFor,
       imageDataFor
     }

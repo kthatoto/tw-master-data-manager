@@ -11,7 +11,7 @@
         .form__columns
           .left
             h3 Tile
-            ImageSetEditor(:images="resourceForm.images" @input="inputImage")
+            ImageSetEditor(:images="resourceForm.images" @input="inputImage" @remove="removeImage")
 
             h3 名前
             el-input.row(v-model="resourceForm.name" ref="resourceName")
@@ -27,7 +27,7 @@
         .form__columns
           .left
             h3 Tile
-            ImageSetEditor(:images="resourceForm.images" @input="inputImage")
+            ImageSetEditor(:images="resourceForm.images" @input="inputImage" @remove="removeImage")
 
             h3 名前
             el-input.row(v-model="resourceForm.name" ref="resourceName")
@@ -81,10 +81,19 @@ export default defineComponent({
       tilesStore.resourceForm.imageData = imageData
     }
 
+    const removeImage = (input: { x: number, y: number }) => {
+      const images: ImageChip[] | undefined = tilesStore.resourceForm.images
+      if (!images) return
+      const imageIndex = images.findIndex((ic: ImageChip) => ic.x === input.x && ic.y === input.y)
+      if (imageIndex >= 0) images.splice(imageIndex, 1)
+      tilesStore.resourceForm.images = images
+    }
+
     return {
       ...commonStore,
       ...tilesStore,
-      inputImage
+      inputImage,
+      removeImage
     }
   }
 })
