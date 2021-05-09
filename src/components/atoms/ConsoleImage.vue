@@ -1,13 +1,11 @@
 <template lang="pug">
-.console-image
-  img(v-if="imageData" :src="'data:image;base64,' + imageData" @dblclick="dblclick" @click.right.prevent="clickRight"
-    :style="{ width, height }")
+.console-image(@dblclick="dblclick" @click.right.prevent="clickRight")
+  img(v-if="imageData" :src="'data:image;base64,' + imageData" :style="{ width, height }")
   .image-set(v-else-if="imageSetDisplayable" ref="imageSet" :style="{ width, height }")
     .row(v-for="y in imageSetSize")
       .cell(v-for="x in imageSetSize" :style="cellStyle")
         ImageChipView(v-if="displayableFor(x, y)" :data="imageDataFor(x, y)")
-  .noimage(v-else @dblclick="dblclick" @click.right.prevent="clickRight"
-    :style="{ width, height, lineHeight }") No Image
+  .noimage(v-else :style="{ width, height, lineHeight }") No Image
 </template>
 
 <script lang="ts">
