@@ -11,12 +11,10 @@
         .form__columns
           .left
             h3 Tile
-
             ImageSetEditor(:images="resourceForm.images" @input="inputImage")
 
             h3 名前
             el-input.row(v-model="resourceForm.name" ref="resourceName")
-
             .buttons
               el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") 作成
 
@@ -24,15 +22,20 @@
             Images(:editable="false")
 
     template(slot="resourceEditModal")
-      el-dialog.dialog.-tileEdit(v-if="resourceEditing" :visible.sync="resourceForm.flag")
+      el-dialog.dialog.-tileEdit(v-if="resourceEditing" :visible.sync="resourceForm.flag" width="900px")
         h2(slot="title") Tile変更
-        h3 Tile
+        .form__columns
+          .left
+            h3 Tile
+            ImageSetEditor(:images="resourceForm.images" @input="inputImage")
 
-        h3 名前
-        el-input.row(v-model="resourceForm.name" ref="resourceName")
+            h3 名前
+            el-input.row(v-model="resourceForm.name" ref="resourceName")
+            .buttons
+              el-button(type="primary" @click="editResource" :disabled="!resourceFormValid") 更新
 
-        .buttons
-          el-button(type="primary" @click="editResource" :disabled="!resourceFormValid") 更新
+          .right
+            Images(:editable="false")
 </template>
 
 <script lang="ts">
