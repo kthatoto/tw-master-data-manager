@@ -1,6 +1,6 @@
 <template lang="pug">
 .detail
-  img(:src="'data:image;base64,' + showingResource.data")
+  ConsoleImage(:resource="showingResource" width="100%")
   h3 {{ showingResource.name }}
 
   .buttons(v-if="editable")
@@ -12,8 +12,10 @@
 import { defineComponent } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
+import ConsoleImage from '@/components/atoms/ConsoleImage.vue'
 
 export default defineComponent({
+  components: { ConsoleImage },
   props: {
     refs: {
       type: Object,
