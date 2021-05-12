@@ -34,7 +34,7 @@ Cypress.Commands.add('editTile', (beforeTileName, tileName, imageName, expectedM
 
 Cypress.Commands.add('deleteTile', (tileName, expectedMessage) => {
   cy.get('.el-tabs__header').contains('Tiles').click()
-  cy.get('.tiles').contains('.resources__item', tileName).find('img').rightclick({ multiple: true })
+  cy.get('.tiles').contains('.resources__item', tileName).find('.console-image').rightclick()
   cy.wait(100)
   cy.get('.tiles').contains('.dialog.-objectDelete button.el-button', '削除').click()
   cy.wait(100)
