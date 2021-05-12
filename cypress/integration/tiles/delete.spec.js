@@ -15,7 +15,7 @@ context('Tiles Delete', () => {
 
       cy.deleteTile(tileName, '削除完了！')
 
-      cy.get('.tiles > .resources > .resources__content .resources__item').not('.dialog').should('have.length', 0)
+      cy.get('.tiles > .resources > .resources__content .resources__item').should('have.length', 0)
     })
 
     it('deletes a tile under a directory', () => {
@@ -34,7 +34,7 @@ context('Tiles Delete', () => {
         { type: 'directory', name: directoryName }
       ])
       cy.goDirectory('tiles', directoryName)
-      cy.get('.tiles > .resources > .resources__content .resources__item').not('.dialog').should('have.length', 0)
+      cy.get('.tiles > .resources > .resources__content .resources__item').should('have.length', 0)
     })
   })
 })
