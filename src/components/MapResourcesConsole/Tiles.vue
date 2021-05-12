@@ -11,7 +11,12 @@
         .form__columns
           .left
             h3 Tile
-            ImageSetEditor(:images="resourceForm.images" @input="inputImage" @remove="removeImage")
+            ImageSetEditor(
+              :images="resourceForm.images"
+              @input="inputImage"
+              @remove="removeImage"
+              @toggleCollision="toggleCollision"
+            )
 
             h3 名前
             el-input.row(v-model="resourceForm.name" ref="resourceName")
@@ -27,7 +32,12 @@
         .form__columns
           .left
             h3 Tile
-            ImageSetEditor(:images="resourceForm.images" @input="inputImage" @remove="removeImage")
+            ImageSetEditor(
+              :images="resourceForm.images"
+              @input="inputImage"
+              @remove="removeImage"
+              @toggleCollision="toggleCollision"
+            )
 
             h3 名前
             el-input.row(v-model="resourceForm.name" ref="resourceName")
@@ -60,32 +70,42 @@ export default defineComponent({
     const commonStore = appStores.commonStore
     const tilesStore = appStores.tilesStore
 
-    const inputImage = (input: { x: number, y: number, id: string, data: string, name: string }) => {
+    const inputImage = (params: { x: number, y: number, id: string, data: string, name: string }) => {
       const images: ImageChip[] | undefined = tilesStore.resourceForm.images
       if (!images) return
-      const imageIndex = images.findIndex((ic: ImageChip) => ic.x === input.x && ic.y === input.y)
+      const imageIndex = images.findIndex((ic: ImageChip) => ic.x === params.x && ic.y === params.y)
       if (imageIndex >= 0) {
         images.splice(imageIndex, 1, {
-          x: input.x,
-          y: input.y,
-          id: input.id,
+          x: params.x,
+          y: params.y,
+          id: params.id,
           collision: images[imageIndex].collision
         })
       } else {
-        images.push({ x: input.x, y: input.y, id: input.id, collision: false })
+        images.push({ x: params.x, y: params.y, id: params.id, collision: false })
       }
       tilesStore.resourceForm.images = images
       const imageData = tilesStore.resourceForm.imageData
       if (!imageData) return
-      imageData[input.id] = { name: input.name, data: input.data }
+      imageData[params.id] = { name: params.name, data: params.data }
       tilesStore.resourceForm.imageData = imageData
     }
 
-    const removeImage = (input: { x: number, y: number }) => {
+    const removeImage = (params: { x: number, y: number }) => {
       const images: ImageChip[] | undefined = tilesStore.resourceForm.images
       if (!images) return
-      const imageIndex = images.findIndex((ic: ImageChip) => ic.x === input.x && ic.y === input.y)
+      const imageIndex = images.findIndex((ic: ImageChip) => ic.x === params.x && ic.y === params.y)
       if (imageIndex >= 0) images.splice(imageIndex, 1)
+      tilesStore.resourceForm.images = images
+    }
+
+    const toggleCollision = (params: { x: number, y: number }) => {
+      const images: ImageChip[] | undefined = tilesStore.resourceForm.images
+      if (!images) return
+      const imageIndex = images.findIndex((ic: ImageChip) => ic.x === params.x && ic.y === params.y)
+      const targetImage: ImageChip | undefined = images[imageIndex]
+      if (!targetImage) return
+      images.splice(imageIndex, 1, { ...targetImage, collision: !targetImage.collision })
       tilesStore.resourceForm.images = images
     }
 
@@ -93,7 +113,8 @@ export default defineComponent({
       ...commonStore,
       ...tilesStore,
       inputImage,
-      removeImage
+      removeImage,
+      toggleCollision
     }
   }
 })

@@ -1,6 +1,8 @@
 <template lang="pug">
 .image-set-editor
   .buttons
+    el-button(size="mini" @click.prevent="toggleCollisionMode" round)
+      el-checkbox(:value="collisionMode") 衝突操作
     el-button(size="mini" @click="sizeDown" round)
       icon(name="minus")
     el-button(size="mini" @click="sizeUp" round)
@@ -10,6 +12,7 @@
     .row(v-for="y in size")
       .cell(v-for="x in size" :style="cellStyle" @click="inputImage(x, y)" @click.right.prevent="removeImage(x, y)")
         ImageChipView(v-if="displayableFor(x, y)" :data="imageDataFor(x, y)")
+        el-checkbox(v-if="collisionMode && displayableFor(x, y)" :value="collisionFor(x, y)" @input="toggleCollisionFor(x, y)")
 </template>
 
 <script lang="ts">
@@ -46,6 +49,11 @@ export default defineComponent({
       size.value--
     }
 
+    const collisionMode = ref<boolean>(false)
+    const toggleCollisionMode = () => {
+      collisionMode.value = !collisionMode.value
+    }
+
     const consoleWidth = ref<number>(100)
     const cellStyle = computed(() => {
       const cellWidth = consoleWidth.value / size.value
@@ -61,6 +69,7 @@ export default defineComponent({
 
     const imagesStore = appStores.imagesStore
     const inputImage = (x: number, y: number) => {
+      if (collisionMode.value) return
       const resource = imagesStore.selectingResource.value
       if (!resource) return
       context.emit('input', {
@@ -73,6 +82,7 @@ export default defineComponent({
     }
 
     const removeImage = (x: number, y: number) => {
+      if (collisionMode.value) return
       context.emit('remove', { x, y })
     }
 
@@ -93,17 +103,31 @@ export default defineComponent({
       if (!imageData) return
       return imageData.data
     }
+    const collisionFor = (x: number, y: number) => {
+      const ic: ImageChip | undefined = inputtedImage(x, y)
+      if (!ic) return false
+      return ic.collision
+    }
+    const toggleCollisionFor = (x: number, y: number) => {
+      const ic: ImageChip | undefined = inputtedImage(x, y)
+      if (!ic) return
+      context.emit('toggleCollision', { x, y })
+    }
 
     return {
       size,
       sizeUp,
       sizeDown,
+      collisionMode,
+      toggleCollisionMode,
       consoleWidth,
       cellStyle,
       inputImage,
       removeImage,
       displayableFor,
-      imageDataFor
+      imageDataFor,
+      collisionFor,
+      toggleCollisionFor
     }
   }
 })
@@ -126,10 +150,22 @@ export default defineComponent({
     .cell
       border: 1px solid lightgray
       cursor: pointer
+      position: relative
       &:hover
         opacity: 0.8
         background-color: #eee
       img
         width: 100%
         height: 100%
+        image-rendering: pixelated
+      >>> .el-checkbox
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        &__input
+          position: absolute
+          top: 2px
+          right: 2px
 </style>
