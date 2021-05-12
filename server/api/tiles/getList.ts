@@ -34,7 +34,7 @@ export default (app: Application, method: 'get', path: string) => {
       }
     })
 
-    const directories: DirectoryDocument[] = await DirectoryModel.find({ directoryId })
+    const directories: DirectoryDocument[] = await DirectoryModel.find({ directoryId, resourceType: 'tiles' })
     const responseDirectories = directories.map((directory: DirectoryDocument) => {
       return {
         id: directory.id,
