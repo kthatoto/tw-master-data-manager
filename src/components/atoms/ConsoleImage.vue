@@ -123,7 +123,7 @@ export default defineComponent({
   z-index: 1
   img
     image-rendering: pixelated
-  img, .noimage
+  img, .noimage, .image-set
     border: 1px solid lightgray
     object-fit: contain
     cursor: pointer
