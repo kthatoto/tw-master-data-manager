@@ -7,11 +7,27 @@
 
     template(slot="resourceCreateModal")
       el-dialog.dialog.-flagCreate(v-if="resourceCreating" :visible.sync="resourceForm.flag")
-        h2(slot="title") Flag作成
+        h2(slot="title") Flag Create
+        h3 Name
+        el-input.row(v-model="resourceForm.name" ref="resourceName")
+        h3 Key
+        el-input.row(v-model="resourceForm.key")
+        h3 Description
+        el-input(type="textarea" v-model="resourceForm.description")
+        .buttons
+          el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") Create
 
     template(slot="resourceEditModal")
       el-dialog.dialog.-flagEdit(v-if="resourceEditing" :visible.sync="resourceForm.flag")
-        h2(slot="title") Flag変更
+        h2(slot="title") Flag Edit
+        h3 Name
+        el-input.row(v-model="resourceForm.name" ref="resourceName")
+        h3 Key
+        el-input.row(v-model="resourceForm.key")
+        h3 Description
+        el-input(type="textarea" v-model="resourceForm.description")
+        .buttons
+          el-button(type="primary" @click="editResource" :disabled="!resourceFormValid") Edit
 </template>
 
 <script lang="ts">
@@ -41,3 +57,7 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="stylus" scoped>
+resource-form(flags)
+</style>
