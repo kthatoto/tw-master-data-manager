@@ -6,7 +6,7 @@ import FlagModel from '../../models/flag'
 export interface FlagsCreateRequestBody {
   name: string
   key: string
-  description: string
+  description?: string
   directoryId?: string
 }
 
