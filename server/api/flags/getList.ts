@@ -2,7 +2,6 @@ import { Application, Request, Response } from 'express'
 
 import { FlagsResponse } from '~domains/flags.ts'
 import FlagModel, { FlagDocument } from '../../models/flag'
-import ImageModel, { ImageDocument } from '../../models/image'
 import DirectoryModel, { DirectoryDocument } from '../../models/directory'
 
 export default (app: Application, method: 'get', path: string) => {
