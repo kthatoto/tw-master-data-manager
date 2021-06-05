@@ -6,6 +6,7 @@ import apiHandle from './api/index'
 
 import ImageModel, { ImageDocument } from './models/image'
 import TileModel, { TileDocument } from './models/tile'
+import FlagModel, { FlagDocument } from './models/flag'
 
 const app: Application = express()
 app.use(bodyParser.urlencoded({ extended: true }))
