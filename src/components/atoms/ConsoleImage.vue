@@ -5,14 +5,17 @@
     .row(v-for="y in imageSetSize")
       .cell(v-for="x in imageSetSize" :style="cellStyle")
         ImageChipView(v-if="displayableFor(x, y)" :data="imageDataFor(x, y)")
+  .flag(v-else-if="resourceType === 'flags'")
+    img.flag(src="@/assets/flag.png" :style="{ width, height }")
   .noimage(v-else :style="{ width, height, lineHeight }") No Image
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted, watch } from '@vue/composition-api'
+import { defineComponent, PropType, computed, ref, onMounted, watch } from '@vue/composition-api'
 
 import { ImageChip } from '~domains/index.ts'
 import ImageChipView from '@/components/molecules/ImageChip.vue'
+import { ResourceType } from '~server/index.ts'
 
 export default defineComponent({
   components: { ImageChipView },
@@ -34,6 +37,11 @@ export default defineComponent({
     },
     lineHeight: {
       type: String,
+      required: false,
+      default: null
+    },
+    resourceType: {
+      type: String as PropType<ResourceType>,
       required: false,
       default: null
     }
@@ -127,6 +135,9 @@ export default defineComponent({
     border: 1px solid lightgray
     object-fit: contain
     cursor: pointer
+  img.flag
+    image-rendering: auto
+    background-color: white
   .noimage
     background-color: gray
     color: white
