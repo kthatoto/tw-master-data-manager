@@ -7,12 +7,14 @@ import deleteResource from './deleteResource'
 
 import imagesHandle from './images/index'
 import tilesHandle from './tiles/index'
+import flagsHandle from './flags/index'
 
 import cypressClean from './cypress/clean'
 
 export default (app: Application) => {
   imagesHandle(app)
   tilesHandle(app)
+  flagsHandle(app)
   createDirectory(app, 'post', '/directories')
   moveDirectory(app, 'patch', '/directories')
   deleteDirectory(app, 'delete', '/directories/:id')

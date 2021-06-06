@@ -6,6 +6,7 @@ import apiHandle from './api/index'
 
 import ImageModel, { ImageDocument } from './models/image'
 import TileModel, { TileDocument } from './models/tile'
+import FlagModel, { FlagDocument } from './models/flag'
 
 const app: Application = express()
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -41,12 +42,13 @@ export default {
   path: '/api/',
   handler: app
 }
-export type ResourceDocument = ImageDocument | TileDocument
-export type ResourceType = 'images' | 'tiles'
+export type ResourceDocument = ImageDocument | TileDocument | FlagDocument
+export type ResourceType = 'images' | 'tiles' | 'flags'
 // @ts-ignore
-export type ResourceModel = ImageModel | TileModel
+export type ResourceModel = ImageModel | TileModel | FlagModel
 export const getModel = (resourceType: ResourceType): ResourceModel => {
   if (resourceType === 'images') return ImageModel
   if (resourceType === 'tiles') return TileModel
+  if (resourceType === 'flags') return FlagModel
   throw new Error(`resourceType:${resourceType} is invalid`)
 }

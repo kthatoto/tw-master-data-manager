@@ -13,6 +13,7 @@ export const buildCommonStore = (stores: AppStores) => {
   const getStoreByResourceType = (resourceType: ResourceType) => {
     if (resourceType === 'images') return stores.imagesStore
     if (resourceType === 'tiles') return stores.tilesStore
+    if (resourceType === 'flags') return stores.flagsStore
     throw new Error(`Not handled resourceType '${resourceType}'`)
   }
 

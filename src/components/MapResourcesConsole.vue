@@ -5,6 +5,8 @@
       Images.pane(:editable="true")
     el-tab-pane(label="Tiles" name="tiles" :lazy="true")
       Tiles.pane(:editable="true")
+    el-tab-pane(label="Flags" name="flags" :lazy="true")
+      Flags.pane(:editable="true")
     el-tab-pane(label="Objekts" name="objekts" :lazy="true")
     el-tab-pane(label="NPCs" name="npcs" :lazy="true")
     el-tab-pane(label="Enemies" name="enemies" :lazy="true")
@@ -16,9 +18,10 @@ import { defineComponent, ref, provide } from '@vue/composition-api'
 import { appStores } from '@/stores/appStores.ts'
 import Images from '@/components/MapResourcesConsole/Images.vue'
 import Tiles from '@/components/MapResourcesConsole/Tiles.vue'
+import Flags from '@/components/MapResourcesConsole/Flags.vue'
 
 export default defineComponent({
-  components: { Images, Tiles },
+  components: { Images, Tiles, Flags },
   setup () {
     const tab = ref<string>('images')
     provide('commonStore', appStores.commonStore)

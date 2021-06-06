@@ -19,7 +19,7 @@
       .focus(v-if="selectingResourceId === o.id")
       ConsoleImage(
         :resource="o" @dblclick="showResource(o.id)" @clickRight="editable && confirmDelete(o, 'resources')"
-        width="80px" height="80px" lineHeight="80px"
+        width="80px" height="80px" lineHeight="80px" :resourceType="resourceType"
       )
       span(@dblclick="openResourceEditModal(o)") {{ o.name }}
 
