@@ -55,10 +55,11 @@ import { appStores } from '@/stores/appStores.ts'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
 import TileDetail from '@/components/MapResourcesConsole/TileDetail.vue'
 import ImageSetEditor from '@/components/organisms/ImageSetEditor.vue'
+import Images from '@/pages/map/Images.vue'
 import { ImageChip } from '~domains/index.ts'
 
 export default defineComponent({
-  components: { Resources, TileDetail, ImageSetEditor },
+  components: { Resources, TileDetail, ImageSetEditor, Images },
   props: {
     editable: {
       type: Boolean,

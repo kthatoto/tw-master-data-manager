@@ -30,7 +30,7 @@ export default defineComponent({
       tab.value = newTabName
       return new Promise<void>((resolve, reject) => {
         return context.root.$router
-          .push(`/map/${newTabName}`)
+          .push(`/map/${newTabName.toLowerCase()}`)
           .then(() => resolve())
           .catch((err) => reject(err))
       })
