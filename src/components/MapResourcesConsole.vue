@@ -1,9 +1,9 @@
 <template lang="pug">
 .console
   el-tabs(type="border-card" :value="tab" :before-leave="beforeTabLeave")
-    el-tab-pane(label="Images" name="images")
-    el-tab-pane(label="Tiles" name="tiles")
-    el-tab-pane(label="Flags" name="flags")
+    el-tab-pane(label="Images" name="Images")
+    el-tab-pane(label="Tiles" name="Tiles")
+    el-tab-pane(label="Flags" name="Flags")
     NuxtChild.pane(:editable="true")
 </template>
 
@@ -14,11 +14,16 @@ import { appStores } from '@/stores/appStores.ts'
 
 export default defineComponent({
   setup (_, context) {
-    const tab = ref<string>('images')
+    const tab = ref<string>('Images')
     provide('commonStore', appStores.commonStore)
     provide('imagesStore', appStores.imagesStore)
     provide('tilesStore', appStores.tilesStore)
     provide('flagsStore', appStores.flagsStore)
+
+    const routeName = context.root.$route.name!
+    if (routeName.split('-').length === 2) {
+      tab.value = routeName.split('-')[1]
+    }
 
     const beforeTabLeave = (newTabName: string) => {
       if (tab.value === newTabName) return true
