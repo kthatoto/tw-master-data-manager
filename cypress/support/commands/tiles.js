@@ -1,5 +1,5 @@
 Cypress.Commands.add('createTile', (imageName, tileName, expectedMessage) => {
-  cy.visit('http://localhost:3000/map/tiles')
+  cy.visitMapResources('tiles')
   cy.contains('tiles作成').click()
   cy.wait(100)
   cy.get('.dialog.-tileCreate .form__columns > .right .images').contains('.resources__item', imageName).find('img').click()
@@ -16,7 +16,7 @@ Cypress.Commands.add('createTile', (imageName, tileName, expectedMessage) => {
 })
 
 Cypress.Commands.add('editTile', (beforeTileName, tileName, imageName, expectedMessage) => {
-  cy.visit('http://localhost:3000/map/tiles')
+  cy.visitMapResources('tiles')
   cy.contains(beforeTileName).dblclick()
   cy.wait(100)
   cy.get('.dialog.-tileEdit .form__columns > .right .images').contains('.resources__item', imageName).find('img').click()
@@ -33,7 +33,7 @@ Cypress.Commands.add('editTile', (beforeTileName, tileName, imageName, expectedM
 })
 
 Cypress.Commands.add('deleteTile', (tileName, expectedMessage) => {
-  cy.visit('http://localhost:3000/map/tiles')
+  cy.visitMapResources('tiles')
   cy.get('.tiles').contains('.resources__item', tileName).find('.console-image').rightclick()
   cy.wait(100)
   cy.get('.tiles').contains('.dialog.-objectDelete button.el-button', '削除').click()
@@ -44,7 +44,7 @@ Cypress.Commands.add('deleteTile', (tileName, expectedMessage) => {
 })
 
 Cypress.Commands.add('tileShouldBeVisible', (tileName, imageFixtureName) => {
-  cy.visit('http://localhost:3000/map/tiles')
+  cy.visitMapResources('tiles')
   cy.fixture(imageFixtureName).then((imageSource) => {
     cy.get('.tiles')
       .contains('.resources__item', tileName)
@@ -61,7 +61,7 @@ Cypress.Commands.add('tileShouldBeVisible', (tileName, imageFixtureName) => {
 //   imageName?: string
 // }[]
 Cypress.Commands.add('prepareTileResources', (objects) => {
-  cy.visit('http://localhost:3000/map/tiles')
+  cy.visitMapResources('tiles')
   objects.forEach(obj => {
     cy.backToHome('tiles')
     if (obj.directories) cy.goDirectories('tiles', obj.directories)
@@ -82,7 +82,7 @@ Cypress.Commands.add('prepareTileResources', (objects) => {
 //   imageFixtureName?: string
 // }[]
 Cypress.Commands.add('tileResourcesShouldBe', (objects) => {
-  cy.visit('http://localhost:3000/map/tiles')
+  cy.visitMapResources('tiles')
   objects.forEach(obj => {
     cy.backToHome('tiles')
     if (obj.directories) cy.goDirectories('tiles', obj.directories)

@@ -14,3 +14,11 @@ Cypress.Commands.add('goDirectory', (type, directory) => {
 Cypress.Commands.add('goDirectories', (type, directories) => {
   directories.forEach(directory => cy.goDirectory(type, directory))
 })
+
+Cypress.Commands.add('visitMapResources', (type) => {
+  cy.url().then(url => {
+    if (url !== `http://localhost:3000/map/${type}`) {
+      cy.visit(`http://localhost:3000/map/${type}`)
+    }
+  })
+})
