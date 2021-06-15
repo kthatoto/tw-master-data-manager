@@ -1,9 +1,9 @@
 <template lang="pug">
 .console
   el-tabs(type="border-card" :value="tab" :before-leave="beforeTabLeave")
-    el-tab-pane(label="Images" name="Images")
-    el-tab-pane(label="Tiles" name="Tiles")
-    el-tab-pane(label="Flags" name="Flags")
+    el-tab-pane(label="Images" name="images")
+    el-tab-pane(label="Tiles" name="tiles")
+    el-tab-pane(label="Flags" name="flags")
     NuxtChild.pane(:editable="true")
 </template>
 
@@ -22,7 +22,7 @@ export default defineComponent({
 
     const routeName = context.root.$route.name!
     if (routeName.split('-').length === 2) {
-      tab.value = routeName.split('-')[1]
+      tab.value = routeName.split('-')[1].toLowerCase()
     }
 
     const beforeTabLeave = (newTabName: string) => {
