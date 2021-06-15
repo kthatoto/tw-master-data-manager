@@ -1,31 +1,45 @@
 <template lang="pug">
 .console
-  el-tabs(type="border-card" v-model="tab")
-    el-tab-pane(label="Images" name="images" :lazy="true")
-      Images.pane(:editable="true")
-    el-tab-pane(label="Tiles" name="tiles" :lazy="true")
-      Tiles.pane(:editable="true")
-    el-tab-pane(label="Flags" name="flags" :lazy="true")
-      Flags.pane(:editable="true")
-    el-tab-pane(label="Objekts" name="objekts" :lazy="true")
-    el-tab-pane(label="NPCs" name="npcs" :lazy="true")
-    el-tab-pane(label="Enemies" name="enemies" :lazy="true")
+  el-tabs(type="border-card" :value="tab" :before-leave="beforeTabLeave")
+    el-tab-pane(label="Images" name="Images")
+    el-tab-pane(label="Tiles" name="Tiles")
+    el-tab-pane(label="Flags" name="Flags")
+    NuxtChild.pane(:editable="true")
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, provide } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import Images from '@/components/MapResourcesConsole/Images.vue'
-import Tiles from '@/components/MapResourcesConsole/Tiles.vue'
-import Flags from '@/components/MapResourcesConsole/Flags.vue'
 
 export default defineComponent({
-  components: { Images, Tiles, Flags },
-  setup () {
-    const tab = ref<string>('images')
+  setup (_, context) {
+    const tab = ref<string>('Images')
     provide('commonStore', appStores.commonStore)
-    return { tab }
+    provide('imagesStore', appStores.imagesStore)
+    provide('tilesStore', appStores.tilesStore)
+    provide('flagsStore', appStores.flagsStore)
+
+    const routeName = context.root.$route.name!
+    if (routeName.split('-').length === 2) {
+      tab.value = routeName.split('-')[1]
+    }
+
+    const beforeTabLeave = (newTabName: string) => {
+      if (tab.value === newTabName) return true
+      tab.value = newTabName
+      return new Promise<void>((resolve, reject) => {
+        return context.root.$router
+          .push(`/map/${newTabName.toLowerCase()}`)
+          .then(() => resolve())
+          .catch((err) => reject(err))
+      })
+    }
+
+    return {
+      tab,
+      beforeTabLeave
+    }
   }
 })
 </script>
@@ -34,18 +48,12 @@ export default defineComponent({
 .console
   height: 100%
   >>> .el-tabs
-    height: 60vh
-    display: flex
-    flex-direction: column
     &__content
       padding: 0
-      flex: 1
     &__item
       padding: 0 10px
-    .el-tab-pane
-      height: 100%
     &--top.el-tabs--border-card>.el-tabs__header .el-tabs__item:nth-child(2)
       padding-left: 10px
   .pane
-    height: 100%
+    height: 60vh
 </style>

@@ -47,5 +47,14 @@ export default {
       config.resolve.alias['~server'] = path.join(__dirname, 'server')
     }
   },
-  serverMiddleware: ['~~/server/']
+  serverMiddleware: ['~~/server/'],
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'map',
+        path: '/',
+        component: resolve(__dirname, 'src/pages/map.vue')
+      })
+    }
+  }
 }
