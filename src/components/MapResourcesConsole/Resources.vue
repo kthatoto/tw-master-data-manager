@@ -77,7 +77,14 @@ export default defineComponent({
     const store = commonStore.getStoreByResourceType(props.resourceType)
 
     onMounted(() => {
-      store.fetchResources()
+      const paths = location.pathname.split('/').filter(p => p)
+      if (paths.length >= 3) {
+        const directoryNames = paths[2]
+        // const resourceName = paths[3]
+        store.fetchResources({ directoryNames })
+      } else {
+        store.fetchResources()
+      }
     })
 
     return {

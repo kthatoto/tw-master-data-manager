@@ -30,6 +30,10 @@ interface ResourceForm {
   action?: 'create' | 'edit'
 }
 
+interface FetchParams {
+  directoryNames?: string // ":aaa:bbb:ccc"
+}
+
 export default <Resource extends ResourceInterface, ResourcesResponse extends ResourcesResponseInterface<Resource>>(
   resourceType: ResourceType,
   resourceForm: ResourceForm
@@ -43,8 +47,15 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     breadcrumbs: []
   }) as State<Resource>
 
-  const fetchResources = async () => {
-    const res: AxiosResponse<ResourcesResponse> = await axios.get(`/api/${resourceType}?directoryId=${state.currentDirectoryId || ''}`)
+  const fetchResources = async (fetchParams: FetchParams = {}) => {
+    let params = ''
+    if (Object.keys(fetchParams).length > 0) {
+      const keys = Object.keys(fetchParams) as (keyof FetchParams)[]
+      params = keys.map((key: keyof FetchParams) => `${key}=${fetchParams[key] || ''}`).join('&')
+    } else {
+      params = `directoryId=${state.currentDirectoryId || ''}`
+    }
+    const res: AxiosResponse<ResourcesResponse> = await axios.get(`/api/${resourceType}?${params}`)
     const data: ResourcesResponse = res.data
     state.resources = data.resources
     state.directories = data.directories
