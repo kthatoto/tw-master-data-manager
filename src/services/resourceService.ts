@@ -6,6 +6,7 @@ import { ResourceType } from '~server/index.ts'
 
 interface ResourceInterface {
   id: string
+  name: string
 }
 
 interface ResourcesResponseInterface<Resource> {
@@ -61,6 +62,7 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
 
   const showResource = (id: string) => {
     state.showingResourceId = id
+    history.pushState(null, '', location.pathname + `/${showingResource.value!.name}`)
   }
   const showingResource = computed<Resource | undefined>(() =>
     state.resources.find((r: Resource) => r.id === state.showingResourceId)
