@@ -14,7 +14,7 @@ import { appStores } from '@/stores/appStores.ts'
 
 export default defineComponent({
   setup (_, context) {
-    const tab = ref<string>('Images')
+    const tab = ref<string>('images')
     provide('commonStore', appStores.commonStore)
     provide('imagesStore', appStores.imagesStore)
     provide('tilesStore', appStores.tilesStore)
