@@ -12,6 +12,10 @@ interface ResourceInterface {
 interface ResourcesResponseInterface<Resource> {
   resources: Resource[]
   directories: Directory[]
+  parentDirectories?: {
+    name: string
+    directoryId: string
+  }[]
 }
 
 interface State<Resource> {
@@ -59,6 +63,9 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     const data: ResourcesResponse = res.data
     state.resources = data.resources
     state.directories = data.directories
+    if (data.parentDirectories) {
+      state.breadcrumbs = data.parentDirectories
+    }
   }
 
   const resourceCreating = computed<boolean>(() => resourceForm.action === 'create')
