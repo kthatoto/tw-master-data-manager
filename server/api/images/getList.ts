@@ -7,7 +7,7 @@ import getList from '../../services/getList'
 
 export default (app: Application, method: 'get', path: string) => {
   app[method](path, async (req: Request, res: Response<ImagesResponse>) => {
-    return getList<ImageDocument>(
+    return await getList<ImageDocument>(
       req,
       res,
       ImageModel,
