@@ -4,7 +4,7 @@ import { ImagesResponse } from '~domains/images.ts'
 import ImageModel, { ImageDocument } from '../../models/image'
 import DirectoryModel, { DirectoryDocument } from '../../models/directory'
 
-import fetchResourcesByDirectoryNames from '~server/services/fetchResourcesByDirectoryNames.ts'
+import fetchResourcesByDirectoryNames from '../../services/fetchResourcesByDirectoryNames'
 
 export default (app: Application, method: 'get', path: string) => {
   app[method](path, async (req: Request, res: Response<ImagesResponse>) => {

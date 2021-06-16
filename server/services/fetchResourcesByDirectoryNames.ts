@@ -1,5 +1,5 @@
-import { ResourceModel } from '~server/index.ts'
-import DirectoryModel, { DirectoryDocument } from '~server/models/directory'
+import { ResourceModel } from '../index'
+import DirectoryModel, { DirectoryDocument } from '../models/directory'
 
 export default async <ResourceDocument>(directoryNames: string[], resourceModel: ResourceModel) => {
   const resources: ResourceDocument[] = []
