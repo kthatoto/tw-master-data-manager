@@ -10,4 +10,5 @@ export interface Tile extends BasicObject {
 export interface TilesResponse {
   resources: Tile[]
   directories: Directory[]
+  parentDirectory?: Directory[]
 }

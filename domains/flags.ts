@@ -8,4 +8,5 @@ export interface Flag extends BasicObject {
 export interface FlagsResponse {
   resources: Flag[]
   directories: Directory[]
+  parentDirectory?: Directory[]
 }
