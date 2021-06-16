@@ -110,7 +110,7 @@ export const buildCommonStore = (stores: AppStores) => {
     if (store.showingResourceId) store.showingResourceId.value = undefined
     store.breadcrumbs.value = []
     store.fetchResources()
-    updateUrlForDirectory(resourceType)
+    updatePathForDirectory(resourceType)
   }
   const backDirectory = (resourceType: ResourceType, directoryId: string) => {
     const store = getStoreByResourceType(resourceType)
@@ -125,22 +125,22 @@ export const buildCommonStore = (stores: AppStores) => {
     store.breadcrumbs.value = store.breadcrumbs.value.slice(0, directoryIndex + 1)
     if (store.showingResourceId) store.showingResourceId.value = undefined
     store.fetchResources()
-    updateUrlForDirectory(resourceType)
+    updatePathForDirectory(resourceType)
   }
   const appendDirectory = (resourceType: ResourceType, directory: { name: string, id: string }) => {
     const store = getStoreByResourceType(resourceType)
     if (store.currentDirectoryId) store.currentDirectoryId.value = directory.id
     store.breadcrumbs.value.push({ name: directory.name, directoryId: directory.id })
     store.fetchResources()
-    updateUrlForDirectory(resourceType)
+    updatePathForDirectory(resourceType)
   }
 
-  const updateUrlForDirectory = (resourceType: ResourceType) => {
+  const updatePathForDirectory = (resourceType: ResourceType) => {
     const store = getStoreByResourceType(resourceType)
-    let newUrl = `/map/${resourceType}/:`
+    let newPath = `/map/${resourceType}/:`
     const directoryPath = store.breadcrumbs.value.map(bc => bc.name).join(':')
-    newUrl += directoryPath
-    history.pushState(null, '', newUrl)
+    newPath += directoryPath
+    history.pushState(null, '', newPath)
   }
 
   return {

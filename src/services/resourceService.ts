@@ -62,7 +62,11 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
 
   const showResource = (id: string) => {
     state.showingResourceId = id
-    history.pushState(null, '', location.pathname + `/${showingResource.value!.name}`)
+
+    let newPath = `/map/${resourceType}/:`
+    const directoryPath = state.breadcrumbs.map(bc => bc.name).join(':')
+    newPath += directoryPath
+    history.pushState(null, '', `${newPath}/${showingResource.value!.name}`)
   }
   const showingResource = computed<Resource | undefined>(() =>
     state.resources.find((r: Resource) => r.id === state.showingResourceId)
