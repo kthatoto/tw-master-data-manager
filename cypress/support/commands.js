@@ -17,7 +17,7 @@ Cypress.Commands.add('goDirectories', (type, directories) => {
 
 Cypress.Commands.add('visitMapResources', (type) => {
   cy.url().then(url => {
-    if (url !== `http://localhost:3000/map/${type}`) {
+    if (!url.startsWith(`http://localhost:3000/map/${type}`)) {
       cy.visit(`http://localhost:3000/map/${type}`)
     }
   })
