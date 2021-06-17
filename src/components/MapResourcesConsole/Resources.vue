@@ -6,9 +6,9 @@
       el-button.button(icon="el-icon-plus" type="primary" @click="openDirectoryCreateModal($refs)") フォルダ作成
     .nav
       icon.home-icon(name="home" @click.native="backToHome(resourceType)")
-      .breadcrumb(v-for="breadcrumb in breadcrumbs" :key="breadcrumb.directoryId")
+      .breadcrumb(v-for="breadcrumb in breadcrumbs" :key="breadcrumb.id")
         icon.icon(name="chevron-right")
-        span(@click="backDirectory(resourceType, breadcrumb.directoryId)") {{ breadcrumb.name }}
+        span(@click="backDirectory(resourceType, breadcrumb.id)") {{ breadcrumb.name }}
 
   .resources__content.content(v-if="!showingResource")
     .resources__item(v-for="o in directories" :key="o.name" :class="{selected: selectingResourceId === o.id}")
