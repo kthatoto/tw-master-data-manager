@@ -10,7 +10,8 @@ export default async <ResourceDocument>(
   res: Response,
   resourceModel: ResourceModel,
   resourceType: ResourceType,
-  resourceReducer: (resource: ResourceDocument) => any
+  resourceReducer: (cache: any) => ((resource: ResourceDocument) => any),
+  cacheGenerator: ((resources: ResourceDocument[]) => Promise<any>) = (async () => {})
 ) => {
   const directoryId: string | undefined = (req.query.directoryId || undefined) as string | undefined
   const directoryNamesString: string | undefined = (req.query.directoryNames || undefined) as string | undefined
@@ -33,8 +34,9 @@ export default async <ResourceDocument>(
     )
   }
 
+  const cache: any = await cacheGenerator(resources)
   const response: any = {}
-  response.resources = resources.map(resourceReducer)
+  response.resources = resources.map(resourceReducer(cache))
   const directoryReducer = (directory: DirectoryDocument) => {
     return { id: directory.id, name: directory.name }
   }

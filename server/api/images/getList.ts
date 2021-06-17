@@ -12,8 +12,10 @@ export default (app: Application, method: 'get', path: string) => {
       res,
       ImageModel,
       'images',
-      (resource: ImageDocument) => {
-        return { id: resource.id, name: resource.name, data: resource.data }
+      (_: any) => {
+        return (resource: ImageDocument) => {
+          return { id: resource.id, name: resource.name, data: resource.data }
+        }
       }
     )
     res.send(response)
