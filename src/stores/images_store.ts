@@ -39,6 +39,7 @@ export const buildImagesStore = () => {
     selectResource,
     selectingResource,
     showResource,
+    showResourceByName,
     showingResource
   } = resourceService<Image, ImagesResponse>('images', resourceForm)
 
@@ -116,6 +117,7 @@ export const buildImagesStore = () => {
     selectResource,
     selectingResource,
     showResource,
+    showResourceByName,
     showingResource,
 
     resourceForm,

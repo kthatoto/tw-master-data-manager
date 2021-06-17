@@ -86,6 +86,11 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     newPath += directoryPath
     history.pushState(null, '', `${newPath}/${showingResource.value!.name}`)
   }
+  const showResourceByName = (name: string) => {
+    const target: Resource | undefined = state.resources.find((resource: Resource) => resource.name === name)
+    if (!target) return
+    state.showingResourceId = target.id
+  }
   const showingResource = computed<Resource | undefined>(() =>
     state.resources.find((r: Resource) => r.id === state.showingResourceId)
   )
@@ -98,6 +103,7 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     selectResource,
     selectingResource,
     showResource,
+    showResourceByName,
     showingResource
   }
 }

@@ -33,6 +33,7 @@ export const buildFlagsStore = () => {
     selectResource,
     selectingResource,
     showResource,
+    showResourceByName,
     showingResource
   } = resourceService<Flag, FlagsResponse>('flags', resourceForm)
 
@@ -90,6 +91,7 @@ export const buildFlagsStore = () => {
     selectResource,
     selectingResource,
     showResource,
+    showResourceByName,
     showingResource,
 
     resourceForm,

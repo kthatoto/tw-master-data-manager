@@ -39,6 +39,7 @@ export const buildTilesStore = () => {
     selectResource,
     selectingResource,
     showResource,
+    showResourceByName,
     showingResource
   } = resourceService<Tile, TilesResponse>('tiles', resourceForm)
 
@@ -99,6 +100,7 @@ export const buildTilesStore = () => {
     selectResource,
     selectingResource,
     showResource,
+    showResourceByName,
     showingResource,
 
     resourceForm,
