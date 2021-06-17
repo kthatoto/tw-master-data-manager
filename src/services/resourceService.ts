@@ -12,10 +12,7 @@ interface ResourceInterface {
 interface ResourcesResponseInterface<Resource> {
   resources: Resource[]
   directories: Directory[]
-  parentDirectories?: {
-    name: string
-    directoryId: string
-  }[]
+  parentDirectories?: Directory[]
 }
 
 interface State<Resource> {
@@ -24,10 +21,7 @@ interface State<Resource> {
   directories: Directory[]
   showingResourceId?: string
   selectingResourceId?: string
-  breadcrumbs: {
-    name: string
-    directoryId: string
-  }[]
+  breadcrumbs: Directory[]
 }
 
 interface ResourceForm {

@@ -115,8 +115,8 @@ export const buildCommonStore = (stores: AppStores) => {
   const backDirectory = (resourceType: ResourceType, directoryId: string) => {
     const store = getStoreByResourceType(resourceType)
     if (store.currentDirectoryId) store.currentDirectoryId.value = directoryId
-    const directoryIndex = store.breadcrumbs.value.findIndex((breadcrumb: { directoryId: string }) =>
-      breadcrumb.directoryId === directoryId
+    const directoryIndex = store.breadcrumbs.value.findIndex((breadcrumb: { id: string }) =>
+      breadcrumb.id === directoryId
     )
     if (directoryIndex < 0) {
       backToHome(resourceType)
@@ -130,7 +130,7 @@ export const buildCommonStore = (stores: AppStores) => {
   const appendDirectory = (resourceType: ResourceType, directory: { name: string, id: string }) => {
     const store = getStoreByResourceType(resourceType)
     if (store.currentDirectoryId) store.currentDirectoryId.value = directory.id
-    store.breadcrumbs.value.push({ name: directory.name, directoryId: directory.id })
+    store.breadcrumbs.value.push({ name: directory.name, id: directory.id })
     store.fetchResources()
     updatePathForDirectory(resourceType)
   }
