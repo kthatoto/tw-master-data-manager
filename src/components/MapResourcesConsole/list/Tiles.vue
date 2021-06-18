@@ -24,7 +24,7 @@
               el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") 作成
 
           .right
-            Images(:editable="false")
+            Images(:editable="false" :selector="true")
 
     template(slot="resourceEditModal")
       el-dialog.dialog.-tileEdit(v-if="resourceEditing" :visible.sync="resourceForm.flag" width="900px")
@@ -45,7 +45,7 @@
               el-button(type="primary" @click="editResource" :disabled="!resourceFormValid") 更新
 
           .right
-            Images(:editable="false")
+            Images(:editable="false" :selector="true")
 </template>
 
 <script lang="ts">
@@ -55,7 +55,7 @@ import { appStores } from '@/stores/appStores.ts'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
 import TileDetail from '@/components/MapResourcesConsole/detail/TileDetail.vue'
 import ImageSetEditor from '@/components/organisms/ImageSetEditor.vue'
-import Images from '@/pages/map/Images.vue'
+import Images from '@/components/MapResourcesConsole/list/Images.vue'
 import { ImageChip } from '~domains/index.ts'
 
 export default defineComponent({
