@@ -64,11 +64,9 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const commonStore = appStores.commonStore
     const imagesStore = props.selector ? appStores.imagesSelectorStore : appStores.imagesStore
 
     return {
-      ...commonStore,
       ...imagesStore
     }
   }

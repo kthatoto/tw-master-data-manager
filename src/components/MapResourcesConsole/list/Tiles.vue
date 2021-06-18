@@ -68,7 +68,6 @@ export default defineComponent({
     }
   },
   setup (_, context) {
-    const commonStore = appStores.commonStore
     const tilesStore = appStores.tilesStore
 
     const inputImage = (params: { x: number, y: number, id: string, data: string, name: string }) => {
@@ -111,7 +110,6 @@ export default defineComponent({
     }
 
     return {
-      ...commonStore,
       ...tilesStore,
       inputImage,
       removeImage,

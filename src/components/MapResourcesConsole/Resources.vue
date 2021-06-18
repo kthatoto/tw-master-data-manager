@@ -73,8 +73,7 @@ export default defineComponent({
     }
   },
   setup (props, context) {
-    const commonStore = appStores.commonStore
-    const store = commonStore.getStoreByResourceType(props.resourceType)
+    const store = {}
 
     onMounted(async () => {
       const paths = location.pathname.split('/').filter(p => p)
@@ -89,7 +88,6 @@ export default defineComponent({
     })
 
     return {
-      ...commonStore,
       ...store
     }
   }

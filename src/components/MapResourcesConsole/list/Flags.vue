@@ -47,11 +47,9 @@ export default defineComponent({
     }
   },
   setup () {
-    const commonStore = appStores.commonStore
     const flagsStore = appStores.flagsStore
 
     return {
-      ...commonStore,
       ...flagsStore
     }
   }
