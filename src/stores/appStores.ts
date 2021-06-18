@@ -29,6 +29,6 @@ export const appStores: AppStores = {
   },
 
   get imagesSelectorStore (): ImagesStore {
-    return _.imagesStore || (_.imagesStore = buildImagesStore())
+    return _.imagesSelectorStore || (_.imagesSelectorStore = buildImagesStore())
   }
 }
