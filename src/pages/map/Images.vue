@@ -56,11 +56,16 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true
+    },
+    selector: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
-  setup (_, context) {
+  setup (props) {
     const commonStore = appStores.commonStore
-    const imagesStore = appStores.imagesStore
+    const imagesStore = props.selector ? appStores.imagesSelectorStore : appStores.imagesStore
 
     return {
       ...commonStore,

@@ -8,6 +8,8 @@ export interface AppStores {
   imagesStore: ImagesStore
   tilesStore: TilesStore
   flagsStore: FlagsStore
+
+  imagesSelectorStore: ImagesStore
 }
 
 const _: Partial<AppStores> = {}
@@ -24,5 +26,9 @@ export const appStores: AppStores = {
   },
   get flagsStore (): FlagsStore {
     return _.flagsStore || (_.flagsStore = buildFlagsStore())
+  },
+
+  get imagesSelectorStore (): ImagesStore {
+    return _.imagesStore || (_.imagesStore = buildImagesStore())
   }
 }

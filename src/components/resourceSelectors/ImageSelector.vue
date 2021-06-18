@@ -2,7 +2,7 @@
 el-dialog(:visible="visible" append-to-body @close="close" width="440px")
   h3(slot="title") Image選択
   .image-selector
-    Images(:editable="false")
+    Images(:editable="false" :selector="true")
   div(slot="footer")
     el-button(type="primary" @click="selectImage" :disabled="!selectable") 選択
 </template>
@@ -11,7 +11,7 @@ el-dialog(:visible="visible" append-to-body @close="close" width="440px")
 import { defineComponent, computed } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import Images from '@/components/MapResourcesConsole/Images.vue'
+import Images from '@/pages/map/Images.vue'
 
 export default defineComponent({
   components: { Images },
