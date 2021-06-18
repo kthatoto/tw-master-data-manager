@@ -53,7 +53,7 @@ import { defineComponent } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
-import TileDetail from '@/components/MapResourcesConsole/TileDetail.vue'
+import TileDetail from '@/components/MapResourcesConsole/detail/TileDetail.vue'
 import ImageSetEditor from '@/components/organisms/ImageSetEditor.vue'
 import Images from '@/pages/map/Images.vue'
 import { ImageChip } from '~domains/index.ts'

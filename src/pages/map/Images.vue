@@ -47,7 +47,7 @@ import { defineComponent } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
-import ImageDetail from '@/components/MapResourcesConsole/ImageDetail.vue'
+import ImageDetail from '@/components/MapResourcesConsole/detail/ImageDetail.vue'
 
 export default defineComponent({
   components: { Resources, ImageDetail },

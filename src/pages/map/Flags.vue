@@ -35,7 +35,7 @@ import { defineComponent } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
-import FlagDetail from '@/components/MapResourcesConsole/FlagDetail.vue'
+import FlagDetail from '@/components/MapResourcesConsole/detail/FlagDetail.vue'
 
 export default defineComponent({
   components: { Resources, FlagDetail },
