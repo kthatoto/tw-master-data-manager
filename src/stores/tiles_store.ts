@@ -1,4 +1,4 @@
-import { reactive, computed, toRefs } from '@vue/composition-api'
+import { reactive, computed } from '@vue/composition-api'
 import axios from 'axios'
 
 import { Tile, TilesResponse } from '~domains/tiles.ts'
@@ -31,17 +31,7 @@ export const buildTilesStore = () => {
     imageData: undefined
   })
 
-  const {
-    state,
-    fetchResources,
-    resourceCreating,
-    resourceEditing,
-    selectResource,
-    selectingResource,
-    showResource,
-    showResourceByName,
-    showingResource
-  } = resourceService<Tile, TilesResponse>('tiles', resourceForm)
+  const resourcesHook = resourceService<Tile, TilesResponse>('tiles', resourceForm)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true
@@ -72,10 +62,10 @@ export const buildTilesStore = () => {
     const params: TilesCreateRequestBody = {
       name: resourceForm.name,
       images: resourceForm.images,
-      directoryId: state.currentDirectoryId
+      directoryId: resourcesHook.currentDirectoryId.value
     }
     const res = await axios.post('/api/tiles', params)
-    handleResponse(res, '作成完了！', fetchResources, resourceForm)
+    handleResponse(res, '作成完了！', resourcesHook.fetchResources, resourceForm)
   }
   const editResource = async () => {
     if (!resourceFormValid.value) return
@@ -86,22 +76,14 @@ export const buildTilesStore = () => {
       id: resourceForm.id,
       name: resourceForm.name,
       images: resourceForm.images,
-      directoryId: state.currentDirectoryId
+      directoryId: resourcesHook.currentDirectoryId.value
     }
     const res = await axios.patch('/api/tiles', params)
-    handleResponse(res, '更新完了！', fetchResources, resourceForm)
+    handleResponse(res, '更新完了！', resourcesHook.fetchResources, resourceForm)
   }
 
   return {
-    ...toRefs(state),
-    fetchResources,
-    resourceCreating,
-    resourceEditing,
-    selectResource,
-    selectingResource,
-    showResource,
-    showResourceByName,
-    showingResource,
+    ...resourcesHook,
 
     resourceForm,
 

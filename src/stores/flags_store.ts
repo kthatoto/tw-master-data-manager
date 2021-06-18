@@ -1,4 +1,4 @@
-import { reactive, computed, toRefs } from '@vue/composition-api'
+import { reactive, computed } from '@vue/composition-api'
 import axios from 'axios'
 
 import { Flag, FlagsResponse } from '~domains/flags.ts'
@@ -25,17 +25,7 @@ export const buildFlagsStore = () => {
     description: undefined
   })
 
-  const {
-    state,
-    fetchResources,
-    resourceCreating,
-    resourceEditing,
-    selectResource,
-    selectingResource,
-    showResource,
-    showResourceByName,
-    showingResource
-  } = resourceService<Flag, FlagsResponse>('flags', resourceForm)
+  const resourcesHook = resourceService<Flag, FlagsResponse>('flags', resourceForm)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true
@@ -64,10 +54,10 @@ export const buildFlagsStore = () => {
       name: resourceForm.name!,
       key: resourceForm.key!,
       description: resourceForm.description,
-      directoryId: state.currentDirectoryId
+      directoryId: resourcesHook.currentDirectoryId.value
     }
     const res = await axios.post('/api/flags', params)
-    handleResponse(res, '作成完了！', fetchResources, resourceForm)
+    handleResponse(res, '作成完了！', resourcesHook.fetchResources, resourceForm)
   }
   const editResource = async () => {
     if (!resourceFormValid.value) return
@@ -77,22 +67,14 @@ export const buildFlagsStore = () => {
       name: resourceForm.name!,
       key: resourceForm.key!,
       description: resourceForm.description,
-      directoryId: state.currentDirectoryId
+      directoryId: resourcesHook.currentDirectoryId.value
     }
     const res = await axios.patch('/api/flags', params)
-    handleResponse(res, '更新完了！', fetchResources, resourceForm)
+    handleResponse(res, '更新完了！', resourcesHook.fetchResources, resourceForm)
   }
 
   return {
-    ...toRefs(state),
-    fetchResources,
-    resourceCreating,
-    resourceEditing,
-    selectResource,
-    selectingResource,
-    showResource,
-    showResourceByName,
-    showingResource,
+    ...resourcesHook,
 
     resourceForm,
 

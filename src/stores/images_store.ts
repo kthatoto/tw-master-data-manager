@@ -1,4 +1,4 @@
-import { reactive, computed, toRefs } from '@vue/composition-api'
+import { reactive, computed } from '@vue/composition-api'
 import axios from 'axios'
 
 import { Image, ImagesResponse } from '~domains/images.ts'
@@ -31,17 +31,7 @@ export const buildImagesStore = () => {
     data: undefined
   })
 
-  const {
-    state,
-    fetchResources,
-    resourceCreating,
-    resourceEditing,
-    selectResource,
-    selectingResource,
-    showResource,
-    showResourceByName,
-    showingResource
-  } = resourceService<Image, ImagesResponse>('images', resourceForm)
+  const resourcesHook = resourceService<Image, ImagesResponse>('images', resourceForm)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true
@@ -89,10 +79,10 @@ export const buildImagesStore = () => {
     const params: ImagesCreateRequestBody = {
       name: resourceForm.name + resourceForm.extension,
       data: resourceForm.data,
-      directoryId: state.currentDirectoryId
+      directoryId: resourcesHook.currentDirectoryId.value
     }
     const res = await axios.post('/api/images', params)
-    handleResponse(res, '作成完了！', fetchResources, resourceForm)
+    handleResponse(res, '作成完了！', resourcesHook.fetchResources, resourceForm)
   }
   const editResource = async () => {
     if (!resourceFormValid.value) return
@@ -103,22 +93,14 @@ export const buildImagesStore = () => {
       id: resourceForm.id,
       name: resourceForm.name + resourceForm.extension,
       data: resourceForm.data,
-      directoryId: state.currentDirectoryId
+      directoryId: resourcesHook.currentDirectoryId.value
     }
     const res = await axios.patch('/api/images', params)
-    handleResponse(res, '更新完了！', fetchResources, resourceForm)
+    handleResponse(res, '更新完了！', resourcesHook.fetchResources, resourceForm)
   }
 
   return {
-    ...toRefs(state),
-    fetchResources,
-    resourceCreating,
-    resourceEditing,
-    selectResource,
-    selectingResource,
-    showResource,
-    showResourceByName,
-    showingResource,
+    ...resourcesHook,
 
     resourceForm,
 
