@@ -11,7 +11,7 @@ el-dialog(:visible="visible" append-to-body @close="close" width="440px")
 import { defineComponent, computed } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
-import Images from '@/pages/map/Images.vue'
+import Images from '@/components/MapResourcesConsole/list/Images.vue'
 
 export default defineComponent({
   components: { Images },
