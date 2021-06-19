@@ -52,7 +52,8 @@
 <script lang="ts">
 import { defineComponent, PropType, onMounted } from '@vue/composition-api'
 
-import { appStores } from '@/stores/appStores.ts'
+import getStoreByResourceType from '@/utils/getStoreByResourceType.ts'
+
 import { ResourceType } from '~server/index.ts'
 
 export default defineComponent({
@@ -73,7 +74,7 @@ export default defineComponent({
     }
   },
   setup (props, context) {
-    const store = {}
+    const store = getStoreByResourceType(props.resourceType)
 
     onMounted(async () => {
       const paths = location.pathname.split('/').filter(p => p)
