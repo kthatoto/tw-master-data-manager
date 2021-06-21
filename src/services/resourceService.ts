@@ -1,4 +1,4 @@
-import { ref, computed, UnwrapRef } from '@vue/composition-api'
+import { ref, reactive, computed, UnwrapRef } from '@vue/composition-api'
 import axios, { AxiosResponse } from 'axios'
 
 import { BasicObject, Directory } from '~domains/index.ts'
@@ -13,7 +13,7 @@ interface ResourceBasic {
 }
 
 interface ResourcesResponseInterface<Resource> {
-  resources: Resource[]
+  resources: UnwrapRef<Resource[]>
   directories: Directory[]
   parentDirectories?: Directory[]
 }
@@ -68,7 +68,7 @@ export default <Resource extends ResourceBasic, ResourcesResponse extends Resour
     selectingResourceId.value = id
   }
   const selectingResource = computed<Resource | undefined>(() =>
-    resources.value.find((r: Resource) => r.id === selectingResourceId.value)
+    resources.value.find((r: ResourceBasic) => r.id === selectingResourceId.value) as (Resource | undefined)
   )
 
   const showResource = (id: string) => {
@@ -80,12 +80,12 @@ export default <Resource extends ResourceBasic, ResourcesResponse extends Resour
     history.pushState(null, '', `${newPath}/${showingResource.value!.name}`)
   }
   const showResourceByName = (name: string) => {
-    const target: Resource | undefined = resources.value.find((resource: Resource) => resource.name === name)
+    const target: Resource | undefined = resources.value.find((resource: ResourceBasic) => resource.name === name) as (Resource | undefined)
     if (!target) return
     showingResourceId.value = target.id
   }
   const showingResource = computed<Resource | undefined>(() =>
-    resources.value.find((r: Resource) => r.id === showingResourceId.value)
+    resources.value.find((r: ResourceBasic) => r.id === showingResourceId.value) as (Resource | undefined)
   )
 
   const directoriesHook = useDirectories(
