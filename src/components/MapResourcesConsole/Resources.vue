@@ -67,6 +67,11 @@ export default defineComponent({
       required: false,
       default: true
     },
+    selector: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     refs: {
       type: Object,
       required: false,
@@ -74,7 +79,7 @@ export default defineComponent({
     }
   },
   setup (props, context) {
-    const store = getStoreByResourceType(props.resourceType)
+    const store = getStoreByResourceType(props.resourceType, props.selector)
 
     onMounted(async () => {
       const paths = location.pathname.split('/').filter(p => p)

@@ -18,6 +18,7 @@ export default defineComponent({
     provide('imagesStore', appStores.imagesStore)
     provide('tilesStore', appStores.tilesStore)
     provide('flagsStore', appStores.flagsStore)
+    provide('imagesSelectorStore', appStores.imagesSelectorStore)
 
     const routeName = context.root.$route.name!
     if (routeName.split('-').length === 2) {
