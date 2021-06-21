@@ -89,7 +89,7 @@ export default defineComponent({
         const directoryNames = paths[2]
         await store.fetchResources({ directoryNames })
         const resourceName = paths[3]
-        if (resourceName) store.showResourceByName(resourceName)
+        if (resourceName) store.showResourceByName(decodeURI(resourceName))
       }
     })
 
