@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { Flag, FlagsResponse } from '~domains/flags.ts'
 import handleResponse from '@/utils/handleResponse.ts'
-import resourceService from '@/services/resourceService.ts'
+import useResources from '@/hooks/useResources.ts'
 
 import { FlagsCreateRequestBody } from '~server/api/flags/create.ts'
 import { FlagsEditRequestBody } from '~server/api/flags/edit.ts'
@@ -25,7 +25,7 @@ export const buildFlagsStore = () => {
     description: undefined
   })
 
-  const resourcesHook = resourceService<Flag, FlagsResponse>('flags', resourceForm)
+  const resourcesHook = useResources<Flag, FlagsResponse>('flags', resourceForm)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true

@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { Image, ImagesResponse } from '~domains/images.ts'
 import handleResponse from '@/utils/handleResponse.ts'
-import resourceService from '@/services/resourceService.ts'
+import useResources from '@/hooks/useResources.ts'
 
 import { ImagesCreateRequestBody } from '~server/api/images/create.ts'
 import { ImagesEditRequestBody } from '~server/api/images/edit.ts'
@@ -31,7 +31,7 @@ export const buildImagesStore = () => {
     data: undefined
   })
 
-  const resourcesHook = resourceService<Image, ImagesResponse>('images', resourceForm)
+  const resourcesHook = useResources<Image, ImagesResponse>('images', resourceForm)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true

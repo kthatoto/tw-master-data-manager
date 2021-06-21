@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Tile, TilesResponse } from '~domains/tiles.ts'
 import { ImageChip } from '~domains/index.ts'
 import handleResponse from '@/utils/handleResponse.ts'
-import resourceService from '@/services/resourceService.ts'
+import useResources from '@/hooks/useResources.ts'
 
 import { TilesCreateRequestBody } from '~server/api/tiles/create.ts'
 import { TilesEditRequestBody } from '~server/api/tiles/edit.ts'
@@ -31,7 +31,7 @@ export const buildTilesStore = () => {
     imageData: undefined
   })
 
-  const resourcesHook = resourceService<Tile, TilesResponse>('tiles', resourceForm)
+  const resourcesHook = useResources<Tile, TilesResponse>('tiles', resourceForm)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true
