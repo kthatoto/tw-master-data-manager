@@ -51,13 +51,12 @@ export default {
   router: {
     extendRoutes(routes, resolve) {
       routes.push({
-        name: 'map',
-        path: '/',
+        path: '',
         component: resolve(__dirname, 'src/pages/map.vue'),
         children: [
           {
-            path: "",
-            name: "map-images",
+            path: '',
+            name: 'default-map-images',
             component: resolve(__dirname, 'src/pages/map/Images.vue')
           }
         ]
@@ -68,7 +67,6 @@ export default {
         const routeName = `map-${type.toLowerCase()}`
         routes.push({
           path: `/map/${type.toLowerCase()}`,
-          name: routeName,
           component: resolve(__dirname, 'src/pages/map.vue'),
           children: [
             {
