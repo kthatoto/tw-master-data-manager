@@ -1,9 +1,9 @@
-import { reactive, computed, toRefs } from '@vue/composition-api'
+import { reactive, computed } from '@vue/composition-api'
 import axios from 'axios'
 
 import { Image, ImagesResponse } from '~domains/images.ts'
 import handleResponse from '@/utils/handleResponse.ts'
-import resourceService from '@/services/resourceService.ts'
+import useResources from '@/hooks/useResources.ts'
 
 import { ImagesCreateRequestBody } from '~server/api/images/create.ts'
 import { ImagesEditRequestBody } from '~server/api/images/edit.ts'
@@ -14,7 +14,7 @@ interface ImageFile {
   uid: number
 }
 
-export const buildImagesStore = () => {
+export const buildImagesStore = (selector: Boolean) => {
   const resourceForm = reactive<{
     flag: boolean
     action?: 'create' | 'edit'
@@ -31,16 +31,7 @@ export const buildImagesStore = () => {
     data: undefined
   })
 
-  const {
-    state,
-    fetchResources,
-    resourceCreating,
-    resourceEditing,
-    selectResource,
-    selectingResource,
-    showResource,
-    showingResource
-  } = resourceService<Image, ImagesResponse>('images', resourceForm)
+  const resourcesHook = useResources<Image, ImagesResponse>('images', resourceForm, selector)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true
@@ -88,10 +79,10 @@ export const buildImagesStore = () => {
     const params: ImagesCreateRequestBody = {
       name: resourceForm.name + resourceForm.extension,
       data: resourceForm.data,
-      directoryId: state.currentDirectoryId
+      directoryId: resourcesHook.currentDirectoryId.value
     }
     const res = await axios.post('/api/images', params)
-    handleResponse(res, '作成完了！', fetchResources, resourceForm)
+    handleResponse(res, '作成完了！', resourcesHook.fetchResources, resourceForm)
   }
   const editResource = async () => {
     if (!resourceFormValid.value) return
@@ -102,21 +93,14 @@ export const buildImagesStore = () => {
       id: resourceForm.id,
       name: resourceForm.name + resourceForm.extension,
       data: resourceForm.data,
-      directoryId: state.currentDirectoryId
+      directoryId: resourcesHook.currentDirectoryId.value
     }
     const res = await axios.patch('/api/images', params)
-    handleResponse(res, '更新完了！', fetchResources, resourceForm)
+    handleResponse(res, '更新完了！', resourcesHook.fetchResources, resourceForm)
   }
 
   return {
-    ...toRefs(state),
-    fetchResources,
-    resourceCreating,
-    resourceEditing,
-    selectResource,
-    selectingResource,
-    showResource,
-    showingResource,
+    ...resourcesHook,
 
     resourceForm,
 

@@ -28,11 +28,9 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const commonStore = appStores.commonStore
     const tilesStore = appStores.tilesStore
 
     return {
-      ...commonStore,
       ...tilesStore
     }
   }

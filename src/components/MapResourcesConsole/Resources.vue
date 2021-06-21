@@ -5,15 +5,15 @@
       el-button.button(icon="el-icon-plus" type="primary" @click="openResourceCreateModal") {{ resourceType }}作成
       el-button.button(icon="el-icon-plus" type="primary" @click="openDirectoryCreateModal($refs)") フォルダ作成
     .nav
-      icon.home-icon(name="home" @click.native="backToHome(resourceType)")
-      .breadcrumb(v-for="breadcrumb in breadcrumbs" :key="breadcrumb.directoryId")
+      icon.home-icon(name="home" @click.native="backToHome")
+      .breadcrumb(v-for="breadcrumb in breadcrumbs" :key="breadcrumb.id")
         icon.icon(name="chevron-right")
-        span(@click="backDirectory(resourceType, breadcrumb.directoryId)") {{ breadcrumb.name }}
+        span(@click="backDirectory(breadcrumb.id)") {{ breadcrumb.name }}
 
   .resources__content.content(v-if="!showingResource")
     .resources__item(v-for="o in directories" :key="o.name" :class="{selected: selectingResourceId === o.id}")
       .focus(v-if="selectingResourceId === o.id")
-      Icon.icon(name="folder" @dblclick.native="appendDirectory(resourceType, o)" @click.right.prevent.native="editable && confirmDelete(o, 'directories')")
+      Icon.icon(name="folder" @dblclick.native="appendDirectory(o)" @click.right.prevent.native="editable && confirmDelete(o, 'directories')")
       span(@dblclick="editable && openDirectoryEditModal($refs, o)") {{ o.name }}
     .resources__item(v-for="o in resources" :key="o.id" @click="selectResource(o.id)" :class="{selected: selectingResourceId === o.id}")
       .focus(v-if="selectingResourceId === o.id")
@@ -37,13 +37,13 @@
         h2(v-else-if="directoryEditing") フォルダ名更新
       el-input(v-model="directoryForm.name" ref="directoryName")
       .buttons
-        el-button(v-if="directoryCreating" type="primary" @click="createDirectory(resourceType)" :disabled="!directoryFormValid") 作成
-        el-button(v-else-if="directoryEditing" type="primary" @click="editDirectory(resourceType)" :disabled="!directoryFormValid") 更新
+        el-button(v-if="directoryCreating" type="primary" @click="createDirectory" :disabled="!directoryFormValid") 作成
+        el-button(v-else-if="directoryEditing" type="primary" @click="editDirectory" :disabled="!directoryFormValid") 更新
 
     el-dialog.dialog.-objectDelete(:visible.sync="deleteForm.flag")
       h2(slot="title") 「{{ deleteForm.name }}」削除していい？
       .buttons
-        el-button(type="danger" @click="deleteObject(resourceType)") 削除
+        el-button(type="danger" @click="deleteObject") 削除
 
     slot(name="resourceCreateModal")
     slot(name="resourceEditModal")
@@ -52,7 +52,8 @@
 <script lang="ts">
 import { defineComponent, PropType, onMounted } from '@vue/composition-api'
 
-import { appStores } from '@/stores/appStores.ts'
+import getStoreByResourceType from '@/utils/getStoreByResourceType.ts'
+
 import { ResourceType } from '~server/index.ts'
 
 export default defineComponent({
@@ -66,6 +67,11 @@ export default defineComponent({
       required: false,
       default: true
     },
+    selector: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     refs: {
       type: Object,
       required: false,
@@ -73,15 +79,21 @@ export default defineComponent({
     }
   },
   setup (props, context) {
-    const commonStore = appStores.commonStore
-    const store = commonStore.getStoreByResourceType(props.resourceType)
+    const store = getStoreByResourceType(props.resourceType, props.selector)
 
-    onMounted(() => {
-      store.fetchResources()
+    onMounted(async () => {
+      const paths = location.pathname.split('/').filter(p => p)
+      if (props.selector || paths.length < 3) {
+        store.fetchResources()
+      } else {
+        const directoryNames = paths[2]
+        await store.fetchResources({ directoryNames })
+        const resourceName = paths[3]
+        store.showResourceByName(resourceName)
+      }
     })
 
     return {
-      ...commonStore,
       ...store
     }
   }

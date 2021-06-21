@@ -53,7 +53,31 @@ export default {
       routes.push({
         name: 'map',
         path: '/',
-        component: resolve(__dirname, 'src/pages/map.vue')
+        component: resolve(__dirname, 'src/pages/map.vue'),
+        children: [
+          {
+            path: "",
+            name: "map-images",
+            component: resolve(__dirname, 'src/pages/map/Images.vue')
+          }
+        ]
+      })
+
+      const resourceTypes = ['Images', 'Tiles', 'Flags']
+      resourceTypes.forEach(type => {
+        const routeName = `map-${type.toLowerCase()}`
+        routes.push({
+          path: `/map/${type.toLowerCase()}`,
+          name: routeName,
+          component: resolve(__dirname, 'src/pages/map.vue'),
+          children: [
+            {
+              path: "*",
+              name: routeName,
+              component: resolve(__dirname, `src/pages/map/${type}.vue`)
+            }
+          ]
+        })
       })
     }
   }

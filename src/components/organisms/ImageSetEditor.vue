@@ -67,7 +67,7 @@ export default defineComponent({
       consoleWidth.value = context.refs.console.clientWidth
     })
 
-    const imagesStore = appStores.imagesStore
+    const imagesStore = appStores.imagesSelectorStore
     const inputImage = (x: number, y: number) => {
       if (collisionMode.value) return
       const resource = imagesStore.selectingResource.value

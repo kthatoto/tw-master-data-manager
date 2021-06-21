@@ -25,11 +25,9 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const commonStore = appStores.commonStore
     const imagesStore = appStores.imagesStore
 
     return {
-      ...commonStore,
       ...imagesStore
     }
   }
