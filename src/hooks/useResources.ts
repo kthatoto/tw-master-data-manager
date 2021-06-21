@@ -30,7 +30,8 @@ type ObjectType = 'resources' | 'directories'
 
 export default <Resource extends ResourceBasic, ResourcesResponse extends ResourcesResponseInterface<Resource>>(
   resourceType: ResourceType,
-  resourceForm: ResourceForm
+  resourceForm: ResourceForm,
+  selector: Boolean = false
 ) => {
   const resources = ref<Resource[]>([])
   const directories = ref<Directory[]>([])
@@ -74,10 +75,12 @@ export default <Resource extends ResourceBasic, ResourcesResponse extends Resour
   const showResource = (id: string) => {
     showingResourceId.value = id
 
-    let newPath = `/map/${resourceType}/:`
-    const directoryPath = breadcrumbs.value.map(bc => bc.name).join(':')
-    newPath += directoryPath
-    history.pushState(null, '', `${newPath}/${showingResource.value!.name}`)
+    if (!selector) {
+      let newPath = `/map/${resourceType}/:`
+      const directoryPath = breadcrumbs.value.map(bc => bc.name).join(':')
+      newPath += directoryPath
+      history.pushState(null, '', `${newPath}/${showingResource.value!.name}`)
+    }
   }
   const showResourceByName = (name: string) => {
     const target: Resource | undefined = resources.value.find((resource: ResourceBasic) => resource.name === name) as (Resource | undefined)
@@ -124,7 +127,7 @@ export default <Resource extends ResourceBasic, ResourcesResponse extends Resour
     showingResourceId.value = undefined
     breadcrumbs.value = []
     fetchResources()
-    updatePathForDirectory()
+    if (!selector) updatePathForDirectory()
   }
   const backDirectory = (directoryId: string) => {
     const directoryIndex = breadcrumbs.value.findIndex((bc: { id: string }) => bc.id === directoryId)
@@ -135,12 +138,12 @@ export default <Resource extends ResourceBasic, ResourcesResponse extends Resour
     showingResourceId.value = undefined
     breadcrumbs.value = breadcrumbs.value.slice(0, directoryIndex + 1)
     fetchResources()
-    updatePathForDirectory()
+    if (!selector) updatePathForDirectory()
   }
   const appendDirectory = (directory: Directory) => {
     breadcrumbs.value.push(directory)
     fetchResources()
-    updatePathForDirectory()
+    if (!selector) updatePathForDirectory()
   }
 
   const updatePathForDirectory = () => {

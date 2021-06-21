@@ -14,7 +14,7 @@ interface ImageFile {
   uid: number
 }
 
-export const buildImagesStore = () => {
+export const buildImagesStore = (selector: Boolean) => {
   const resourceForm = reactive<{
     flag: boolean
     action?: 'create' | 'edit'
@@ -31,7 +31,7 @@ export const buildImagesStore = () => {
     data: undefined
   })
 
-  const resourcesHook = useResources<Image, ImagesResponse>('images', resourceForm)
+  const resourcesHook = useResources<Image, ImagesResponse>('images', resourceForm, selector)
 
   const openResourceCreateModal = () => {
     resourceForm.flag = true

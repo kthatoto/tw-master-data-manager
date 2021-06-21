@@ -14,7 +14,7 @@ const _: Partial<AppStores> = {}
 
 export const appStores: AppStores = {
   get imagesStore (): ImagesStore {
-    return _.imagesStore || (_.imagesStore = buildImagesStore())
+    return _.imagesStore || (_.imagesStore = buildImagesStore(false))
   },
   get tilesStore (): TilesStore {
     return _.tilesStore || (_.tilesStore = buildTilesStore())
@@ -24,6 +24,6 @@ export const appStores: AppStores = {
   },
 
   get imagesSelectorStore (): ImagesStore {
-    return _.imagesSelectorStore || (_.imagesSelectorStore = buildImagesStore())
+    return _.imagesSelectorStore || (_.imagesSelectorStore = buildImagesStore(true))
   }
 }
