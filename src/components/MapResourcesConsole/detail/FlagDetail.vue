@@ -13,7 +13,7 @@
 
   .buttons(v-if="editable")
     el-button(type="primary" @click="openResourceEditModal(showingResource)") 変更
-    el-button(type="danger" @click="confirmDelete(showingResource)") 削除
+    el-button(type="danger" @click="confirmDelete(showingResource, 'resources')") 削除
 </template>
 
 <script lang="ts">
