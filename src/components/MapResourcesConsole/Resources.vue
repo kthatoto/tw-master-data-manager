@@ -83,13 +83,13 @@ export default defineComponent({
 
     onMounted(async () => {
       const paths = location.pathname.split('/').filter(p => p)
-      if (paths.length >= 3) {
+      if (props.selector || paths.length < 3) {
+        store.fetchResources()
+      } else {
         const directoryNames = paths[2]
         await store.fetchResources({ directoryNames })
         const resourceName = paths[3]
         store.showResourceByName(resourceName)
-      } else {
-        store.fetchResources()
       }
     })
 
