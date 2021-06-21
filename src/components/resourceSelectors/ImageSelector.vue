@@ -22,7 +22,7 @@ export default defineComponent({
     }
   },
   setup (_, context) {
-    const imagesStore = appStores.imagesStore
+    const imagesStore = appStores.imagesSelectorStore
 
     const selectImage = () => {
       context.emit('select', imagesStore.selectingResource.value)
