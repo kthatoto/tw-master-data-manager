@@ -1,4 +1,4 @@
-import { reactive, computed, toRefs, UnwrapRef } from '@vue/composition-api'
+import { ref, computed, UnwrapRef } from '@vue/composition-api'
 import axios, { AxiosResponse } from 'axios'
 
 import { BasicObject, Directory } from '~domains/index.ts'
@@ -7,7 +7,7 @@ import { ResourceType } from '~server/index.ts'
 import handleResponse from '@/utils/handleResponse.ts'
 import useDirectories from '@/hooks/useDirectories.ts'
 
-interface ResourceInterface {
+interface ResourceBasic {
   id: string
   name: string
 }
@@ -16,14 +16,6 @@ interface ResourcesResponseInterface<Resource> {
   resources: Resource[]
   directories: Directory[]
   parentDirectories?: Directory[]
-}
-
-interface State<Resource> {
-  resources: Resource[]
-  directories: Directory[]
-  showingResourceId?: string
-  selectingResourceId?: string
-  breadcrumbs: Directory[]
 }
 
 interface ResourceForm {
@@ -36,21 +28,19 @@ interface FetchParams {
 
 type ObjectType = 'resources' | 'directories'
 
-export default <Resource extends ResourceInterface, ResourcesResponse extends ResourcesResponseInterface<Resource>>(
+export default <Resource extends ResourceBasic, ResourcesResponse extends ResourcesResponseInterface<Resource>>(
   resourceType: ResourceType,
   resourceForm: ResourceForm
 ) => {
-  const state = reactive<State<Resource>>({
-    resources: [],
-    directories: [],
-    showingResourceId: undefined,
-    selectingResourceId: undefined,
-    breadcrumbs: []
-  })
+  const resources = ref<Resource[]>([])
+  const directories = ref<Directory[]>([])
+  const breadcrumbs = ref<Directory[]>([])
+  const showingResourceId = ref<string | undefined>(undefined)
+  const selectingResourceId = ref<string | undefined>(undefined)
 
   const currentDirectoryId = computed<string | undefined>(() => {
-    if (state.breadcrumbs.length === 0) return undefined
-    const lastBreadcrumb = state.breadcrumbs[state.breadcrumbs.length - 1]
+    if (breadcrumbs.value.length === 0) return undefined
+    const lastBreadcrumb = breadcrumbs.value[breadcrumbs.value.length - 1]
     return lastBreadcrumb.id
   })
 
@@ -64,10 +54,10 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
     }
     const res: AxiosResponse<ResourcesResponse> = await axios.get(`/api/${resourceType}?${params}`)
     const data: ResourcesResponse = res.data
-    state.resources = data.resources
-    state.directories = data.directories
+    resources.value = data.resources
+    directories.value = data.directories
     if (data.parentDirectories) {
-      state.breadcrumbs = data.parentDirectories
+      breadcrumbs.value = data.parentDirectories
     }
   }
 
@@ -75,27 +65,27 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
   const resourceEditing = computed<boolean>(() => resourceForm.action === 'edit')
 
   const selectResource = (id: string) => {
-    state.selectingResourceId = id
+    selectingResourceId.value = id
   }
   const selectingResource = computed<Resource | undefined>(() =>
-    state.resources.find((r: Resource) => r.id === state.selectingResourceId)
+    resources.value.find((r: Resource) => r.id === selectingResourceId.value)
   )
 
   const showResource = (id: string) => {
-    state.showingResourceId = id
+    showingResourceId.value = id
 
     let newPath = `/map/${resourceType}/:`
-    const directoryPath = state.breadcrumbs.map(bc => bc.name).join(':')
+    const directoryPath = breadcrumbs.value.map(bc => bc.name).join(':')
     newPath += directoryPath
     history.pushState(null, '', `${newPath}/${showingResource.value!.name}`)
   }
   const showResourceByName = (name: string) => {
-    const target: Resource | undefined = state.resources.find((resource: Resource) => resource.name === name)
+    const target: Resource | undefined = resources.value.find((resource: Resource) => resource.name === name)
     if (!target) return
-    state.showingResourceId = target.id
+    showingResourceId.value = target.id
   }
   const showingResource = computed<Resource | undefined>(() =>
-    state.resources.find((r: Resource) => r.id === state.showingResourceId)
+    resources.value.find((r: Resource) => r.id === showingResourceId.value)
   )
 
   const directoriesHook = useDirectories(
@@ -124,45 +114,49 @@ export default <Resource extends ResourceInterface, ResourcesResponse extends Re
   const deleteObject = async () => {
     const res = await axios.delete(`/api/${deleteForm.objectType}/${deleteForm.id}?resourceType=${resourceType}`)
     const result: boolean = handleResponse(res, '削除完了！', fetchResources, deleteForm)
-    if (result) state.showingResourceId = undefined
+    if (result) showingResourceId.value = undefined
     deleteForm.objectType = undefined
     deleteForm.id = undefined
     deleteForm.name = undefined
   }
 
   const backToHome = () => {
-    state.showingResourceId = undefined
-    state.breadcrumbs = []
+    showingResourceId.value = undefined
+    breadcrumbs.value = []
     fetchResources()
     updatePathForDirectory()
   }
   const backDirectory = (directoryId: string) => {
-    const directoryIndex = state.breadcrumbs.findIndex((bc: { id: string }) => bc.id === directoryId)
+    const directoryIndex = breadcrumbs.value.findIndex((bc: { id: string }) => bc.id === directoryId)
     if (directoryIndex < 0) {
       backToHome()
       return
     }
-    state.showingResourceId = undefined
-    state.breadcrumbs = state.breadcrumbs.slice(0, directoryIndex + 1)
+    showingResourceId.value = undefined
+    breadcrumbs.value = breadcrumbs.value.slice(0, directoryIndex + 1)
     fetchResources()
     updatePathForDirectory()
   }
   const appendDirectory = (directory: Directory) => {
-    state.breadcrumbs.push(directory)
+    breadcrumbs.value.push(directory)
     fetchResources()
     updatePathForDirectory()
   }
 
   const updatePathForDirectory = () => {
     let newPath = `/map/${resourceType}/:`
-    const directoryPath = state.breadcrumbs.map(bc => bc.name).join(':')
+    const directoryPath = breadcrumbs.value.map(bc => bc.name).join(':')
     newPath += directoryPath
     history.pushState(null, '', newPath)
   }
 
   return {
-    ...toRefs(state),
-    // state: state as UnwrapRef<State<Resource>>,
+    resources,
+    directories,
+    breadcrumbs,
+    showingResourceId,
+    selectingResourceId,
+
     currentDirectoryId,
     fetchResources,
     resourceCreating,
