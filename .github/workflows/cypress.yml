@@ -1,0 +1,20 @@
+name: Cypress
+
+on:
+  issue_comment:
+    - created
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    if: contains(github.event.comment.html_url, '/pull/') && startsWith(github.event.comment.body, 'run-cypress')
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/github-script@0.8.0
+        with:
+          script: github.issues.createComment({
+                    issue_number: context.issue.number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    body: 'Success!'
+                  })
