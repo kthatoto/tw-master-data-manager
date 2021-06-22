@@ -2,7 +2,8 @@ name: Cypress
 
 on:
   issue_comment:
-    - created
+    types:
+      - created
 
 jobs:
   cypress:
