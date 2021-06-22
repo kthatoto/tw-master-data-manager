@@ -6,7 +6,9 @@ on:
 
 jobs:
   cypress:
+    name: Run
     runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/github-script@v4
