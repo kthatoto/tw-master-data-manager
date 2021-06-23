@@ -25,3 +25,5 @@ jobs:
           record: true
           start: yarn dev
           wait-on: 'http://localhost:3000'
+        env:
+          TW_MONGODB_URL: mongodb://localhost:27017
