@@ -21,7 +21,7 @@
             h3 名前
             el-input.row(v-model="resourceForm.name" ref="resourceName")
             .buttons
-              el-button(type="primary" @click="createResource" :disabled="!resourceFormValid") 作成
+              el-button(type="primary" :disabled="!resourceFormValid") 作成
 
           .right
             Images(:editable="false" :selector="true")
