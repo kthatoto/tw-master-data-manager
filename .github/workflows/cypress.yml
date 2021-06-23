@@ -8,14 +8,13 @@ jobs:
   prerequisites:
     name: Prerequisites
     runs-on: ubuntu-latest
-    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/run-cypress')
     steps:
     - name: Check for Command
       id: command
       uses: xt0rted/slash-command-action@065da288bcfe24ff96b3364c7aac1f6dca0fb027
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        command: deploy
+        command: run-cypress
         reaction: true
         reaction-type: eyes
 
