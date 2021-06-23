@@ -22,7 +22,6 @@ jobs:
       - name: Cypress Run
         uses: cypress-io/github-action@v2
         with:
-          record: true
           start: yarn dev
           wait-on: 'http://localhost:3000'
           record: false
