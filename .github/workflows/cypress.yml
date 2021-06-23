@@ -25,6 +25,6 @@ jobs:
           start: yarn dev
           wait-on: 'http://localhost:3000'
           record: false
-          spec: cypress/integration/*
+          spec: cypress/integration/**/*
         env:
           TW_MONGODB_URL: mongodb://localhost:27017
