@@ -22,6 +22,8 @@ jobs:
     - name: Get branch on Pull Request
       uses: xt0rted/pull-request-comment-branch@29fe0354c01b30fb3de76f193ab33abf8fe5ddb0
       id: get_branch
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Notify Pending status
       uses: hkusu/status-create-action@1040f888115fc10b2e0fa8efc8ef3b85a916af2e
