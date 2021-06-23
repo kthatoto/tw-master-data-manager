@@ -8,7 +8,7 @@ jobs:
   prerequisites:
     name: Prerequisites
     runs-on: ubuntu-latest
-    if: contains(github.event.comment.html_url, '/pull/') && startsWith(github.event.comment.body, '/run-cypress')
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/run-cypress')
     steps:
     - name: Get branch on Pull Request
       uses: xt0rted/pull-request-comment-branch@29fe0354c01b30fb3de76f193ab33abf8fe5ddb0
