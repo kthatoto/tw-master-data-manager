@@ -23,7 +23,7 @@ const connectDatabase = async (databaseName: string) => {
   if (currentDatabaseName) await mongoose.disconnect()
   await mongoose.connect(
     `${DATABASE_URL}/${databaseName}?authSource=admin`,
-    { useNewUrlParser: true, useUnifiedTopology: true }
+    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
   )
 }
 
