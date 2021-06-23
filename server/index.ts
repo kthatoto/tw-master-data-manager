@@ -15,14 +15,12 @@ app.use(bodyParser.json())
 export const productionDatabaseName = 'tw-master'
 export const cypressDatabaseName = 'tw-master-cypress'
 
-const { TW_MONGODB_USER, TW_MONGODB_PASSWORD, TW_MONGODB_HOST, TW_MONGODB_PORT } = process.env
-const DATABASE_URL = `mongodb://${TW_MONGODB_USER}:${TW_MONGODB_PASSWORD}@${TW_MONGODB_HOST}:${TW_MONGODB_PORT}`
 const connectDatabase = async (databaseName: string) => {
   const currentDatabaseName = mongoose.connection.db?.databaseName
   if (currentDatabaseName === databaseName) return
   if (currentDatabaseName) await mongoose.disconnect()
   await mongoose.connect(
-    `${DATABASE_URL}/${databaseName}?authSource=admin`,
+    `${process.env.TW_MONGODB_URL}/${databaseName}?authSource=admin`,
     { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
   )
 }
