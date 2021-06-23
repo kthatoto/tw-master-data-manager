@@ -35,9 +35,9 @@ jobs:
 
     outputs:
       command_name: ${{ steps.command.outputs.command-name }}
-      command_arguments : ${{ steps.command.outputs.command-arguments }}
-      branch_name: ${{ steps.upstream_branch.outputs.head_ref }}
-      commit_sha: ${{ steps.upstream_branch.outputs.head_sha }}
+      command_arguments: ${{ steps.command.outputs.command-arguments }}
+      branch_name: ${{ steps.get_branch.outputs.head_ref }}
+      commit_sha: ${{ steps.get_branch.outputs.head_sha }}
 
   cypress:
     name: Cypress
