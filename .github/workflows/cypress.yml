@@ -31,7 +31,7 @@ jobs:
         sha: ${{ steps.get_branch.outputs.sha }}
         state: pending
         description: Branch:${{ steps.get_branch.outputs.branch_name }}
-        context: Deployment
+        context: Cypress Testing
 
     outputs:
       command_name: ${{ steps.command.outputs.command-name }}
@@ -71,7 +71,7 @@ jobs:
       with:
         sha: ${{ needs.prerequisites.outputs.commit_sha }}
         state: success
-        context: Deployment
+        context: Cypress Testing
         description: Successful
 
   error_notification:
@@ -86,4 +86,4 @@ jobs:
         sha: ${{ needs.prerequisites.outputs.commit_sha }}
         state: failure
         description: Failed
-        context: Deployment
+        context: Cypress Testing
