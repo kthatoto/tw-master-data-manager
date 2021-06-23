@@ -8,26 +8,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide } from '@vue/composition-api'
+import { defineComponent, ref } from '@vue/composition-api'
 
 import { appStores } from '@/stores/appStores.ts'
 
 export default defineComponent({
   setup (_, context) {
     const tab = ref<string>('images')
-    provide('imagesStore', appStores.imagesStore)
-    provide('tilesStore', appStores.tilesStore)
-    provide('flagsStore', appStores.flagsStore)
-    provide('imagesSelectorStore', appStores.imagesSelectorStore)
 
     const routeName = context.root.$route.name!
     if (routeName.split('-').length === 2) {
       tab.value = routeName.split('-')[1].toLowerCase()
     }
 
-    const beforeTabLeave = (newTabName: string) => {
+    const beforeTabLeave = (newTabName: string, oldTabName: string) => {
       if (tab.value === newTabName) return true
       tab.value = newTabName
+      appStores.clearStoreByName(oldTabName)
       return new Promise<void>((resolve, reject) => {
         return context.root.$router
           .push(`/map/${newTabName.toLowerCase()}`)

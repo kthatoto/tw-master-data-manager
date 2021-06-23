@@ -8,6 +8,8 @@ export interface AppStores {
   flagsStore: FlagsStore
 
   imagesSelectorStore: ImagesStore
+
+  clearStoreByName: (name: string) => void
 }
 
 const _: Partial<AppStores> = {}
@@ -25,5 +27,11 @@ export const appStores: AppStores = {
 
   get imagesSelectorStore (): ImagesStore {
     return _.imagesSelectorStore || (_.imagesSelectorStore = buildImagesStore(true))
+  },
+
+  clearStoreByName (name: string) {
+    if (name === 'images') _.imagesStore = undefined
+    if (name === 'tiles') _.tilesStore = undefined
+    if (name === 'flags') _.flagsStore = undefined
   }
 }
