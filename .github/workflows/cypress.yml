@@ -8,7 +8,6 @@ jobs:
   prerequisites:
     name: Prerequisites
     runs-on: ubuntu-latest
-    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/cypress')
     steps:
     - name: Check for Command
       id: command
