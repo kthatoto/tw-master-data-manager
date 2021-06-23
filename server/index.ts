@@ -14,27 +14,23 @@ app.use(bodyParser.json())
 
 export const productionDatabaseName = 'tw-master'
 export const cypressDatabaseName = 'tw-master-cypress'
+
+const connectDatabase = async (databaseName: string) => {
+  const currentDatabaseName = mongoose.connection.db?.databaseName
+  if (currentDatabaseName === databaseName) return
+  if (currentDatabaseName) await mongoose.disconnect()
+  await mongoose.connect(
+    `${process.env.TW_MONGODB_URL}/${databaseName}?authSource=admin`,
+    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
+  )
+}
+
 app.use(async (req: Request, res: Response, next: Function) => {
-  const currentDatabaseName = mongoose.connection.db.databaseName
-  if (req.headers.cypress && currentDatabaseName === productionDatabaseName) {
-    await mongoose.disconnect()
-    await mongoose.connect(
-      `mongodb://root:rootroot@localhost:27017/${cypressDatabaseName}?authSource=admin`,
-      { useNewUrlParser: true, useUnifiedTopology: true }
-    )
-  } else if (!req.headers.cypress && currentDatabaseName === cypressDatabaseName) {
-    await mongoose.disconnect()
-    await mongoose.connect(
-      `mongodb://root:rootroot@localhost:27017/${productionDatabaseName}?authSource=admin`,
-      { useNewUrlParser: true, useUnifiedTopology: true }
-    )
-  }
+  const databaseName = req.headers.cypress ? cypressDatabaseName : productionDatabaseName
+  await connectDatabase(databaseName)
   next()
 })
-mongoose.connect(
-  `mongodb://root:rootroot@localhost:27017/${productionDatabaseName}?authSource=admin`,
-  { useNewUrlParser: true, useUnifiedTopology: true }
-)
+connectDatabase(productionDatabaseName)
 
 apiHandle(app)
 
