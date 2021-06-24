@@ -16,9 +16,9 @@ Cypress.Commands.add('editFlag', (beforeFlagName, flagName, flagKey, flagDescrip
   cy.visitMapResources('flags')
   cy.contains(beforeFlagName).dblclick()
   cy.wait(100)
-  cy.contains('.dialog.-flagEdit', 'Name').next().get('.el-input__inner').clear().type(flagName)
-  cy.contains('.dialog.-flagEdit', 'Key').next().get('.el-input__inner').clear().type(flagKey)
-  cy.contains('.dialog.-flagEdit', 'Description').next().get('.el-textarea__inner').clear().type(flagDescription)
+  cy.get('.dialog.-flagEdit').contains('Name').next().find('.el-input__inner').clear().type(flagName)
+  cy.get('.dialog.-flagEdit').contains('Key').next().find('.el-input__inner').clear().type(flagKey)
+  cy.get('.dialog.-flagEdit').contains('Description').next().find('.el-textarea__inner').clear().type(flagDescription)
   cy.contains('.dialog.-flagEdit button.el-button', 'Edit').click()
   cy.wait(100)
   if (expectedMessage) {
