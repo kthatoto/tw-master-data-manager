@@ -2,9 +2,9 @@ Cypress.Commands.add('createFlag', (flagName, flagKey, flagDescription, expected
   cy.visitMapResources('flags')
   cy.contains('flags作成').click()
   cy.wait(100)
-  cy.contains('.dialog.-flagCreate', 'Name').next().get('.el-input__inner').clear().type(flagName)
-  cy.contains('.dialog.-flagCreate', 'Key').next().get('.el-input__inner').clear().type(flagKey)
-  cy.contains('.dialog.-flagCreate', 'Description').next().get('.el-textarea__inner').clear().type(flagDescription)
+  cy.get('.dialog.-flagCreate').contains('Name').next().find('.el-input__inner').clear().type(flagName)
+  cy.get('.dialog.-flagCreate').contains('Key').next().find('.el-input__inner').clear().type(flagKey)
+  cy.get('.dialog.-flagCreate').contains('Description').next().find('.el-textarea__inner').clear().type(flagDescription)
   cy.contains('.dialog.-flagCreate button.el-button', 'Create').click()
   cy.wait(100)
   if (expectedMessage) {
