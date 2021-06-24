@@ -16,7 +16,7 @@ context('Flags Edit', () => {
         { type: 'file', ...flagParams }
       ])
 
-      cy.createFlag(flagName, afterFlagName, afterFlagKey, afterFlagDescription, '更新完了！')
+      cy.editFlag(flagName, afterFlagName, afterFlagKey, afterFlagDescription, '更新完了！')
 
       cy.flagResourcesShouldBe([
         { type: 'file', ...afterFlagParams }
@@ -30,7 +30,7 @@ context('Flags Edit', () => {
       ])
 
       cy.goDirectory('flags', directoryName)
-      cy.createFlag(flagName, afterFlagName, afterFlagKey, afterFlagDescription, '更新完了！')
+      cy.editFlag(flagName, afterFlagName, afterFlagKey, afterFlagDescription, '更新完了！')
 
       cy.flagResourcesShouldBe([
         { type: 'directory', name: directoryName },
