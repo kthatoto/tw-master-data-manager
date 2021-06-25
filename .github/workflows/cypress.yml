@@ -26,7 +26,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Notify Pending status
-        if: ${{ steps.verify_changed.outputs.file_changed }}
         uses: hkusu/status-create-action@v1
         with:
           sha: ${{ steps.get_branch.outputs.sha }}
