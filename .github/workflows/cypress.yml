@@ -40,6 +40,7 @@ jobs:
         run: echo '${{ toJSON(steps.verify_changed) }}'
 
       - name: Notify Pending status
+        if: ${{ steps.verify_changed.outputs.file_changed == "true" }}
         uses: hkusu/status-create-action@v1
         with:
           sha: ${{ steps.get_branch.outputs.sha }}
@@ -48,15 +49,15 @@ jobs:
           context: Cypress Testing
 
     outputs:
-      command_name: ${{ steps.command.outputs.command-name }}
-      command_arguments: ${{ steps.command.outputs.command-arguments }}
       branch_name: ${{ steps.get_branch.outputs.head_ref }}
       commit_sha: ${{ steps.get_branch.outputs.head_sha }}
+      file_changed: ${{ steps.verify_changed.outputs.file_changed }}
 
   cypress:
     name: Cypress
     runs-on: ubuntu-latest
     needs: [prerequisites]
+    if: ${{ needs.prerequisites.outputs.file_changed == "true" }}
     steps:
       - uses: actions/checkout@v2
         with:
