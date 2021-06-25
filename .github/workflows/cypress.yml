@@ -36,13 +36,8 @@ jobs:
           files: |
             src/hooks
 
-      - name: Skip all actions if no change
-        # if: ${{ steps.verify_changed.outputs.file_changed == 'false' }}
-        uses: potiuk/cancel-workflow-runs@master
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          cancelMode: self
-          selfPreservation: false
+      - name: Dump changed files
+        run: echo '${{ toJSON(steps.verify_changed) }}'
 
       - name: Notify Pending status
         uses: hkusu/status-create-action@v1
