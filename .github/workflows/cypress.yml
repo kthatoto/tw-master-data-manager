@@ -32,8 +32,9 @@ jobs:
       - name: Verify changed target files
         id: verify_changed
         uses: tj-actions/verify-changed-files@v7
-        with: |
-          'src/hooks'
+        with:
+          files: |
+            'src/hooks'
 
       - name: Skip all actions if no change
         if: ${{ steps.verify_changed.outputs.file_changed == 'false' }}
