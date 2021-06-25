@@ -35,6 +35,7 @@ jobs:
         with:
           files: |
             src/hooks
+            src
 
       - name: Dump changed files
         run: echo '${{ toJSON(steps.verify_changed) }}'
