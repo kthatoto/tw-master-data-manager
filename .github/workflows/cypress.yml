@@ -38,7 +38,7 @@ jobs:
 
       - name: Skip all actions if no change
         if: ${{ steps.verify_changed.outputs.file_changed == 'false' }}
-        uses: potiuk/cancel-workflow-runs@v4.9
+        uses: potiuk/cancel-workflow-runs@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           cancelMode: self
