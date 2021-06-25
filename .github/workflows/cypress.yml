@@ -34,8 +34,7 @@ jobs:
         uses: tj-actions/verify-changed-files@v7
         with:
           files: |
-            src/hooks
-            src
+            src/*
 
       - name: Dump changed files
         run: echo '${{ toJSON(steps.verify_changed) }}'
