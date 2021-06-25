@@ -12,21 +12,21 @@ jobs:
     steps:
     - name: Check for Command
       id: command
-      uses: xt0rted/slash-command-action@065da288bcfe24ff96b3364c7aac1f6dca0fb027
+      uses: xt0rted/slash-command-action@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        command: run/cypress
+        command: run
         reaction: true
         reaction-type: eyes
 
     - name: Get branch on Pull Request
-      uses: xt0rted/pull-request-comment-branch@29fe0354c01b30fb3de76f193ab33abf8fe5ddb0
+      uses: xt0rted/pull-request-comment-branch@v1
       id: get_branch
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Notify Pending status
-      uses: hkusu/status-create-action@1040f888115fc10b2e0fa8efc8ef3b85a916af2e
+      uses: hkusu/status-create-action@v1
       with:
         sha: ${{ steps.get_branch.outputs.sha }}
         state: pending
@@ -67,7 +67,7 @@ jobs:
         TW_MONGODB_URL: mongodb://localhost:27017
 
     - name: Notify Successful status
-      uses: hkusu/status-create-action@1040f888115fc10b2e0fa8efc8ef3b85a916af2e
+      uses: hkusu/status-create-action@v1
       with:
         sha: ${{ needs.prerequisites.outputs.commit_sha }}
         state: success
@@ -81,7 +81,7 @@ jobs:
     if: failure() && needs.prerequisites.outputs.commit_sha != null
     steps:
     - name: Notify pending status
-      uses: hkusu/status-create-action@1040f888115fc10b2e0fa8efc8ef3b85a916af2e
+      uses: hkusu/status-create-action@v1
       with:
         sha: ${{ needs.prerequisites.outputs.commit_sha }}
         state: failure
