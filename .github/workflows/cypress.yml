@@ -25,20 +25,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ steps.get_branch.outputs.head_ref }}
-
-      - name: Verify changed target files
-        id: verify_changed
-        uses: tj-actions/verify-changed-files@v7
-        with:
-          files: |
-            src/hooks
-
-      - name: Dump changed files
-        run: echo '${{ toJSON(steps.verify_changed) }}'
-
       - name: Notify Pending status
         uses: hkusu/status-create-action@v1
         with:
@@ -48,8 +34,6 @@ jobs:
           context: Cypress Testing
 
     outputs:
-      command_name: ${{ steps.command.outputs.command-name }}
-      command_arguments: ${{ steps.command.outputs.command-arguments }}
       branch_name: ${{ steps.get_branch.outputs.head_ref }}
       commit_sha: ${{ steps.get_branch.outputs.head_sha }}
 
