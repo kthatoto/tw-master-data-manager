@@ -34,7 +34,7 @@ jobs:
         uses: technote-space/get-diff-action@v4
         with:
           files: |
-            src/hooks/**/*
+            src/**/*
 
       - name: Dump changed files
         run: echo '${{ toJSON(env) }}'
