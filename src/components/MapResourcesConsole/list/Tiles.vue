@@ -42,7 +42,7 @@
             h3 名前
             el-input.row(v-model="resourceForm.name" ref="resourceName")
             .buttons
-              el-button(type="primary" @click="editResource" :disabled="!resourceFormValid") 更新
+              el-button(type="primary" :disabled="!resourceFormValid") 更新
 
           .right
             Images(:editable="false" :selector="true")
