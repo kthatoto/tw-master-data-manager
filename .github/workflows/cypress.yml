@@ -80,7 +80,7 @@ jobs:
     needs: [prerequisites, cypress]
     if: failure() && needs.prerequisites.outputs.commit_sha != null
     steps:
-    - name: Notify pending status
+    - name: Notify Failure status
       uses: hkusu/status-create-action@v1
       with:
         sha: ${{ needs.prerequisites.outputs.commit_sha }}
