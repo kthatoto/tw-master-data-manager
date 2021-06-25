@@ -8,34 +8,32 @@ jobs:
   prerequisites:
     name: Prerequisites
     runs-on: ubuntu-latest
-    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/cypress')
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/run/cypress')
     steps:
-    - name: Check for Command
-      id: command
-      uses: xt0rted/slash-command-action@065da288bcfe24ff96b3364c7aac1f6dca0fb027
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        command: cypress
-        reaction: true
-        reaction-type: eyes
+      - name: Check for Command
+        id: command
+        uses: xt0rted/slash-command-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          command: run
+          reaction: true
+          reaction-type: eyes
 
-    - name: Get branch on Pull Request
-      uses: xt0rted/pull-request-comment-branch@29fe0354c01b30fb3de76f193ab33abf8fe5ddb0
-      id: get_branch
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get branch on Pull Request
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: get_branch
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Notify Pending status
-      uses: hkusu/status-create-action@1040f888115fc10b2e0fa8efc8ef3b85a916af2e
-      with:
-        sha: ${{ steps.get_branch.outputs.sha }}
-        state: pending
-        description: Branch:${{ steps.get_branch.outputs.branch_name }}
-        context: Cypress Testing
+      - name: Notify Pending status
+        uses: hkusu/status-create-action@v1
+        with:
+          sha: ${{ steps.get_branch.outputs.sha }}
+          state: pending
+          description: Branch:${{ steps.get_branch.outputs.branch_name }}
+          context: Cypress Testing
 
     outputs:
-      command_name: ${{ steps.command.outputs.command-name }}
-      command_arguments: ${{ steps.command.outputs.command-arguments }}
       branch_name: ${{ steps.get_branch.outputs.head_ref }}
       commit_sha: ${{ steps.get_branch.outputs.head_sha }}
 
@@ -44,35 +42,35 @@ jobs:
     runs-on: ubuntu-latest
     needs: [prerequisites]
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ needs.prerequisites.outputs.branch_name }}
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.prerequisites.outputs.branch_name }}
 
-    - name: Setup Node
-      uses: actions/setup-node@v2
-      with:
-        node-version: 12.x
-    - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.6.0
-      with:
-        mongodb-version: 4.4.1
-    - name: Cypress Run
-      uses: cypress-io/github-action@v2
-      with:
-        start: yarn dev
-        wait-on: 'http://localhost:3000'
-        record: false
-        spec: cypress/integration/**/*
-      env:
-        TW_MONGODB_URL: mongodb://localhost:27017
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12.x
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.6.0
+        with:
+          mongodb-version: 4.4.1
+      - name: Cypress Run
+        uses: cypress-io/github-action@v2
+        with:
+          start: yarn dev
+          wait-on: 'http://localhost:3000'
+          record: false
+          spec: cypress/integration/**/*
+        env:
+          TW_MONGODB_URL: mongodb://localhost:27017
 
-    - name: Notify Successful status
-      uses: hkusu/status-create-action@1040f888115fc10b2e0fa8efc8ef3b85a916af2e
-      with:
-        sha: ${{ needs.prerequisites.outputs.commit_sha }}
-        state: success
-        context: Cypress Testing
-        description: Successful
+      - name: Notify Successful status
+        uses: hkusu/status-create-action@v1
+        with:
+          sha: ${{ needs.prerequisites.outputs.commit_sha }}
+          state: success
+          context: Cypress Testing
+          description: Successful
 
   error_notification:
     name: Notify Failure status
@@ -80,10 +78,10 @@ jobs:
     needs: [prerequisites, cypress]
     if: failure() && needs.prerequisites.outputs.commit_sha != null
     steps:
-    - name: Notify pending status
-      uses: hkusu/status-create-action@1040f888115fc10b2e0fa8efc8ef3b85a916af2e
-      with:
-        sha: ${{ needs.prerequisites.outputs.commit_sha }}
-        state: failure
-        description: Failed
-        context: Cypress Testing
+      - name: Notify Failure status
+        uses: hkusu/status-create-action@v1
+        with:
+          sha: ${{ needs.prerequisites.outputs.commit_sha }}
+          state: failure
+          description: Failed
+          context: Cypress Testing
