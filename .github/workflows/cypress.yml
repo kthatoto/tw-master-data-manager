@@ -25,6 +25,24 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.get_branch.outputs.head_ref }}
+
+      - name: Verify changed target files
+        id: verify_changed
+        uses: tj-actions/verify-changed-files@v7
+        with:
+          src/hooks
+
+      - name: Skip all actions if no change
+        if: ${{ steps.verify_changed.outputs.file_changed == 'false' }}
+        uses: potiuk/cancel-workflow-runs@v4.9
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          cancelMode: self
+          selfPreservation: false
+
       - name: Notify Pending status
         uses: hkusu/status-create-action@v1
         with:
