@@ -5,7 +5,7 @@ export default {
   srcDir: 'src',
   target: 'static',
   head: {
-    title: 'tw-game-editor',
+    title: 'tw-master-data-manager',
     htmlAttrs: {
       lang: 'en'
     },
