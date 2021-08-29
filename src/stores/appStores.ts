@@ -1,6 +1,6 @@
-import { buildImagesStore, ImagesStore } from '@/stores/images_store.ts'
-import { buildTilesStore, TilesStore } from '@/stores/tiles_store.ts'
-import { buildFlagsStore, FlagsStore } from '@/stores/flags_store.ts'
+import { buildImagesStore, ImagesStore } from '@/stores/images_store'
+import { buildTilesStore, TilesStore } from '@/stores/tiles_store'
+import { buildFlagsStore, FlagsStore } from '@/stores/flags_store'
 
 export interface AppStores {
   imagesStore: ImagesStore

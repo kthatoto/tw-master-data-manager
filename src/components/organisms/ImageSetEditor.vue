@@ -18,8 +18,8 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, computed, onMounted } from '@vue/composition-api'
 
-import { appStores } from '@/stores/appStores.ts'
-import { ImageChip } from '~domains/index.ts'
+import { appStores } from '@/stores/appStores'
+import { ImageChip } from '~domains/index'
 import ImageChipView from '@/components/molecules/ImageChip.vue'
 
 export default defineComponent({

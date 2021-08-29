@@ -33,7 +33,7 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import { appStores } from '@/stores/appStores.ts'
+import { appStores } from '@/stores/appStores'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
 import FlagDetail from '@/components/MapResourcesConsole/detail/FlagDetail.vue'
 

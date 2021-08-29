@@ -52,9 +52,9 @@
 <script lang="ts">
 import { defineComponent, PropType, onMounted } from '@vue/composition-api'
 
-import getStoreByResourceType from '@/utils/getStoreByResourceType.ts'
+import getStoreByResourceType from '@/utils/getStoreByResourceType'
 
-import { ResourceType } from '~domains/index.ts'
+import { ResourceType } from '~domains/index'
 
 export default defineComponent({
   props: {

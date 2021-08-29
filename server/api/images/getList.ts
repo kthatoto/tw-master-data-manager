@@ -1,6 +1,6 @@
 import { Application, Request, Response } from 'express'
 
-import { ImagesResponse } from '~domains/images.ts'
+import { ImagesResponse } from '~domains/images'
 import ImageModel, { ImageDocument } from '../../models/image'
 
 import getList from '../../services/getList'

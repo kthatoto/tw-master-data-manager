@@ -1,4 +1,4 @@
-import { Directory, BasicObject, ImageChip } from '~domains/index.ts'
+import { Directory, BasicObject, ImageChip } from '~domains/index'
 
 export interface Tile extends BasicObject {
   imageData: {

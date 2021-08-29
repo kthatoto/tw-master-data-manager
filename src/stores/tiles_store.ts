@@ -1,13 +1,13 @@
 import { reactive, computed } from '@vue/composition-api'
 import axios from 'axios'
 
-import { Tile, TilesResponse } from '~domains/tiles.ts'
-import { ImageChip } from '~domains/index.ts'
-import handleResponse from '@/utils/handleResponse.ts'
-import useResources from '@/hooks/useResources.ts'
+import { Tile, TilesResponse } from '~domains/tiles'
+import { ImageChip } from '~domains/index'
+import handleResponse from '@/utils/handleResponse'
+import useResources from '@/hooks/useResources'
 
-import { TilesCreateRequestBody } from '~server/api/tiles/create.ts'
-import { TilesEditRequestBody } from '~server/api/tiles/edit.ts'
+import { TilesCreateRequestBody } from '~server/api/tiles/create'
+import { TilesEditRequestBody } from '~server/api/tiles/edit'
 
 export const buildTilesStore = () => {
   const resourceForm = reactive<{

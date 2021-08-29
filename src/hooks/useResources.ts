@@ -1,10 +1,10 @@
 import { ref, reactive, computed, UnwrapRef } from '@vue/composition-api'
 import axios, { AxiosResponse } from 'axios'
 
-import { BasicObject, Directory, ResourceType } from '~domains/index.ts'
+import { BasicObject, Directory, ResourceType } from '~domains/index'
 
-import handleResponse from '@/utils/handleResponse.ts'
-import useDirectories from '@/hooks/useDirectories.ts'
+import handleResponse from '@/utils/handleResponse'
+import useDirectories from '@/hooks/useDirectories'
 
 interface ResourceBasic {
   id: string

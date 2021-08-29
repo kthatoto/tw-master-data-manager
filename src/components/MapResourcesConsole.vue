@@ -10,7 +10,7 @@
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
 
-import { appStores } from '@/stores/appStores.ts'
+import { appStores } from '@/stores/appStores'
 
 export default defineComponent({
   setup (_, context) {

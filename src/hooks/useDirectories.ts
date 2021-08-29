@@ -1,11 +1,11 @@
 import { reactive, computed, ComputedRef } from '@vue/composition-api'
 import axios from 'axios'
 
-import { Directory, ResourceType } from '~domains/index.ts'
-import handleResponse from '@/utils/handleResponse.ts'
+import { Directory, ResourceType } from '~domains/index'
+import handleResponse from '@/utils/handleResponse'
 
-import { CreateDirectoryRequestBody } from '~server/api/createDirectory.ts'
-import { MoveDirectoryRequestBody } from '~server/api/moveDirectory.ts'
+import { CreateDirectoryRequestBody } from '~server/api/createDirectory'
+import { MoveDirectoryRequestBody } from '~server/api/moveDirectory'
 
 export default (
   resourceType: ResourceType,

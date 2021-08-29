@@ -1,6 +1,6 @@
 import { Application, Request, Response } from 'express'
 
-import { FlagsResponse } from '~domains/flags.ts'
+import { FlagsResponse } from '~domains/flags'
 import FlagModel, { FlagDocument } from '../../models/flag'
 
 import getList from '../../services/getList'
