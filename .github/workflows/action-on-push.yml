@@ -1,9 +1,6 @@
 name: Action on Push
 
-on:
-  push:
-    branches:
-      - 'feature/**'
+on: [push]
 
 jobs:
   deploy:
