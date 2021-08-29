@@ -1,6 +1,6 @@
-import ImageModel, { ImageDocument } from '~server/models/image'
-import TileModel, { TileDocument } from '~server/models/tile'
-import FlagModel, { FlagDocument } from '~server/models/flag'
+import ImageModel, { ImageDocument } from '../server/models/image'
+import TileModel, { TileDocument } from '../server/models/tile'
+import FlagModel, { FlagDocument } from '../server/models/flag'
 
 export type ResourceDocument = ImageDocument | TileDocument | FlagDocument
 export type ResourceType = 'images' | 'tiles' | 'flags'
