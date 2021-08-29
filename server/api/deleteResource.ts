@@ -1,6 +1,6 @@
 import { Application, Request, Response } from 'express'
 
-import { ResourceType, getModel, ResourceModel, ResourceDocument } from '../index'
+import { ResourceType, getModel, ResourceModel, ResourceDocument } from '~domains/index'
 import { DefaultResponseBody } from '~server/api/index'
 
 export default (app: Application, method: 'delete', path: string) => {
