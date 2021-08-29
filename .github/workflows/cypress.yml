@@ -1,50 +1,12 @@
 name: Cypress
 
-on:
-  issue_comment:
-    types: [created]
+on: [push]
 
 jobs:
-  prerequisites:
-    name: Prerequisites
-    runs-on: ubuntu-latest
-    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/run/cypress')
-    steps:
-      - name: Check for Command
-        id: command
-        uses: xt0rted/slash-command-action@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          command: run
-          reaction: true
-          reaction-type: eyes
-
-      - name: Get branch on Pull Request
-        uses: xt0rted/pull-request-comment-branch@v1
-        id: get_branch
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Notify Pending status
-        uses: hkusu/status-create-action@v1
-        with:
-          sha: ${{ steps.get_branch.outputs.sha }}
-          state: pending
-          description: Branch:${{ steps.get_branch.outputs.branch_name }}
-          context: Cypress Testing
-
-    outputs:
-      branch_name: ${{ steps.get_branch.outputs.head_ref }}
-      commit_sha: ${{ steps.get_branch.outputs.head_sha }}
-
   cypress:
-    name: Cypress
     runs-on: ubuntu-latest
-    needs: [prerequisites]
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: ${{ needs.prerequisites.outputs.branch_name }}
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -63,25 +25,3 @@ jobs:
           spec: cypress/integration/**/*
         env:
           TW_MONGODB_URL: mongodb://localhost:27017
-
-      - name: Notify Successful status
-        uses: hkusu/status-create-action@v1
-        with:
-          sha: ${{ needs.prerequisites.outputs.commit_sha }}
-          state: success
-          context: Cypress Testing
-          description: Successful
-
-  error_notification:
-    name: Notify Failure status
-    runs-on: ubuntu-latest
-    needs: [prerequisites, cypress]
-    if: failure() && needs.prerequisites.outputs.commit_sha != null
-    steps:
-      - name: Notify Failure status
-        uses: hkusu/status-create-action@v1
-        with:
-          sha: ${{ needs.prerequisites.outputs.commit_sha }}
-          state: failure
-          description: Failed
-          context: Cypress Testing

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import { ResourceModel, ResourceType } from '../index'
+import { ResourceModel, ResourceType } from '~domains/index'
 import DirectoryModel, { DirectoryDocument } from '../models/directory'
 
 import fetchResourcesByDirectoryNames from '../services/fetchResourcesByDirectoryNames'

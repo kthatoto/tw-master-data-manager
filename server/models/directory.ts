@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose'
 
-import { ResourceType } from '~server/index'
+import { ResourceType } from '~domains/index'
 
 export interface DirectoryDocument extends Document {
   name: string

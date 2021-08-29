@@ -1,8 +1,7 @@
 import { ref, reactive, computed, UnwrapRef } from '@vue/composition-api'
 import axios, { AxiosResponse } from 'axios'
 
-import { BasicObject, Directory } from '~domains/index.ts'
-import { ResourceType } from '~server/index.ts'
+import { BasicObject, Directory, ResourceType } from '~domains/index.ts'
 
 import handleResponse from '@/utils/handleResponse.ts'
 import useDirectories from '@/hooks/useDirectories.ts'

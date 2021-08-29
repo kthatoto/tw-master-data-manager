@@ -1,4 +1,4 @@
-import { ResourceType } from '~server/index.ts'
+import { ResourceType } from '~domains/index.ts'
 import { appStores } from '@/stores/appStores.ts'
 
 export default (resourceType: ResourceType, selector: Boolean = false) => {

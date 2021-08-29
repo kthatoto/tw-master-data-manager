@@ -1,6 +1,6 @@
 import { Application, Request, Response } from 'express'
 
-import { ResourceType } from '~server/index'
+import { ResourceType } from '~domains/index'
 import { DefaultResponseBody } from '~server/api/index'
 import DirectoryModel from '../models/directory'
 

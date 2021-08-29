@@ -1,4 +1,4 @@
-import { ResourceModel, ResourceType } from '../index'
+import { ResourceModel, ResourceType } from '~domains/index'
 import DirectoryModel, { DirectoryDocument } from '../models/directory'
 
 export default async <ResourceDocument>(directoryNames: string[], resourceModel: ResourceModel, resourceType: ResourceType) => {
