@@ -3,8 +3,8 @@ name: Action on Push
 on: [push]
 
 jobs:
-  deploy:
-    name: Deploy
+  cypress:
+    name: Cypress
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
