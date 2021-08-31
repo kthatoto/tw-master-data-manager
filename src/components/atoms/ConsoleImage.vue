@@ -13,7 +13,7 @@
 <script lang="ts">
 import { defineComponent, PropType, computed, ref, onMounted, watch } from '@vue/composition-api'
 
-import { ImageChip, ResourceType } from '~domains/index.ts'
+import { ImageChip, ResourceType } from '~domains/index'
 import ImageChipView from '@/components/molecules/ImageChip.vue'
 
 export default defineComponent({

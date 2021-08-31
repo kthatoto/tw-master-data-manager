@@ -1,12 +1,12 @@
 import { reactive, computed } from '@vue/composition-api'
 import axios from 'axios'
 
-import { Flag, FlagsResponse } from '~domains/flags.ts'
-import handleResponse from '@/utils/handleResponse.ts'
-import useResources from '@/hooks/useResources.ts'
+import { Flag, FlagsResponse } from '~domains/flags'
+import handleResponse from '@/utils/handleResponse'
+import useResources from '@/hooks/useResources'
 
-import { FlagsCreateRequestBody } from '~server/api/flags/create.ts'
-import { FlagsEditRequestBody } from '~server/api/flags/edit.ts'
+import { FlagsCreateRequestBody } from '~server/api/flags/create'
+import { FlagsEditRequestBody } from '~server/api/flags/edit'
 
 export const buildFlagsStore = () => {
   const resourceForm = reactive<{

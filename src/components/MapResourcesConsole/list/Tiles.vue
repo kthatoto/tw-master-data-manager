@@ -51,12 +51,12 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import { appStores } from '@/stores/appStores.ts'
+import { appStores } from '@/stores/appStores'
 import Resources from '@/components/MapResourcesConsole/Resources.vue'
 import TileDetail from '@/components/MapResourcesConsole/detail/TileDetail.vue'
 import ImageSetEditor from '@/components/organisms/ImageSetEditor.vue'
 import Images from '@/components/MapResourcesConsole/list/Images.vue'
-import { ImageChip } from '~domains/index.ts'
+import { ImageChip } from '~domains/index'
 
 export default defineComponent({
   components: { Resources, TileDetail, ImageSetEditor, Images },

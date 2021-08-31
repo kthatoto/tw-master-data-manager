@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-import { appStores } from '@/stores/appStores.ts'
+import { appStores } from '@/stores/appStores'
 import ConsoleImage from '@/components/atoms/ConsoleImage.vue'
 
 export default defineComponent({

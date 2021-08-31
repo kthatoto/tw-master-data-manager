@@ -1,4 +1,4 @@
-import { Directory, BasicObject } from '~domains/index.ts'
+import { Directory, BasicObject } from '~domains/index'
 
 export interface Flag extends BasicObject {
   key: string

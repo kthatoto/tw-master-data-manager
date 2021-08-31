@@ -1,12 +1,12 @@
 import { reactive, computed } from '@vue/composition-api'
 import axios from 'axios'
 
-import { Image, ImagesResponse } from '~domains/images.ts'
-import handleResponse from '@/utils/handleResponse.ts'
-import useResources from '@/hooks/useResources.ts'
+import { Image, ImagesResponse } from '~domains/images'
+import handleResponse from '@/utils/handleResponse'
+import useResources from '@/hooks/useResources'
 
-import { ImagesCreateRequestBody } from '~server/api/images/create.ts'
-import { ImagesEditRequestBody } from '~server/api/images/edit.ts'
+import { ImagesCreateRequestBody } from '~server/api/images/create'
+import { ImagesEditRequestBody } from '~server/api/images/edit'
 
 interface ImageFile {
   name: string

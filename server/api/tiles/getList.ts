@@ -1,6 +1,6 @@
 import { Application, Request, Response } from 'express'
 
-import { TilesResponse } from '~domains/tiles.ts'
+import { TilesResponse } from '~domains/tiles'
 import TileModel, { TileDocument } from '../../models/tile'
 import ImageModel, { ImageDocument } from '../../models/image'
 
