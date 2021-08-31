@@ -1,6 +1,6 @@
 <template lang="pug">
 .detail
-  ConsoleImage(:resource="showingResource" width="100%")
+  ConsoleImage(:resource="showingResource" width="50%")
   h3 {{ showingResource.name }}
 
   .buttons(v-if="editable")

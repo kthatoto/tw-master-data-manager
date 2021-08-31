@@ -1,6 +1,6 @@
 <template lang="pug">
 .detail
-  ConsoleImage(:resource="showingResource" width="100%" resourceType="flags")
+  ConsoleImage(:resource="showingResource" width="50%" resourceType="flags")
   h3 {{ showingResource.name }}
 
   table
