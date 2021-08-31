@@ -78,5 +78,14 @@ export default {
         })
       })
     }
+  },
+  render: {
+    fallback: {
+      static: {
+        handlers: {
+          '.png': false
+        }
+      }
+    }
   }
 }
